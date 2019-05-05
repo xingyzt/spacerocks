@@ -1,0 +1,24 @@
+html,body {
+  background-color:black;
+  margin:0;
+}
+
+#asteroid {
+  animation:ryugu 60s infinite linear;
+  transform-origin:40% 40%;
+}
+
+#shadow {
+  animation:shadow 120s infinite linear;
+  transform-origin:40% 40%;
+}
+
+@keyframes ryugu {
+  0%   {transform:rotate(0deg);}
+  100% {transform:rotate(360deg);}
+}
+
+@keyframes shadow {
+  0%   {transform:rotate(0deg);}
+  100% {transform:rotate(-360deg);}
+}
