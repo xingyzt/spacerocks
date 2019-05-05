@@ -18,7 +18,7 @@
           </radialGradient>
         </defs>
         <rect width='100%' height='100%'/>
-        <g id='asteroid'>
+        <g class='asteroid'>
           <path d='M200 1000C200 800 800 200 1000 200C1200 200 1800 800 1800 1000C1800 1200 1200 1800 1000 1800C800 1800 200 1200 200 1000z' fill='url(#r)'/>
           <g fill='#787878'>
             <circle cx='220' cy='950' r='28'/>
@@ -58,6 +58,11 @@
             <circle cx='300' cy='1200' r='27'/>
             <circle cx='240' cy='1100' r='20'/>
           </g>
+        </g>
+        <g id='rover'>
+          <rect width='100' height='100' x='950' y='100' fill='#fff'/>
+        </g>
+        <g class='asteroid'>
           <g fill='#7a7a7a' transform='rotate(90,1000,1000)'>
             <circle cx='220' cy='950' r='28'/>
             <circle cx='260' cy='870' r='22'/>
@@ -343,7 +348,6 @@
         <rect id='shadow' width='2000' height='2000' fill='url(#g)'/>
       </svg>
     </div>
-    <div id='x'></div>
   <script></script>
   </body>
 </html>
