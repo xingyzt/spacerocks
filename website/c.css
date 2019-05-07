@@ -5,16 +5,62 @@ html,body {
 
 .asteroid {
   animation:ryugu 60s infinite linear;
-  transform-origin:40% 40%;
+  transform-origin:1000px 1000px;
 }
 
-#rover {
+.rover {
   animation:roving 15s infinite cubic-bezier(.3,0,.7,1);
 }
 
+.hop {
+  animation:jump 15s infinite cubic-bezier(.3,0,.7,1);
+}
+
+.left{
+  animation:aleft 90s infinite ease-in-out;
+}
+
+.right{
+  animation:aright 90s infinite ease-in-out;
+}
+
+.pivot {
+  animation:pivot 15s infinite cubic-bezier(.2,0,.8,1);
+  transform-origin:1000px -100px;
+}
+
+#blink {
+  animation:blink 1s infinite linear;
+}
+
 #shadow {
-  animation:shadow 120s infinite linear;
-  transform-origin:40% 40%;
+  animation:shadow 90s infinite linear;
+  transform-origin:1000px 1000px;
+}
+
+#wheel1 {
+  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
+  transform-origin:887.5px 193px;
+}
+#wheel2 {
+  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
+  transform-origin:967.5px 193px;
+}
+#wheel3 {
+  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
+  transform-origin:1047.5px 193px;
+}
+#wheel4 {
+  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
+  transform-origin:947.5px 193px;
+}
+#wheel5 {
+  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
+  transform-origin:1027.5px 193px;
+}
+#wheel6 {
+  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
+  transform-origin:1107.5px 193px;
 }
 
 @keyframes ryugu {
@@ -28,7 +74,50 @@ html,body {
   100% {transform:translate(0,0);}
 }
 
+@keyframes jump {
+  0%   {transform:translate(0,0);}
+  50% {transform:translate(0,0);}
+  100% {transform:translate(0,0);}
+}
+
+@keyframes pivot {
+  0%   {transform:rotate(0);}
+  25% {transform:rotate(-10deg);}
+  75% {transform:rotate(10deg);}
+  100% {transform:rotate(0);}
+}
+
 @keyframes shadow {
   0%   {transform:rotate(0deg);}
   100% {transform:rotate(-360deg);}
+}
+
+@keyframes wheelRotate {
+  0% {transform:rotate(0deg);}
+  100% {transform:rotate(-60deg);}
+}
+
+@keyframes aleft {
+  0%   {fill:#fff;stroke:#fff;}
+  25%   {fill:#fff;stroke:#fff;}
+  50%  {fill:#ccc;stroke:#ccc;}
+  75%  {fill:#ccc;stroke:#ccc;}
+  100% {fill:#fff;stroke:#fff;}
+}
+
+@keyframes aright {
+  0%   {fill:#ddd;stroke:#ddd;}
+  25%   {fill:#ccc;stroke:#ccc;}
+  50%  {fill:#ccc;stroke:#ccc;}
+  75%  {fill:#fff;stroke:#fff;}
+  100% {fill:#ddd;stroke:#ddd;}
+}
+
+@keyframes blink {
+  0%   {opacity:1}
+  15%  {opacity:0}
+  30%  {opacity:1}
+  45%  {opacity:0}
+  85%  {opacity:0}
+  100% {opacity:1}
 }
