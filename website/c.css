@@ -1,108 +1,53 @@
 html,body {
   background-color:black;
   margin:0;
+  overflow:hidden;
 }
-
+#ryugu{
+  position:absolute;
+  width:100%;
+  top:30%;
+}
 .asteroid {
-  animation:ryugu 60s infinite linear;
+  animation:ryugu 60s infinite linear -6s;
   transform-origin:1000px 1000px;
 }
-
-.rover {
-  animation:roving 15s infinite cubic-bezier(.3,0,.7,1);
-}
-
-.hop {
-  animation:jump 15s infinite cubic-bezier(.3,0,.7,1);
-}
-
-.left{
-  animation:aleft 90s infinite ease-in-out;
-}
-
-.right{
-  animation:aright 90s infinite ease-in-out;
-}
-
-.pivot {
-  animation:pivot 15s infinite cubic-bezier(.2,0,.8,1);
-  transform-origin:1000px -100px;
-}
-
-#blink {
-  animation:blink 1s infinite linear;
-}
-
-#shadow {
-  animation:shadow 90s infinite linear;
-  transform-origin:1000px 1000px;
-}
-
-#wheel1 {
-  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
-  transform-origin:887.5px 193px;
-}
-#wheel2 {
-  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
-  transform-origin:967.5px 193px;
-}
-#wheel3 {
-  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
-  transform-origin:1047.5px 193px;
-}
-#wheel4 {
-  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
-  transform-origin:947.5px 193px;
-}
-#wheel5 {
-  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
-  transform-origin:1027.5px 193px;
-}
-#wheel6 {
-  animation:wheelRotate 0.2s infinite cubic-bezier(0.5,0,1,1);
-  transform-origin:1107.5px 193px;
-}
-
 @keyframes ryugu {
   0%   {transform:rotate(0deg);}
   100% {transform:rotate(360deg);}
 }
 
+.rover {
+  animation:roving 15s infinite cubic-bezier(.3,0,.7,1) -6s;
+}
 @keyframes roving {
   0%   {transform:translate(0,0);}
   50% {transform:translate(0,125px);}
   100% {transform:translate(0,0);}
 }
 
+.hop {
+  animation:jump 15s infinite cubic-bezier(.1,0,.9,1) -6s;
+}
 @keyframes jump {
-  0%   {transform:translate(0,0);}
-  50% {transform:translate(0,0);}
-  100% {transform:translate(0,0);}
+  0%   {transform:translate(-60px,-70px);}
+  30%   {transform:translate(0,0);}
+  70%   {transform:translate(-100px,10px);}
+  100%   {transform:translate(-60px,-70px);}
 }
 
-@keyframes pivot {
-  0%   {transform:rotate(0);}
-  25% {transform:rotate(-10deg);}
-  75% {transform:rotate(10deg);}
-  100% {transform:rotate(0);}
+.left{
+  animation:aleft 90s infinite ease-in-out -6s;
 }
-
-@keyframes shadow {
-  0%   {transform:rotate(0deg);}
-  100% {transform:rotate(-360deg);}
-}
-
-@keyframes wheelRotate {
-  0% {transform:rotate(0deg);}
-  100% {transform:rotate(-60deg);}
-}
-
 @keyframes aleft {
   0%   {fill:#fff;stroke:#fff;}
-  25%   {fill:#fff;stroke:#fff;}
+  25%  {fill:#fff;stroke:#fff;}
   50%  {fill:#ccc;stroke:#ccc;}
   75%  {fill:#ccc;stroke:#ccc;}
   100% {fill:#fff;stroke:#fff;}
+}
+.right{
+  animation:aright 90s infinite ease-in-out -6s;
 }
 
 @keyframes aright {
@@ -112,7 +57,21 @@ html,body {
   75%  {fill:#fff;stroke:#fff;}
   100% {fill:#ddd;stroke:#ddd;}
 }
+.pivot {
+  animation:pivot 15s infinite cubic-bezier(.2,0,.8,1) -6s;
+  transform-origin:1000px -100px;
+}
 
+@keyframes pivot {
+  0%   {transform:rotate(10deg);}
+  30%   {transform:rotate(10deg);}
+  40% {transform:rotate(-5deg);}
+  75% {transform:rotate(10deg);}
+  100% {transform:rotate(10deg);}
+}
+#blink {
+  animation:blink 1s infinite linear;
+}
 @keyframes blink {
   0%   {opacity:1}
   15%  {opacity:0}
@@ -121,3 +80,111 @@ html,body {
   85%  {opacity:0}
   100% {opacity:1}
 }
+#shadow {
+  animation:shadow 90s infinite linear -6s;
+  transform-origin:1000px 1000px;
+}
+@keyframes shadow {
+  0%   {transform:rotate(0deg);}
+  100% {transform:rotate(-360deg);}
+}
+#wheel1 {
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  transform-origin:887.5px 193px;
+}
+#wheel2 {
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  transform-origin:967.5px 193px;
+}
+#wheel3 {
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  transform-origin:1047.5px 193px;
+}
+#wheel4 {
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  transform-origin:947.5px 193px;
+}
+#wheel5 {
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  transform-origin:1027.5px 193px;
+}
+#wheel6 {
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  transform-origin:1107.5px 193px;
+}
+@keyframes wheelRotate {
+  0% {transform:rotate(0deg);}
+  100% {transform:rotate(-3240deg);}
+}
+
+#eyesLight{
+  animation:eyesLight 90s infinite linear -6s;
+}
+#eyesDark{
+  animation:eyesDark 90s infinite linear -6s;
+}
+@keyframes eyesLight {
+  0%   {opacity:1}
+  49%  {opacity:1}
+  50%  {opacity:0}
+  89%  {opacity:0}
+  90%  {opacity:1}
+}
+@keyframes eyesDark {
+  0%   {opacity:0}
+  54%  {opacity:0}
+  55%  {opacity:1}
+  89%  {opacity:1}
+  90%  {opacity:0}
+  100%  {opacity:0}
+}
+.norm {
+  animation:norm 15s infinite linear -6s;
+}
+.scared {
+  animation:scared 15s infinite linear -6s;
+  
+}
+.mmm {
+  animation:mmm 15s infinite linear -6s;
+  
+}
+@keyframes norm {
+  0%   {opacity:0;}
+  35%   {opacity:0;}
+  35.01%   {opacity:1;}
+  80%   {opacity:1;}
+  80.01%   {opacity:0;}
+  100% {opacity:0;}
+}
+@keyframes scared {
+  0%   {opacity:1;}
+  30%   {opacity:1;}
+  30.01%   {opacity:0;}
+  80%   {opacity:0;}
+  80.01%   {opacity:1;}
+  100% {opacity:1;}
+}
+@keyframes mmm {
+  0%   {opacity:0;}
+  30%   {opacity:0;}
+  30.01%   {opacity:1;}
+  35%   {opacity:1;}
+  35.01%   {opacity:0;}
+  100% {opacity:0;}
+}
+
+
+
+
+
+
+/*@keyframes eyes {*/
+/*  0%   {fill:#000;}*/
+/*  25%  {fill:#000;}*/
+/*  50%  {fill:#0ef;}*/
+/*  75%  {fill:#0ef;}*/
+/*  100% {fill:#000;}*/
+/*}*/
+
+
