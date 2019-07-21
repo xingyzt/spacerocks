@@ -1,4 +1,4 @@
-# FloatingSpaceRocks
-Repository for the FTC Space Rocks team
+# SpaceRocks Website
+Website for the FTC Space Rocks team
 
-A dumping ground for evil robot instructions.
+Not a dumping ground for evil robot instructions.
