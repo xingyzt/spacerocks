@@ -6,10 +6,11 @@ html,body {
 #ryugu{
   position:absolute;
   width:100%;
-  top:30%;
+  bottom:calc(-70vw + 100px);
+  animation:fadeIn 6s ease-in-out -0.2s;
 }
 .asteroid {
-  animation:ryugu 60s infinite linear -6s;
+  animation:ryugu 60s infinite linear -5s;
   transform-origin:1000px 1000px;
 }
 @keyframes ryugu {
@@ -18,7 +19,7 @@ html,body {
 }
 
 .rover {
-  animation:roving 15s infinite cubic-bezier(.3,0,.7,1) -6s;
+  animation:roving 15s infinite cubic-bezier(.3,0,.7,1) -5s;
 }
 @keyframes roving {
   0%   {transform:translate(0,0);}
@@ -27,7 +28,7 @@ html,body {
 }
 
 .hop {
-  animation:jump 15s infinite cubic-bezier(.1,0,.9,1) -6s;
+  animation:jump 15s infinite cubic-bezier(.1,0,.9,1) -5s;
 }
 @keyframes jump {
   0%   {transform:translate(-60px,-70px);}
@@ -37,7 +38,7 @@ html,body {
 }
 
 .left{
-  animation:aleft 90s infinite ease-in-out -6s;
+  animation:aleft 90s infinite ease-in-out -5s;
 }
 @keyframes aleft {
   0%   {fill:#fff;stroke:#fff;}
@@ -47,7 +48,7 @@ html,body {
   100% {fill:#fff;stroke:#fff;}
 }
 .right{
-  animation:aright 90s infinite ease-in-out -6s;
+  animation:aright 90s infinite ease-in-out -5s;
 }
 
 @keyframes aright {
@@ -58,7 +59,7 @@ html,body {
   100% {fill:#ddd;stroke:#ddd;}
 }
 .pivot {
-  animation:pivot 15s infinite cubic-bezier(.2,0,.8,1) -6s;
+  animation:pivot 15s infinite cubic-bezier(.2,0,.8,1) -5s;
   transform-origin:1000px -100px;
 }
 
@@ -81,7 +82,7 @@ html,body {
   100% {opacity:1}
 }
 #shadow {
-  animation:shadow 90s infinite linear -6s;
+  animation:shadow 90s infinite linear -5s;
   transform-origin:1000px 1000px;
 }
 @keyframes shadow {
@@ -89,27 +90,27 @@ html,body {
   100% {transform:rotate(-360deg);}
 }
 #wheel1 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -5s;
   transform-origin:887.5px 193px;
 }
 #wheel2 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -5s;
   transform-origin:967.5px 193px;
 }
 #wheel3 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -5s;
   transform-origin:1047.5px 193px;
 }
 #wheel4 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -5s;
   transform-origin:947.5px 193px;
 }
 #wheel5 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -5s;
   transform-origin:1027.5px 193px;
 }
 #wheel6 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -6s;
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -5s;
   transform-origin:1107.5px 193px;
 }
 @keyframes wheelRotate {
@@ -118,10 +119,10 @@ html,body {
 }
 
 #eyesLight{
-  animation:eyesLight 90s infinite linear -6s;
+  animation:eyesLight 90s infinite linear -5s;
 }
 #eyesDark{
-  animation:eyesDark 90s infinite linear -6s;
+  animation:eyesDark 90s infinite linear -5s;
 }
 @keyframes eyesLight {
   0%   {opacity:1}
@@ -139,14 +140,14 @@ html,body {
   100%  {opacity:0}
 }
 .norm {
-  animation:norm 15s infinite linear -6s;
+  animation:norm 15s infinite linear -5s;
 }
 .scared {
-  animation:scared 15s infinite linear -6s;
+  animation:scared 15s infinite linear -5s;
   
 }
 .mmm {
-  animation:mmm 15s infinite linear -6s;
+  animation:mmm 15s infinite linear -5s;
   
 }
 @keyframes norm {
@@ -173,18 +174,34 @@ html,body {
   35.01%   {opacity:0;}
   100% {opacity:0;}
 }
-
-
-
-
-
-
-/*@keyframes eyes {*/
-/*  0%   {fill:#000;}*/
-/*  25%  {fill:#000;}*/
-/*  50%  {fill:#0ef;}*/
-/*  75%  {fill:#0ef;}*/
-/*  100% {fill:#000;}*/
-/*}*/
-
-
+#name,#number{
+  text-align:center;
+  position:absolute;
+  color:#fff;
+  width:100%;
+}
+#number{
+  top:10vh;
+  font-size:6vw;
+  font-family:Codystar;
+  animation:fadeIn 2s ease-in-out -0.2s;
+}
+#name{
+  top:calc(5vw + 10vh);
+  font-size:10vw;
+  font-family:CodystarLight;
+  animation:fadeIn 4s ease-in-out -0.2s;
+}
+@font-face {
+  font-family:CodystarLight;
+  src:url(codystar/light.woff2);
+}
+@font-face {
+  font-family:Codystar;
+  src:url(codystar/reg.woff2);
+}
+@keyframes fadeIn {
+  0%   {opacity:0;}
+  10%   {opacity:0;}
+  100% {opacity:1;}
+}
