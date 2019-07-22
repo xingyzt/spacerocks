@@ -5,6 +5,7 @@ html,body {
   background-color:black;
   margin:0;
   overflow:hidden;
+  user-select: none;
 }
 #ryugu{
   position:absolute;
