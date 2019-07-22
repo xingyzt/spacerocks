@@ -425,12 +425,13 @@
         document.getElementById('blank').classList='opaque';
         var d = new Date();
         d = d.getTime();
-        setInterval(
+        var i = setInterval(
           function(){
             var v = new Date();
             v.getTime();
             if((v-d)>500){
               window.location=url;
+              clearInterval(i);
             }
           },10);
       }
