@@ -12,7 +12,7 @@ html,body {
   left:calc(50vw - 75vh);
   width:200vh;
   bottom:-140vh;
-  animation:fadeIn 8s ease-in-out -0.2s;
+  animation:fadeIn 8s ease -0.2s;
 }
 .asteroid {
   animation:ryugu 60s infinite linear -7s;;
@@ -184,7 +184,7 @@ html,body {
   top:calc(12vh - 4vw);
   left:calc(50% - 2.4vw);
   width:3.5vw;
-  animation:fadeIn 2s ease-in-out -0.2s;
+  animation:fadeIn 2s ease -0.2s;
 }
 #name,#number,.links{
   text-align:center;
@@ -197,20 +197,20 @@ html,body {
 #number{
   top:12vh;
   font-size:6vw;
-  animation:fadeIn 2s ease-in-out -0.2s;
+  animation:fadeIn 3.5s ease -0.2s;
 }
 #name{
   top:calc(6vw + 12vh);
   font-size:10vw;
   font-family:CodystarLight,Codystar,'Raleway Dots',Sans-Serif;
-  animation:fadeIn 4s ease-in-out -0.2s;
+  animation:fadeIn 5s ease -0.2s;
 }
 .links{
   top:calc(17vw + 12vh);
   -webkit-text-stroke-width:0.5px;
 }
 #link-frame{
-  animation:fadeIn 6s ease-in-out -0.2s;
+  animation:fadeIn 6.5s ease -0.2s;
 }
 a{
   color:#fff;
