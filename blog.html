@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Blog | 15303
+    </title>
+    <style>
+      body,html{
+        background:#000;
+        margin:0;
+        width:100%;
+        height:100%;
+        overflow:hidden;
+        cursor:default;
+      }
+      iframe{
+        position:absolute;
+        left:calc(50% - 375px);
+        top:-200px;
+        width:750px;
+        height:calc(100% + 300px);
+        border:none;
+        filter:invert(100%) hue-rotate(180deg);
+      }
+      @media only screen and (max-width:750px){
+        iframe{
+          width:100%;
+          left:0;
+        }
+      }
+      #c{
+        position:absolute;
+        left:50%;
+        pointer-events:none;
+      }
+      #d{
+        position:absolute;
+        right:50%;
+        pointer-events:none;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src="http://majorstemacademy.org/"></iframe>
+    <canvas id='c' width='5000' height='10000'></canvas>
+    <canvas id='d' width='5000' height='10000'></canvas>
+    <script>
+      function q(a,x,y,z){
+        a.beginPath();
+        a.arc(x,y,z,0,2*Math.PI);
+        a.fill();
+      }
+      var c = document.getElementById("c");
+      c = c.getContext("2d");
+      c.fillStyle = "#fff";
+      var d = document.getElementById("d");
+      d = d.getContext("2d");
+      d.fillStyle = "#fff";
+      for(var i=0;i<2000;i++){
+        setTimeout(function(){
+          var x = Math.random()*5000;
+          var y = Math.random()*screen.height;
+          var z = Math.random()*screen.width*0.001;
+          var r = Math.random();
+          if(r>0.5){
+            if(x>4500){
+              r = Math.random();
+              if(r<((4750-x)/500)){
+                q(d,x,y,z);
+              }
+            }else{
+              q(d,x,y,z);
+            }
+          }else{
+            if(x<500){
+              r = Math.random();
+              if(r<((x-250)/500)){
+                q(c,x,y,z);
+              }
+            }else{
+              q(c,x,y,z);
+            }
+          }
+        },100);
+      }
+    </script>
+  </body>
+</html>
