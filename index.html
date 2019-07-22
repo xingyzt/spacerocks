@@ -405,20 +405,35 @@
     <div id='name'>SPACE ROCKS</div>
     <div id='link-frame'>
       <div class='links standard'> <!--single line links-->
-        <a href='about'>ABOUT US</a> · <a href='blog.html'>OUR BLOG</a> · <a href='stuff'>OUR STUFF</a> · <a href='https://twitter.com/SpaceRocksFTC'>TWITTER</a> · <a href='https://github.com/15303/ftc_app'>GITHUB</a>
+        <a href="javascript:delay('about')">ABOUT US</a> · <a href="javascript:delay('blog');">OUR BLOG</a> · <a href="javascript:delay('stuff');">OUR STUFF</a> · <a href='https://twitter.com/SpaceRocksFTC' target='_blank'>TWITTER</a> · <a href='https://github.com/15303/ftc_app' target='_blank'>GITHUB</a>
       </div>
       <div class='links small'> <!--small window-->
-        <a href='about'>ABOUT US</a> · <a href='blog'>OUR BLOG</a> · <a href='stuff'>OUR STUFF</a><br>
-        <a href='https://twitter.com/SpaceRocksFTC'>TWITTER</a> · <a href='https://github.com/15303/ftc_app'>GITHUB</a>
+        <a href="javascript:delay('about');">ABOUT US</a> · <a href="javascript:delay('blog');">OUR BLOG</a> · <a href="javascript:delay('stuff');">OUR STUFF</a><br>
+        <a href='https://twitter.com/SpaceRocksFTC' target='_blank'>TWITTER</a> · <a href='https://github.com/15303/ftc_app' target='_blank'>GITHUB</a>
       </div>
       <div class='links mobile'> <!--vertical links for mobile-->
-        <a href='about'>ABOUT US</a><br>
-        <a href='blog'>OUR BLOG</a><br>
-        <a href='stuff'>OUR STUFF</a><br>
-        <a href='https://twitter.com/SpaceRocksFTC'>TWITTER</a><br>
-        <a href='https://github.com/15303/ftc_app'>GITHUB</a>
+        <a href="javascript:delay('about');">ABOUT US</a><br>
+        <a href="javascript:delay('blog');">OUR BLOG</a><br>
+        <a href="javascript:delay('stuff');">OUR STUFF</a><br>
+        <a href='https://twitter.com/SpaceRocksFTC' target='_blank'>TWITTER</a><br>
+        <a href='https://github.com/15303/ftc_app' target='_blank'>GITHUB</a>
       </div>
     </div>
-    <script></script>
+    <div id='blank' class='clear'></div>
+    <script>
+      function delay(url){
+        document.getElementById('blank').classList='opaque';
+        var d = new Date();
+        d = d.getTime();
+        setInterval(
+          function(){
+            var v = new Date();
+            v.getTime();
+            if((v-d)>500){
+              window.location=url;
+            }
+          },10);
+      }
+    </script>
   </body>
 </html>

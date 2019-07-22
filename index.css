@@ -209,6 +209,7 @@ a{
   text-decoration:none;
   -webkit-text-stroke-width:1px
   border-top:4px solid #000;
+  cursor:pointer;
 }
 a:hover,a:focus{
   outline:none;
@@ -271,4 +272,18 @@ a:hover,a:focus{
   .standard,.small{
     display:none;
   }
+}
+#blank{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#000;
+  pointer-events:none;
+  transition-duration:0.5s;
+}
+.clear{
+  opacity:0;
+}
+.opaque{
+  opacity:1;
 }

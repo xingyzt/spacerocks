@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
   <head>
@@ -21,6 +22,7 @@
         height:calc(100% + 300px);
         border:none;
         filter:invert(100%) hue-rotate(180deg);
+        animation:fade 2.5s ease-in-out;
       }
       @media only screen and (max-width:750px){
         iframe{
@@ -28,22 +30,38 @@
           left:0;
         }
       }
-      #c{
+      #c,#d{
         position:absolute;
-        left:50%;
         pointer-events:none;
       }
+      #c{
+        left:50%;
+        animation:flyRight 2s ease-out;
+      }
       #d{
-        position:absolute;
         right:50%;
-        pointer-events:none;
+        animation:flyLeft 2s ease-out;
+      }
+      @keyframes fade {
+        0% {opacity:0;}
+        60% {opacity:0;}
+        100%{opacity:1;}
+      }
+      @keyframes flyRight {
+        0% {left:100%;filter:blur(50px);}
+        100%{left:50%;filter:blur(0px);}
+      }
+      @keyframes flyLeft {
+        0% {right:100%;filter:blur(50px);}
+        100%{right:50%;filter:blur(0px);}
       }
     </style>
   </head>
   <body>
     <iframe src="http://majorstemacademy.org/"></iframe>
-    <canvas id='c' width='5000' height='10000'></canvas>
-    <canvas id='d' width='5000' height='10000'></canvas>
+    <canvas id='c' width='2000' height='2000'></canvas>
+    <canvas id='d' width='2000' height='2000'></canvas>
+    <div id='b'></div>
     <script>
       function q(a,x,y,z){
         a.beginPath();
@@ -57,31 +75,28 @@
       d = d.getContext("2d");
       d.fillStyle = "#fff";
       for(var i=0;i<2000;i++){
-        setTimeout(function(){
-          var x = Math.random()*5000;
-          var y = Math.random()*screen.height;
-          var z = Math.random()*screen.width*0.001;
-          var r = Math.random();
-          if(r>0.5){
-            if(x>4500){
-              r = Math.random();
-              if(r<((4750-x)/500)){
-                q(d,x,y,z);
-              }
-            }else{
-              q(d,x,y,z);
+        var y = Math.random()*screen.height;
+        var z = Math.random()*screen.width*0.001;
+        var r = Math.random();
+        if(r>0.75){
+          if(i>1500){
+            r = Math.random();
+            if(r<((1750-i)/500)){
+              q(d,i,y,z);
             }
           }else{
-            if(x<500){
-              r = Math.random();
-              if(r<((x-250)/500)){
-                q(c,x,y,z);
-              }
-            }else{
-              q(c,x,y,z);
-            }
+            q(d,i,y,z);
           }
-        },100);
+        }else if(r<0.25){
+          if(i<500){
+            r = Math.random();
+            if(r<((i-250)/500)){
+              q(c,i,y,z);
+            }
+          }else{
+            q(c,i,y,z);
+          }
+        }
       }
     </script>
   </body>
