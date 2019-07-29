@@ -284,13 +284,16 @@ a:hover,a:focus{
     display:none;
   }
 }
-#blank{
+#blank,#blanca{
   position:absolute;
   width:100%;
   height:100%;
   background:#000;
   pointer-events:none;
   transition-duration:0.5s;
+}
+#blanca{
+  transition-duration:0.3s;
 }
 .clear{
   opacity:0;

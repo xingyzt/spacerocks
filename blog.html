@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
   <head>
@@ -23,12 +22,23 @@
         height:calc(100% + 300px);
         border:none;
         filter:invert(100%) hue-rotate(180deg);
-        animation:fade 2.5s ease-in-out;
+        animation:fade 2.5s ease-out;
+      }
+      #back{
+        position:absolute;
+        top:2vh;
+        left:calc(50% - 375px);
+        width:8vh;
+        height:8vh;
+        animation:fade 2.5s ease-out;
       }
       @media only screen and (max-width:750px){
         iframe{
           width:100%;
           left:0;
+        }
+        #back{
+          left:1vh;
         }
       }
       #c,#d{
@@ -56,13 +66,30 @@
         0% {right:100%;filter:blur(50px);}
         100%{right:50%;filter:blur(0px);}
       }
+      #blank{
+        position:absolute;
+        width:100%;
+        height:100%;
+        background:#000;
+        pointer-events:none;
+        transition-duration:0.5s;
+      }
+      .clear{
+        opacity:0;
+      }
+      .opaque{
+        opacity:1;
+      }
     </style>
   </head>
   <body>
     <iframe src="http://majorstemacademy.org/"></iframe>
     <canvas id='c' width='2000' height='2000'></canvas>
     <canvas id='d' width='2000' height='2000'></canvas>
+    <a href='javascript:back()'><img id='back' src='back.svg' width='128' height='128'/></a>
     <div id='b'></div>
+    <div id='blank' class='clear'></div>
+    <script src='back.js'></script>
     <script>
       function q(a,x,y,z){
         a.beginPath();

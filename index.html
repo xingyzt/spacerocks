@@ -407,23 +407,24 @@
     <div id='name'>SPACE ROCKS</div>
     <div id='link-frame'>
       <div class='links standard'> <!--single line links-->
-        <a href="javascript:delay('about')">ABOUT US</a> · <a href="javascript:delay('blog');">OUR BLOG</a> · <a href="javascript:delay('stuff');">OUR STUFF</a> · <a href='https://twitter.com/SpaceRocksFTC' target='_blank'>TWITTER</a> · <a href='https://github.com/15303/ftc_app' target='_blank'>GITHUB</a>
+        <a href="javascript:to('about')">ABOUT US</a> · <a href="javascript:to('blog');">OUR BLOG</a> · <a href="javascript:to('stuff');">OUR STUFF</a> · <a href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWITTER</a> · <a href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
       </div>
       <div class='links small'> <!--small window-->
-        <a href="javascript:delay('about');">ABOUT US</a> · <a href="javascript:delay('blog');">OUR BLOG</a> · <a href="javascript:delay('stuff');">OUR STUFF</a><br>
-        <a href='https://twitter.com/SpaceRocksFTC' target='_blank'>TWITTER</a> · <a href='https://github.com/15303/ftc_app' target='_blank'>GITHUB</a>
+        <a href="javascript:to('about');">ABOUT US</a> · <a href="javascript:to('blog');">OUR BLOG</a> · <a href="javascript:to('stuff');">OUR STUFF</a><br>
+        <a href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWITTER</a> · <a href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
       </div>
       <div class='links mobile'> <!--vertical links for mobile-->
-        <a href="javascript:delay('about');">ABOUT US</a><br>
-        <a href="javascript:delay('blog');">OUR BLOG</a><br>
-        <a href="javascript:delay('stuff');">OUR STUFF</a><br>
-        <a href='https://twitter.com/SpaceRocksFTC' target='_blank'>TWITTER</a><br>
-        <a href='https://github.com/15303/ftc_app' target='_blank'>GITHUB</a>
+        <a href="javascript:to('about');">ABOUT US</a><br>
+        <a href="javascript:to('blog');">OUR BLOG</a><br>
+        <a href="javascript:to('stuff');">OUR STUFF</a><br>
+        <a href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWITTER</a><br>
+        <a href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
       </div>
     </div>
     <div id='blank' class='clear'></div>
+    <div id='blanca' class='clear'></div>
     <script>
-      function delay(url){
+      function to(url){
         document.getElementById('blank').classList='opaque';
         var d = new Date();
         d = d.getTime();
@@ -432,8 +433,23 @@
             var v = new Date();
             v.getTime();
             if((v-d)>500){
-              window.location=url;
               clearInterval(i);
+              window.location=url;
+            }
+          },10);
+      }
+      function open(url){
+        document.getElementById('blanca').classList='opaque';
+        document.getElementById('blanca').style.backgroundColor='#fff';
+        var d = new Date();
+        d = d.getTime();
+        var i = setInterval(
+          function(){
+            var v = new Date();
+            v.getTime();
+            if((v-d)>500){
+              clearInterval(i);
+              window.location=url;
             }
           },10);
       }
