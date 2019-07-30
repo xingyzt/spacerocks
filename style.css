@@ -6,7 +6,7 @@ html,body {
   background-color:black;
   margin:0;
   overflow:hidden;
-  user-select: none;
+  user-select:none;
   color:#fff;
 }
 a{
@@ -20,6 +20,10 @@ a{
   font-family:Codystar;
   src:url('codystar/reg.woff2') format('woff2');
   src:url('codystar/reg.woff') format('woff');
+}
+@font-face {
+  font-family:UbuntuMono;
+  src:url('ubuntu/monobold.woff2') format('woff2');
 }
 /*main*/
 #ryugu{
@@ -310,6 +314,11 @@ a{
   opacity:0;
 }
 /*subpages*/
+@keyframes fade {
+  0% {opacity:0;}
+  60% {opacity:0;}
+  100%{opacity:1;}
+}
 #top{
   position:absolute;
   width:100%;
@@ -360,11 +369,23 @@ a{
     left:1vh;
   }
 }
-/*blog*/
-@keyframes fade {
-  0% {opacity:0;}
-  60% {opacity:0;}
-  100%{opacity:1;}
+#body{
+  transform:translate(0,16vh);
+  margin-left:calc(50% - 350px);
+  width:700px;
+  user-select:text;
+}
+.featured{
+  font-family:UbuntuMono;
+  color:#fff;
+  font-size:50pt;
+  text-shadow:2pt 2pt #888;
+  transition-duration:0.2s;
+  animation:fade 3s ease-out;
+}
+.featured:hover{
+  text-shadow:4pt 4pt #888;
+  transition-duration:0.2s;
 }
 #canvas-right,#canvas-left{
   position:absolute;
@@ -377,6 +398,7 @@ a{
 #canvas-left{
   right:50%;
 }
+/*blog*/
 #iframe-blog{
   position:absolute;
   left:calc(50% - 375px);
@@ -391,5 +413,9 @@ a{
   #iframe-blog{
     width:100%;
     left:0;
+  }
+  #body{
+    width:90%;
+    margin-left:5%;
   }
 }
