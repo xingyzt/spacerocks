@@ -77,7 +77,7 @@ function home(){
       v.getTime();
       if((v-d)>500){
         clearInterval(i);
-        window.location='/';
+        window.location='/spacerocks';
       }
     },10);
 }
