@@ -243,7 +243,7 @@ a{
   color:#fff;
   text-decoration:none;
   -webkit-text-stroke-width:1px
-  border-top:4px solid #000;
+  border-top:3px solid #000;
   cursor:pointer;
 }
 .link:hover,.link:focus{
@@ -253,7 +253,7 @@ a{
   -webkit-text-stroke-width:1px;
   border-left:4px solid #fff;
   border-right:4px solid #fff;
-  border-top:4px solid #fff;
+  border-top:3px solid #fff;
 }
 @keyframes fadeIn {
   0%   {opacity:0;}
@@ -265,7 +265,7 @@ a{
     font-family:CodystarLight,'Raleway Dots',Sans-Serif;
   }
   .standard{
-    font-size:2.4vw;
+    font-size:2.45vw;
     display:visible;
   }
   .mobile,.small{
@@ -277,7 +277,7 @@ a{
     font-family:Codystar,'Raleway Dots',Sans-Serif;
   }
   .small{
-    font-size:3.8vw;
+    font-size:3.9vw;
     display:visible;
   }
   .mobile,.standard{
