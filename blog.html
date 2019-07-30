@@ -5,97 +5,34 @@
       Blog | 15303
     </title>
     <link rel="shortcut icon" href="fav.png" />
-    <style>
-      body,html{
-        background:#000;
-        margin:0;
-        width:100%;
-        height:100%;
-        overflow:hidden;
-        cursor:default;
-      }
-      iframe{
-        position:absolute;
-        left:calc(50% - 375px);
-        top:-200px;
-        width:750px;
-        height:calc(100% + 300px);
-        border:none;
-        filter:invert(100%) hue-rotate(180deg);
-        animation:fade 2.5s ease-out;
-      }
-      #back{
-        position:absolute;
-        top:2vh;
-        left:calc(50% - 375px);
-        width:8vh;
-        height:8vh;
-        animation:fade 2.5s ease-out;
-      }
-      @media only screen and (max-width:750px){
-        iframe{
-          width:100%;
-          left:0;
-        }
-        #back{
-          left:1vh;
-        }
-      }
-      #c,#d{
-        position:absolute;
-        pointer-events:none;
-      }
-      #c{
-        left:50%;
-        animation:fade 2s ease-out;
-      }
-      #d{
-        right:50%;
-        animation:fade 2s ease-out;
-      }
-      @keyframes fade {
-        0% {opacity:0;}
-        60% {opacity:0;}
-        100%{opacity:1;}
-      }
-      #blank{
-        position:absolute;
-        width:100%;
-        height:100%;
-        background:#000;
-        pointer-events:none;
-        transition-duration:0.5s;
-      }
-      .clear{
-        opacity:0;
-      }
-      .opaque{
-        opacity:1;
-      }
-    </style>
+    <link rel=stylesheet href='style.css'/>
   </head>
   <body>
-    <iframe src="http://majorstemacademy.org/"></iframe>
-    <canvas id='c' width='2000' height='2000'></canvas>
-    <canvas id='d' width='2000' height='2000'></canvas>
-    <a href='javascript:back()'><img id='back' src='back.svg' width='128' height='128'/></a>
+    <iframe id='iframe-blog' src="http://majorstemacademy.org/"></iframe>
+    <canvas id='canvas-left' width='2000' height='2000'></canvas>
+    <canvas id='canvas-right' width='2000' height='2000'></canvas>
+    <div id='top'>
+      <img id='top-logo' src='logo.svg' width='128' height='128'/>
+      <a href='javascript:home()'><div id='top-chunk'></div></a>
+    </div>
     <div id='b'></div>
     <div id='blank' class='clear'></div>
-    <script src='back.js'></script>
+    <script src='home.js'></script>
     <script>
       function q(a,x,y,z){
         a.beginPath();
         a.arc(x,y,z,0,2*Math.PI);
         a.fill();
       }
-      var c = document.getElementById("c");
+      var c = document.getElementById("canvas-right");
       c = c.getContext("2d");
       c.fillStyle = "#fff";
-      var d = document.getElementById("d");
+      var d = document.getElementById("canvas-left");
       d = d.getContext("2d");
       d.fillStyle = "#fff";
       for(var i=0;i<2000;i++){
-        var y = Math.random()*screen.height;
+      for(var j=0;j<2;j++){
+        var y = Math.random()*screen.height*2;
         var z = Math.random()*screen.width*0.001;
         var r = Math.random();
         if(r>0.75){
@@ -117,6 +54,7 @@
             q(c,i,y,z);
           }
         }
+      }
       }
     </script>
   </body>
