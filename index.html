@@ -407,54 +407,24 @@
     <div id='name'>SPACE ROCKS</div>
     <div id='link-frame'>
       <div class='links standard'> <!--single line links-->
-        <a class='link' href="javascript:to('about')">ABOUT US</a> &middot; <a class='link' href="javascript:to('robot');">ROBOT</a> &middot; <a class='link' href="javascript:to('blog');">BLOG</a> &middot; <a class='link' href="javascript:to('stuff');">STUFF</a> &middot; <a class='link' href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWITTER</a> &middot; <a class='link' href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
+        <a class='link' href="javascript:to('about')">ABOUT US</a> &middot; <a class='link' href="javascript:to('robot');">ROBOT</a> &middot; <a class='link' href="javascript:to('blog');">BLOG</a> &middot; <a class='link' href="javascript:to('stuff');">STUFF</a> &middot; <a class='link' href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWIT&hairsp;TER</a> &middot; <a class='link' href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
       </div>
       <div class='links small'> <!--small window-->
         <a class='link' href="javascript:to('about');">ABOUT US</a> &middot; <a class='link' href="javascript:to('robot');">ROBOT</a> &middot; <a class='link' href="javascript:to('blog');">BLOG</a> &middot; <a class='link' href="javascript:to('stuff');">STUFF</a><br>
-        <a class='link' href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWITTER</a> &middot; <a class='link' href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
+        <a class='link' href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWIT&hairsp;TER</a> &middot; <a class='link' href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
       </div>
       <div class='links mobile'> <!--vertical links for mobile-->
         <a class='link' href="javascript:to('about');">ABOUT US</a><br>
         <a class='link' href="javascript:to('robot');">ROBOT</a><br>
         <a class='link' href="javascript:to('blog');">BLOG</a><br>
         <a class='link' href="javascript:to('stuff');">STUFF</a><br>
-        <a class='link' href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWITTER</a><br>
+        <a class='link' href="javascript:open('https://twitter.com/SpaceRocksFTC')">TWIT&hairsp;TER</a><br>
         <a class='link' href="javascript:open('https://github.com/15303/ftc_app')">GITHUB</a>
       </div>
     </div>
     <div id='blank' class='clear'></div>
     <div id='blanca' class='clear'></div>
     <iframe class='preload' src="http://majorstemacademy.org/"></iframe>
-    <script>
-      function to(url){
-        document.getElementById('blank').classList='opaque';
-        var d = new Date();
-        d = d.getTime();
-        var i = setInterval(
-          function(){
-            var v = new Date();
-            v.getTime();
-            if((v-d)>500){
-              clearInterval(i);
-              window.location=url;
-            }
-          },10);
-      }
-      function open(url){
-        document.getElementById('blanca').classList='opaque';
-        document.getElementById('blanca').style.backgroundColor='#fff';
-        var d = new Date();
-        d = d.getTime();
-        var i = setInterval(
-          function(){
-            var v = new Date();
-            v.getTime();
-            if((v-d)>500){
-              clearInterval(i);
-              window.location=url;
-            }
-          },10);
-      }
-    </script>
+    <script src='script.js'></script>
   </body>
 </html>
