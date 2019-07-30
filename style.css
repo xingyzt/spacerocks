@@ -303,12 +303,14 @@ a{
   }
 }
 #blank,#blanca{
-  position:absolute;
+  position:fixed;
+  top:0;
   width:100%;
   height:100%;
   background:#000;
   pointer-events:none;
   transition-duration:0.5s;
+  z-index:100;
 }
 #blanca{
   transition-duration:0.3s;
@@ -323,7 +325,7 @@ a{
   opacity:0;
 }
 /*subpages*/
-#top{
+#navbar{
   position:fixed;
   width:100%;
   height:16vh;
@@ -333,25 +335,25 @@ a{
   background:
   linear-gradient(
     to bottom,
-    hsl(0, 0%, 0%) 0%,
-    hsla(0, 0%, 0%, 0.987) 15%,
-    hsla(0, 0%, 0%, 0.951) 28%,
-    hsla(0, 0%, 0%, 0.896) 39.2%,
-    hsla(0, 0%, 0%, 0.825) 48.8%,
-    hsla(0, 0%, 0%, 0.741) 57%,
-    hsla(0, 0%, 0%, 0.648) 64%,
-    hsla(0, 0%, 0%, 0.55) 69.9%,
-    hsla(0, 0%, 0%, 0.45) 74.9%,
-    hsla(0, 0%, 0%, 0.352) 79.2%,
-    hsla(0, 0%, 0%, 0.259) 83%,
-    hsla(0, 0%, 0%, 0.175) 86.4%,
-    hsla(0, 0%, 0%, 0.104) 89.6%,
-    hsla(0, 0%, 0%, 0.049) 92.8%,
-    hsla(0, 0%, 0%, 0.013) 96.2%,
-    hsla(0, 0%, 0%, 0) 100%
+    #000 0%,
+    rgba(0,0,0,0.987) 15%,
+    rgba(0,0,0,0.951) 28%,
+    rgba(0,0,0,0.896) 39.2%,
+    rgba(0,0,0,0.825) 48.8%,
+    rgba(0,0,0,0.741) 57%,
+    rgba(0,0,0,0.648) 64%,
+    rgba(0,0,0,0.55) 69.9%,
+    rgba(0,0,0,0.45) 74.9%,
+    rgba(0,0,0,0.352) 79.2%,
+    rgba(0,0,0,0.259) 83%,
+    rgba(0,0,0,0.175) 86.4%,
+    rgba(0,0,0,0.104) 89.6%,
+    rgba(0,0,0,0.049) 92.8%,
+    rgba(0,0,0,0.013) 96.2%,
+    rgba(0,0,0,0) 100%
   );
 }
-#top-chunk{
+#nav-chunk{
   position:absolute;
   top:0;
   left:calc(50% - 425px);
@@ -359,7 +361,7 @@ a{
   height:12vh;
   cursor:pointer;
 }
-#top-logo{
+#nav-logo{
   position:absolute;
   top:4vh;
   left:calc(50% - 4vh);
@@ -369,7 +371,7 @@ a{
   min-height:40px;
 }
 @media only screen and (max-width:850px){
-  #top-back{
+  #nav-back{
     left:1vh;
   }
 }
