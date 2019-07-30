@@ -15,9 +15,9 @@ for(var j=0;j<2;j++){
   var z = Math.random()*screen.width*0.001;
   var r = Math.random();
   if(r>0.75){
-    if(i>1500){
+    if(i>1600){
       r = Math.random();
-      if(r<((1750-i)/500)){
+      if(r<((1675-i)/100)){
         q(d,i,y,z);
       }
     }else{
@@ -26,7 +26,7 @@ for(var j=0;j<2;j++){
   }else if(r<0.25){
     if(i<500){
       r = Math.random();
-      if(r<((i-250)/500)){
+      if(r<((i-325)/100)){
         q(c,i,y,z);
       }
     }else{
