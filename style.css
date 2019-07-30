@@ -209,7 +209,7 @@ a{
 }
 #image{
   position:absolute;
-  top:calc(12vh - 4vw);
+  top:calc(11vh - 3.5vw);
   left:calc(50% - 2.4vw);
   width:3.5vw;
   animation:fadeIn 2s ease -0.2s;
@@ -222,18 +222,18 @@ a{
   cursor:default;
 }
 #number{
-  top:12vh;
+  top:11vh;
   font-size:6vw;
   animation:fadeIn 3.5s ease -0.2s;
 }
 #name{
-  top:calc(6vw + 12vh);
+  top:calc(6vw + 11vh);
   font-size:10vw;
   font-family:CodystarLight,Codystar,'Raleway Dots',Sans-Serif;
   animation:fadeIn 5s ease -0.2s;
 }
 .links{
-  top:calc(17vw + 12vh);
+  top:calc(17vw + 11vh);
   -webkit-text-stroke-width:0.5px;
 }
 #link-frame{
@@ -361,7 +361,7 @@ a{
 }
 #top-logo{
   position:absolute;
-  top:2vh;
+  top:4vh;
   left:calc(50% - 4vh);
   width:8vh;
   height:8vh;
