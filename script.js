@@ -1,5 +1,5 @@
 var url = [ //directory of links
-  '/',
+  'https://xyzt.design/spacerocks', //to be updated
   'about',
   'robot',
   'blog',
@@ -33,7 +33,7 @@ if(doc.title!=='15303 Space Rocks'){ //excludes main page
   setAttributes(navLogo,{"id":"nav-logo","src":"logo.svg"});
   navBar.appendChild(navLogo);
   var navLink = doc.createElement('a');
-  navLink.href = 'https://xyzt.design/spacerocks/'; // change when there's a custom domain
+  navLink.href = 'javascript:to(0)';
   navBar.appendChild(navLink);
   var navChunk = doc.createElement('div');
   navChunk.id = 'nav-chunk';
@@ -122,21 +122,6 @@ function open(index){ //white screen (external pages)
       if((v-d)>500){
         clearInterval(i);
         window.location=url[index];
-      }
-    },10);
-}
-function home(){ //goes to home page
-  doc.getElementById('blank').classList='opaque';
-  var d = new Date();
-  d = d.getTime();
-  var i = setInterval(
-    function(){
-      var v = new Date();
-      v.getTime();
-      if((v-d)>500){
-        clearInterval(i);
-        window.location='https://xyzt.design/spacerocks';
-        // window.location=url[0]; (future)
       }
     },10);
 }
