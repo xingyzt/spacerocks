@@ -210,7 +210,7 @@ a{
 #image{
   position:absolute;
   top:calc(11vh - 3.5vw);
-  left:calc(50% - 2.4vw);
+  left:calc(50% - 2.35vw);
   width:3.5vw;
   animation:fadeIn 2s ease -0.2s;
 }
@@ -364,11 +364,9 @@ a{
 #nav-logo{
   position:absolute;
   top:4vh;
-  left:calc(50% - 4vh);
-  width:8vh;
-  height:8vh;
+  left:calc(50% - 1.75vw);
+  width:3.5vw;
   min-width:40px;
-  min-height:40px;
 }
 @media only screen and (max-width:850px){
   #nav-back{
@@ -394,11 +392,13 @@ a{
   text-shadow:2pt 2pt #888;
   transition-duration:0.2s;
   animation:fadeIn 3s ease;
+  white-space:nowrap;
 }
 #credits{
   color:#bbb;
   font-size:12pt;
   white-space:nowrap;
+  padding-bottom:2vh;
 }
 #canvas-right,#canvas-left{
   position:fixed;
@@ -431,5 +431,14 @@ a{
   #body{
     width:90%;
     margin-left:5%;
+  }
+  .featured{
+    font-size:8.64vw;
+    width:90%;
+  }
+}
+@media only screen and (max-width:640px){
+  #credits{
+    font-size:2.5vw;
   }
 }
