@@ -1,4 +1,10 @@
 <!doctype html>
+<!--
+TODO:
+- get HTML down to 10kb uncompressed
+ - procedually generate asteroid terrain
+ - generate meta with JS function
+-->
 <html>
   <head>
     <title>15303 Space Rocks</title>
@@ -36,13 +42,34 @@
             <stop offset='1' stop-color='#787878'/>
           </radialGradient>
         </defs>
+        <symbol id='wheel'>
+          <path class='wheel' d='M880 180h15l7.5 13l-7.5 13h-15l-7.5 -13l7.5 -13z'/>
+        </symbol>
+        <symbol id='wheelset'>
+          <use href="#wheel" x="0"  y="0"/>
+          <use href="#wheel" x="80"  y="0"/>
+          <use href="#wheel" x="160"  y="0"/>
+        </symbol>
+        <symbol id='norm' class='norm'>
+          <ellipse cx='875' cy='115' rx='2' ry='4' stroke-width='0'/>
+          <ellipse cx='915' cy='115' rx='2' ry='4' stroke-width='0'/>
+          <path d='M880 140l30 -5' fill='none' stroke-width='3'/>
+        </symbol>
+        <symbol id='scared' class='scared'>
+          <ellipse cx='875' cy='115' rx='3' ry='5'/>
+          <ellipse cx='915' cy='115' rx='3' ry='5'/>
+          <circle cx='895' cy='135' r='15'/>
+        </symbol>
+        <symbol id='mmm' class='mmm' fill='none' stroke-width='3'>
+          <path d='M872.5 112.5l7.5 7.5l-7.5 7.5'/>
+          <path d='M917.5 112.5l-7.5 7.5l7.5 7.5'/>
+          <path d='M877 140l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5'/>
+        </symbol>
         <rect width='100%' height='100%'/>
         <g class='rover' stroke-width='15' stroke-linejoin='round'>
         <g class='pivot'>
         <g class='hop'>
-          <path id='wheel1' d='M880 180h15l7.5 13l-7.5 13h-15l-7.5 -13l7.5 -13z' stroke='#444' fill='#333'/>
-          <path id='wheel2' d='M960 180h15l7.5 13l-7.5 13h-15l-7.5 -13l7.5 -13z' stroke='#444' fill='#333'/>
-          <path id='wheel3' d='M1040 180h15l7.5 13l-7.5 13h-15l-7.5 -13l7.5 -13z' stroke='#444' fill='#333'/>
+          <use href="#wheelset" x="0"  y="0" stroke='#444' fill='#333'/>
         </g></g></g>
         <g class='asteroid'>
           <path d='M200 1000C200 800 800 200 1000 200C1200 200 1800 800 1800 1000C1800 1200 1200 1800 1000 1800C800 1800 200 1200 200 1000z' fill='url(#r)'/>
@@ -91,21 +118,13 @@
           <path d='M1115 100l15 -100z' stroke='#888' stroke-width='10'/>
           <rect class='right' width='270' height='45' x='865' y='105'/>
           <rect class='left' width='60' height='45' x='865' y='105'/>
-        <g id='eyesLight'>
-          <ellipse class='scared' cx='875' cy='115' rx='3' ry='5' fill='#222'/>
-          <ellipse class='scared' cx='915' cy='115' rx='3' ry='5' fill='#222'/>
-          <circle class='scared' cx='895' cy='135' r='15' fill='#222'/>
-          <path class='mmm' d='M872.5 112.5l7.5 7.5l-7.5 7.5' fill='none' stroke-width='3' stroke='#222'/>
-          <path class='mmm' d='M917.5 112.5l-7.5 7.5l7.5 7.5' fill='none' stroke-width='3' stroke='#222'/>
-          <path class='mmm' d='M877 140l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5' fill='none' stroke-width='3' stroke='#222'/>
-          <ellipse class='norm' cx='875' cy='115' rx='2' ry='4' fill='#222'/>
-          <ellipse class='norm' cx='915' cy='115' rx='2' ry='4' fill='#222'/>
-          <path class='norm' d='M880 140l30 -5' fill='none' stroke-width='3' stroke='#222'/>
-        </g>
+          <g id='eyesLight' fill='#222' stroke='#222'>
+            <use href="#norm" />
+            <use href="#scared" stroke-width='0'/>
+            <use href="#mmm" stroke-width='0'/>
+          </g>
           <circle cx='1130' cy='0' r='10' fill='#422'/>
-          <path id='wheel4' d='M940 180h15l7.5 13l-7.5 13h-15l-7.5 -13l7.5 -13z' stroke='#555' fill='#444'/>
-          <path id='wheel5' d='M1020 180h15l7.5 13l-7.5 13h-15l-7.5 -13l7.5 -13z' stroke='#555' fill='#444'/>
-          <path id='wheel6' d='M1100 180h15l7.5 13l-7.5 13h-15l-7.5 -13l7.5 -13z' stroke='#555' fill='#444'/>
+          <use href="#wheelset" x="60"  y="0" stroke='#555' fill='#444'/>
         </g></g></g>
         <g class='asteroid'>
           <g fill='#7a7a7a' transform='rotate(90,1000,1000)'>
@@ -392,16 +411,10 @@
         </g>
         <rect id='shadow' width='2200' height='2200' x='-100' y='-100' fill='url(#g)'/>
         <g class='fast'><g class='rover'><g class='pivot'><g class='hop'>
-          <g id='eyesDark'>
-            <ellipse class='scared' cx='875' cy='115' rx='3' ry='5' fill='#0cf'/>
-            <ellipse class='scared' cx='915' cy='115' rx='3' ry='5' fill='#0cf'/>
-            <circle class='scared' cx='895' cy='135' r='15' fill='#0cf'/>
-            <path class='mmm' d='M872.5 112.5l7.5 7.5l-7.5 7.5' fill='none' stroke-width='3' stroke='#0cf'/>
-            <path class='mmm' d='M917.5 112.5l-7.5 7.5l7.5 7.5' fill='none' stroke-width='3' stroke='#0cf'/>
-            <path class='mmm' d='M877 140l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5l4.5 -7.5l4.5 7.5' fill='none' stroke-width='3' stroke='#0cf'/>
-            <ellipse class='norm' cx='875' cy='115' rx='2' ry='4' fill='#0cf'/>
-            <ellipse class='norm' cx='915' cy='115' rx='2' ry='4' fill='#0cf'/>
-            <path class='norm' d='M880 140l30 -5' fill='none' stroke-width='3' stroke='#0cf'/>
+          <g id='eyesDark' fill='#0cf' stroke='#0cf'>
+            <use href="#norm" />
+            <use href="#scared" stroke-width='0'/>
+            <use href="#mmm" stroke-width='0'/>
           </g>
           <circle id='blink' cx='1130' cy='0' r='40' fill='url(#c)'/>
           <circle id='blink' cx='1130' cy='0' r='40' fill='url(#b)'/>

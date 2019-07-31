@@ -94,29 +94,9 @@
   0%   {transform:rotate(0deg);}
   100% {transform:rotate(-360deg);}
 }
-#wheel1 {
+.wheel {
   animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -7s;;
   transform-origin:887.5px 193px;
-}
-#wheel2 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -7s;;
-  transform-origin:967.5px 193px;
-}
-#wheel3 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -7s;;
-  transform-origin:1047.5px 193px;
-}
-#wheel4 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -7s;;
-  transform-origin:947.5px 193px;
-}
-#wheel5 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -7s;;
-  transform-origin:1027.5px 193px;
-}
-#wheel6 {
-  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -7s;;
-  transform-origin:1107.5px 193px;
 }
 @keyframes wheelRotate {
   0% {transform:rotate(0deg);}
