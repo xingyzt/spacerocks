@@ -1,0 +1,10 @@
+get index.html down to 10kb uncompressed minus video
+ - procedually generate asteroid terrain
+ - generate meta with JS function
+create custom dot font
+ - Codystar does not work well at small sizes
+get custom domain
+ - change url[0] to '/'
+replace ryugu with renders
+ - preview webp followed by 8-second clip follewed by star background
+ - ryugu to be moved to the bottom of subpages
