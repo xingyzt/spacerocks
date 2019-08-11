@@ -21,8 +21,8 @@
 }
 #video{
   position:fixed;
-  height:100%;
-  width:calc(100vh / 9 * 16);
+  width:100%;
+  height:calc(100vw / 1366 * 768);
   animation:fadeIn 8s ease backwards;
 }
 #image{
@@ -66,9 +66,9 @@
     display:none;
   }
 }
-@media (max-aspect-ratio:1/1){
+@media (max-aspect-ratio:1366/768){
   #video{
-    width:calc(100vh / 9 * 16);
+    width:calc(100vh / 768 * 1366);
     height:100%;
   }
 }
