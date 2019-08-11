@@ -1,0 +1,152 @@
+#ryugu{
+  position:absolute;
+  left:calc(50vw - 75vh);
+  width:200vh;
+  bottom:-140vh;
+  animation:fadeIn 8s ease -0.2s;
+}
+.asteroid {
+  animation:ryugu 60s infinite linear -7s;;
+  transform-origin:1000px 1000px;
+}
+@keyframes ryugu {
+  0%   {transform:rotate(0deg);}
+  100% {transform:rotate(360deg);}
+}
+
+.rover {
+  animation:roving 15s infinite cubic-bezier(.3,0,.7,1) -7s;;
+}
+@keyframes roving {
+  0%   {transform:translate(0,0);}
+  50% {transform:translate(0,125px);}
+  100% {transform:translate(0,0);}
+}
+
+.hop {
+  animation:jump 15s infinite cubic-bezier(.1,0,.9,1) -7s;;
+}
+@keyframes jump {
+  0%   {transform:translate(-60px,-70px);}
+  30%   {transform:translate(0,0);}
+  70%   {transform:translate(-100px,10px);}
+  100%   {transform:translate(-60px,-70px);}
+}
+
+.left{
+  animation:aleft 90s infinite ease-in-out -7s;;
+}
+@keyframes aleft {
+  0%   {fill:#fff;stroke:#fff;}
+  25%  {fill:#fff;stroke:#fff;}
+  50%  {fill:#ccc;stroke:#ccc;}
+  75%  {fill:#ccc;stroke:#ccc;}
+  100% {fill:#fff;stroke:#fff;}
+}
+.right{
+  animation:aright 90s infinite ease-in-out -7s;;
+}
+
+@keyframes aright {
+  0%   {fill:#ddd;stroke:#ddd;}
+  25%   {fill:#ccc;stroke:#ccc;}
+  50%  {fill:#ccc;stroke:#ccc;}
+  75%  {fill:#fff;stroke:#fff;}
+  100% {fill:#ddd;stroke:#ddd;}
+}
+.pivot {
+  animation:pivot 15s infinite cubic-bezier(.2,0,.8,1) -7s;;
+  transform-origin:1000px -100px;
+}
+
+@keyframes pivot {
+  0%   {transform:rotate(10deg);}
+  30%   {transform:rotate(10deg);}
+  40% {transform:rotate(-5deg);}
+  75% {transform:rotate(10deg);}
+  100% {transform:rotate(10deg);}
+}
+#blink {
+  animation:blink 1s infinite linear;
+}
+@keyframes blink {
+  0%   {opacity:1}
+  15%  {opacity:0}
+  30%  {opacity:1}
+  45%  {opacity:0}
+  85%  {opacity:0}
+  100% {opacity:1}
+}
+#shadow {
+  animation:shadow 90s infinite linear -7s;;
+  transform-origin:1000px 1000px;
+}
+@keyframes shadow {
+  0%   {transform:rotate(0deg);}
+  100% {transform:rotate(-360deg);}
+}
+.wheel {
+  animation:wheelRotate 15s infinite cubic-bezier(0.5,0.3,1,1) -7s;;
+  transform-origin:887.5px 193px;
+}
+@keyframes wheelRotate {
+  0% {transform:rotate(0deg);}
+  100% {transform:rotate(-3240deg);}
+}
+
+#eyesLight{
+  animation:eyesLight 90s infinite linear -7s;;
+}
+#eyesDark{
+  animation:eyesDark 90s infinite linear -7s;;
+}
+@keyframes eyesLight {
+  0%   {opacity:1}
+  38%  {opacity:1}
+  39%  {opacity:0}
+  89%  {opacity:0}
+  90%  {opacity:1}
+}
+@keyframes eyesDark {
+  0%   {opacity:0}
+  38%  {opacity:0}
+  39%  {opacity:1}
+  89%  {opacity:1}
+  90%  {opacity:0}
+  100%  {opacity:0}
+}
+.norm {
+  animation:norm 15s infinite linear -7s;;
+}
+.scared {
+  animation:scared 15s infinite linear -7s;;
+  
+}
+.mmm {
+  animation:mmm 15s infinite linear -7s;;
+  
+}
+@keyframes norm {
+  0%   {opacity:0;}
+  35%   {opacity:0;}
+  35.01%   {opacity:1;}
+  80%   {opacity:1;}
+  80.01%   {opacity:0;}
+  100% {opacity:0;}
+}
+@keyframes scared {
+  0%   {opacity:1;}
+  30%   {opacity:1;}
+  30.01%   {opacity:0;}
+  80%   {opacity:0;}
+  80.01%   {opacity:1;}
+  100% {opacity:1;}
+}
+@keyframes mmm {
+  0%   {opacity:0;}
+  30%   {opacity:0;}
+  30.01%   {opacity:1;}
+  35%   {opacity:1;}
+  35.01%   {opacity:0;}
+  100% {opacity:0;}
+}
