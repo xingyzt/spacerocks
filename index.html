@@ -20,8 +20,9 @@
   src:url('fonts/codystar/regular.woff') format('woff');
 }
 #video{
-  position:absolute;
-  height:vmax;
+  position:fixed;
+  height:100%;
+  width:calc(100vh / 9 * 16);
   animation:fadeIn 8s ease backwards;
 }
 #image{
@@ -63,6 +64,12 @@
   }
   .mobile,.small{
     display:none;
+  }
+}
+@media (max-aspect-ratio:1/1){
+  #video{
+    width:calc(100vh / 9 * 16);
+    height:100%;
   }
 }
 @media only screen and (max-aspect-ratio:3/2) and (min-aspect-ratio:4/5) {
