@@ -2,8 +2,11 @@
 <html>
   <head>
     <style>
+@font-face{
+  font-family:'hyperspace';
+  src: url('fonts/hyperspace/bold.otf');
+}
 html,body{
-  margin:none;
   background:#000;
   overflow:hidden;
 }
@@ -15,6 +18,7 @@ body{
   width:100vmin;
   height:100vmin;
   left:calc(50vw - 50vmin);
+  top:calc(50vh - 50vmin);
 }
 #svg-wrapper,#diamond-mask{
   position:absolute;
@@ -24,12 +28,12 @@ body{
 path#diamond{
   animation:3s thicken ease-in forwards;
 }
-path#logo,path#wire{
-  animation:.2s flicker 4s forwards;
+path#logo,path#wire,#directory{
+  animation:.2s flicker 3.5s forwards;
   opacity:0;
 }
 path#logo{
-  animation-delay:5s;
+  animation-delay:4.5s;
 }
 #diamond-mask{
   --start:0deg;
@@ -43,6 +47,50 @@ path#logo{
   stroke-width:.8vw;
   filter:drop-shadow(0 0 .5vmin #88f) drop-shadow(0 0 1vmin #44f);
   mix-blend-mode:lighten;
+}
+#directory{
+  width:calc(100vw - 4rem);
+  height:calc(100vh - 4rem);
+  position:fixed;
+  left:2rem;
+  top:2rem;
+  animation-delay:4.5s;
+  pointer-events:none
+}
+#directory,#directory>a:hover{
+  color:#fff;
+  filter:drop-shadow(0 0 .5vmin #88f) drop-shadow(0 0 1vmin #44f);
+}
+#directory:hover{
+  opacity:1;
+  color:#000;
+  filter:none;
+}
+#directory>a{
+  font-family:hyperspace,sans-serif;
+  font-size:2.5rem;
+  text-decoration:none;
+  color:inherit;
+  display:block;
+  padding-left:.3rem;
+  position:absolute;
+  pointer-events:auto;
+}
+#directory>a:focus{
+  outline:.15rem solid #fff;
+}
+#directory>a:hover{
+  animation:.2s flicker;
+}
+#directory>#robot{
+  bottom:0;
+}
+#directory>#blog{
+  right:0;
+}
+#directory>#git{
+  right:0;
+  bottom:0;
 }
 @keyframes thicken{
   0%{stroke-width:0}
@@ -87,6 +135,12 @@ path#logo{
         '/>
       </svg>
       <div id='diamond-mask'></div>
+    </div>
+    <div id='directory'>
+      <a id='about' href='about'>About us</a>
+      <a id='robot' href='robot'>robot</a>
+      <a id='blog' href='blog'>blog</a>
+      <a id='git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
     <script>
 const diamondMask = document.getElementById('diamond-mask');
