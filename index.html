@@ -1,146 +1,104 @@
 <!doctype html>
 <html>
   <head>
-    <title>15303 Space Rocks</title>
-    <meta charset='UTF-8'>
-    <meta name='description' content='FTC robotics team'>
-    <meta name='keywords' content='15303,space rocks,15303 space rocks,FIRST,FTC,robotics'>
-    <meta name='author' content='Written by Ella; Designed by Shawn'>
-    <meta name='viewport' content='width=device-width,initial-scale=1.0'>
-    <link rel='shortcut icon' href='fav.png' />
-    <link rel=stylesheet href='master.css'/>
     <style>
-@font-face {
-  font-family:CodystarLight;
-  src:url('fonts/codystar/light.woff2') format('woff2');
+html,body{
+  margin:none;
+  background:#000;
+  overflow:hidden;
 }
-@font-face {
-  font-family:CodystarSparse;
-  src:url('fonts/codystar/sparse.woff2') format('woff2');
+body{
+  /*filter:invert(1) hue-rotate(180deg);*/
 }
-@font-face {
-  font-family:Codystar;
-  src:url('fonts/codystar/regular.woff2') format('woff2');
-  src:url('fonts/codystar/regular.woff') format('woff');
+#logo-wrapper{
+  position:relative;
+  width:100vmin;
+  height:100vmin;
+  left:calc(50vw - 50vmin);
 }
-#video{
-  position:fixed;
-  width:100%;
-  filter:brightness(0.3);
-  height:calc(100vw / 1366 * 768);
-  animation:fadeIn 8s ease backwards;
-}
-#image{
-  position:absolute;
-  top:calc(11vh - 3.5vw);
-  left:calc(50% - 2.1vw);
-  width:3.5vw;
-  animation:fadeIn 2s ease;
-}
-#name,#number,#links{
-  text-align:center;
+#svg-wrapper,#diamond-mask{
   position:absolute;
   width:100%;
-  cursor:default;
+  height:100%;
 }
-#number{
-  top:11vh;
-  font-size:6vw;
-  animation:fadeIn 3.5s ease;
-  font-family:Codystar,Sans-serif;
+path#diamond{
+  animation:3s thicken ease-in forwards;
 }
-#name{
-  top:calc(6vw + 11vh);
-  font-size:10vw;
-  font-family:CodystarLight,Sans-Serif;
-  animation:fadeIn 5s ease;
+path#logo,path#wire{
+  animation:.2s flicker 4s forwards;
+  opacity:0;
 }
-#links{
-  top:calc(17vw + 11vh);
-  font-family:CodystarSparse,Sans-serif;
-  animation:fadeIn 6.5s ease;
+path#logo{
+  animation-delay:5s;
 }
-@media only screen and (min-aspect-ratio:3/2){
-  #name{
-    font-family:CodystarLight,Sans-Serif;
-  }
-  .standard{
-    font-size:2.63vw;
-    display:visible;
-    -webkit-text-stroke-width:.01vw;
-  }
-  .mobile,.small{
-    display:none;
-  }
+#diamond-mask{
+  --start:0deg;
+  --falloff:360deg;
+  left:0;
+  top:0;
+  background:conic-gradient(from var(--start),#000 var(--falloff),#fff);
+  mix-blend-mode:darken;
 }
-@media (max-aspect-ratio:1366/768){
-  #video{
-    width:calc(100vh / 768 * 1366);
-    height:100%;
-  }
+#svg-wrapper{
+  stroke-width:.8vw;
+  filter:drop-shadow(0 0 .5vmin #88f) drop-shadow(0 0 1vmin #44f);
+  mix-blend-mode:lighten;
 }
-@media only screen and (max-aspect-ratio:3/2) and (min-aspect-ratio:4/5) {
-  #name{
-    font-family:Codystar,Sans-Serif;
-  }
-  .small{
-    font-size:4.2vw;
-    -webkit-text-stroke-width:.03vw;
-    display:visible;
-  }
-  .mobile,.standard{
-    display:none;
-  }
+@keyframes thicken{
+  0%{stroke-width:0}
+  100%{stroke-width:.8vw}
 }
-@media only screen and (max-aspect-ratio:4/5) {
-  #links{
-    font-family:Codystar,Sans-serif;
-    text-shadow:none;
-  }
-  #number{
-    -webkit-text-stroke-width:0.25px;
-  }
-  #name{
-    font-family:Codystar,Sans-Serif;
-  }
-  .mobile{
-    font-size:8vw;
-    text-align:left;
-    margin-top:10vw;
-    margin-left:7.5vw;
-    display:visible;
-  }
-  .standard,.small{
-    display:none;
-  }
+@keyframes flicker{
+  0%{opacity:0}
+  20%{opacity:1}
+  50%{opacity:0}
+  100%{opacity:1}
 }
     </style>
   </head>
   <body>
-    <video id='video' width='1366' height='768' autoplay muted loop playsinline playbackRate='0.8'>
-      <source src='reel.webm' type='video/webm'/>
-    Your browser does not support the video tag.
-    </video>
-    <img id='image' src='logo.svg'>
-    <div id='number'>&thinsp;&hairsp;F&hairsp;TC 15303</div> <!--kerning-->
-    <div id='name'>SPACE ROCKS</div>
-    <div id='links'>
-      <div class='links standard'> <!--single line links-->
-        <a href='javascript:to(1)'>ABOUT US</a>&middot;<a href='javascript:to(2);'>ROBOT</a>&middot;<a href='javascript:to(3);'>BLOG</a>&middot;<a href='javascript:to(4);'>STUFF</a>&middot;<a href='javascript:open(5)'>TWITTER</a>&middot;<a href='javascript:open(6)'>GITHUB</a>
-      </div>
-      <div class='links small'> <!--small window-->
-        <a href='javascript:to(1);'>ABOUT US</a>&middot;<a href='javascript:to(2);'>ROBOT</a>&middot;<a href='javascript:to(3);'>BLOG</a>&middot;<a href='javascript:to(4);'>STUFF</a><br>
-        <a href='javascript:open(5)'>TWITTER</a>&middot;<a href='javascript:open(6)'>GITHUB</a>
-      </div>
-      <div class='links mobile'> <!--vertical links for mobile-->
-        <a href='javascript:to(1);'>ABOUT US</a><br>
-        <a ref='javascript:to(2);'>ROBOT</a><br>
-        <a href='javascript:to(3);'>BLOG</a><br>
-        <a href='javascript:to(4);'>STUFF</a><br>
-        <a href='javascript:open(5)'>TWIT&hairsp;TER</a><br>
-        <a href='javascript:open(6)'>GITHUB</a>
-      </div>
+    <div id='logo-wrapper'>
+      <svg id='svg-wrapper' viewBox='0 0 1800 1800' stroke-linejoin='round' stroke-linecap='round' fill='none' stroke='#fff'>
+        <path id='diamond' d='
+        M900 500l500 500l-500 500l-500 -500z
+        '/>
+        <path id='wire' d='
+        M400 1000l600 -100l400 100l-600 100z
+        M900 500l100 400l-100 600l-100 -400z
+        '/>
+        <path id='logo' d='
+    M682.5 667.5l-150 -150v50v-50z
+    M707.5 642.5l100 -100l-50 -100l-125 125l-75 -75l150 -150
+    M832.5 517.5l50 -50v-150l-100 100l100 -100v-150l-150 150
+    M917.5 467.5l82.5 82.5l100 -200l-182.5 -182.5z
+    M1025 575l100 100l75 -75l-125 -125l125 125l75 -75l-150 -150
+    
+    M450 1100l-75 -75l-75 75l75 75l-75 75l-75 -75
+    M475 1125l-150 150l150 -150l75 75l-75 75l-75 -75
+    M632.5 1267.5h-100l-107.5 107.5l77.5 -75l100 100l-75 75l107.5 -107.5v-100
+    M775 1425l-75 -75l-150 150l75 75
+    M875 1525l-75 -75l-75 75l50 50l-50 -50l-75 75l75 75
+    
+    M925 1525l150 150l-150 -150l75 -75l75 75l-75 75h150
+    M1125 1325l-100 100l150 150l100 -100z
+    M1225 1225l-75 75l150 150l75 -75
+    M1250 1200l150 150l-75 -75h150h-150v-150
+    M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
+        '/>
+      </svg>
+      <div id='diamond-mask'></div>
     </div>
-    <script src='script.js'></script>
+    <script>
+const diamondMask = document.getElementById('diamond-mask');
+let tick=-50;
+
+function animate(){
+  tick++;
+  diamondMask.style.setProperty('--start',tick*20+'deg');
+  diamondMask.style.setProperty('--falloff',(360-(tick*5))+'deg');
+}
+
+setInterval(animate,10);
+    </script>
   </body>
 </html>
