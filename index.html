@@ -32,22 +32,32 @@ body{
   height:100%;
 }
 path#diamond{
-  animation:3s thicken ease-in forwards;
+  animation:.2s flicker forwards;
 }
 path#logo,path#wire,#directory{
-  animation:.2s flicker 4s forwards;
+  animation:.2s flicker forwards;
   opacity:0;
 }
-path#logo,#directory{
+.fresh>path#diamond{
+  animation:3s thicken ease-in forwards;
+}
+.fresh>path#wire{
+  animation-delay:4s;
+}
+.fresh>path#logo,.fresh>#directory{
   animation-delay:5s;
 }
-#diamond-mask{
+.fresh>#diamond-mask{
+  display:block;
   --start:0deg;
   --falloff:360deg;
   left:0;
   top:0;
   background:conic-gradient(from var(--start),#000 var(--falloff),#fff);
   mix-blend-mode:darken;
+}
+#diamond-mask{
+  display:none;
 }
 #svg-wrapper{
   stroke-width:.8vw;
@@ -148,23 +158,29 @@ path#logo,#directory{
       <a id='git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
     <script>
-if(document.referrer.includes('15303')||document.referrer.includes('spacerocks')){
-  alert(true);
-}
-
-const diamondMask = document.getElementById('diamond-mask');
-let tick=-50;
-
-function animate(){
-  tick+=1.5;
-  diamondMask.style.setProperty('--start',tick*20+'deg');
-  diamondMask.style.setProperty('--falloff',(360-(tick*5))+'deg');
-  if(tick>360){
-    clearInterval(interval);
+const doc = document;
+if(!(doc.referrer.includes('15303')||doc.referrer.includes('spacerocks'))){
+  const logoWrapper = doc.getElementById('logo-wrapper');
+  const svgWrapper = doc.getElementById('svg-wrapper');
+  const diamondMask = doc.getElementById('diamond-mask');
+  let tick=-50;
+  
+  logoWrapper.classList.add('fresh');
+  svgWrapper.classList.add('fresh');
+  doc.body.classList.add('fresh');
+  
+  function animate(){
+    tick+=1.5;
+    diamondMask.style.setProperty('--start',tick*20+'deg');
+    diamondMask.style.setProperty('--falloff',(360-(tick*5))+'deg');
+    if(tick>360){
+      clearInterval(interval);
+    }
   }
+  
+  var interval = setInterval(animate,16.666);
 }
 
-var interval = setInterval(animate,16.666);
     </script>
   </body>
 </html>
