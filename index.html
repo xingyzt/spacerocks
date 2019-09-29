@@ -69,11 +69,11 @@ path#diamond,path#logo,path#wire,#directory{
   top:2rem;
   pointer-events:none
 }
-#directory,#directory>a:hover,#svg-wrapper{
+#directory,#directory>a:hover,#directory>a:focus,#svg-wrapper{
   color:#fff;
   filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f);
 }
-#directory:hover{
+#directory:hover,#directory:focus-within{
   opacity:1;
   color:#000;
   filter:none;
@@ -84,14 +84,14 @@ path#diamond,path#logo,path#wire,#directory{
   text-decoration:none;
   color:inherit;
   display:block;
-  padding-left:.3rem;
+  padding-left:calc(.1*(4vmax + 2vmin + .2rem));
   position:absolute;
   pointer-events:auto;
 }
 #directory>a:focus{
   outline:.15rem solid #fff;
 }
-#directory>a:hover{
+#directory>a:hover,#directory>a:focus{
   animation:.2s flicker;
 }
 #directory>#robot{
