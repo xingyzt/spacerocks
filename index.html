@@ -31,14 +31,12 @@ body{
   width:100%;
   height:100%;
 }
-path#diamond{
-  animation:.2s flicker forwards;
-}
-path#logo,path#wire,#directory{
-  animation:.2s flicker forwards;
+path#diamond,path#logo,path#wire,#directory{
+  animation:.2s flicker forwards .2s;
   opacity:0;
 }
 .fresh>path#diamond{
+  opacity:1;
   animation:3s thicken ease-in forwards;
 }
 .fresh>path#wire{
@@ -60,8 +58,7 @@ path#logo,path#wire,#directory{
   display:none;
 }
 #svg-wrapper{
-  stroke-width:.8vw;
-  filter:drop-shadow(0 0 .5vmin #88f) drop-shadow(0 0 1vmin #44f);
+  stroke-width:.8vmin;
   mix-blend-mode:lighten;
 }
 #directory{
@@ -72,9 +69,9 @@ path#logo,path#wire,#directory{
   top:2rem;
   pointer-events:none
 }
-#directory,#directory>a:hover{
+#directory,#directory>a:hover,#svg-wrapper{
   color:#fff;
-  filter:drop-shadow(0 0 .5vmin #88f) drop-shadow(0 0 1vmin #44f);
+  filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f);
 }
 #directory:hover{
   opacity:1;
@@ -109,7 +106,7 @@ path#logo,path#wire,#directory{
 }
 @keyframes thicken{
   0%{stroke-width:0}
-  100%{stroke-width:.8vw}
+  100%{stroke-width:.8vmin}
 }
 @keyframes flicker{
   0%{opacity:0}
@@ -159,7 +156,8 @@ path#logo,path#wire,#directory{
     </div>
     <script>
 const doc = document;
-if(!(document.referrer.includes('15303')||document.referrer.includes('spacerocks'))){
+const ref = doc.referrer;
+if(!(ref.includes('15303')||ref.includes('spacerocks'))){
   const logoWrapper = doc.getElementById('logo-wrapper');
   const svgWrapper = doc.getElementById('svg-wrapper');
   const diamondMask = doc.getElementById('diamond-mask');
