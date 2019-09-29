@@ -4,12 +4,16 @@
     <style>
 @font-face{
   font-family:'hyperspace';
-  src: url('fonts/hyperspace/bold.otf');
+  src: url('fonts/hyperspace/regular.otf');
 }
 html,body{
   background:#000;
   overflow:hidden;
+  height:100vh;
 }
+/**{*/
+/*  outline:1px solid #f00;*/
+/*}*/
 body{
   /*filter:invert(1) hue-rotate(180deg);*/
 }
@@ -22,6 +26,8 @@ body{
 }
 #svg-wrapper,#diamond-mask{
   position:absolute;
+  left:0;
+  top:0;
   width:100%;
   height:100%;
 }
@@ -29,11 +35,11 @@ path#diamond{
   animation:3s thicken ease-in forwards;
 }
 path#logo,path#wire,#directory{
-  animation:.2s flicker 3.5s forwards;
+  animation:.2s flicker 4s forwards;
   opacity:0;
 }
-path#logo{
-  animation-delay:4.5s;
+path#logo,#directory{
+  animation-delay:5s;
 }
 #diamond-mask{
   --start:0deg;
@@ -54,7 +60,6 @@ path#logo{
   position:fixed;
   left:2rem;
   top:2rem;
-  animation-delay:4.5s;
   pointer-events:none
 }
 #directory,#directory>a:hover{
@@ -68,7 +73,7 @@ path#logo{
 }
 #directory>a{
   font-family:hyperspace,sans-serif;
-  font-size:2.5rem;
+  font-size:calc(4vmax + 2vmin + .5rem);
   text-decoration:none;
   color:inherit;
   display:block;
@@ -143,16 +148,24 @@ path#logo{
       <a id='git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
     <script>
+if(document.referrer.contains('15303')){
+  alert(true);
+}
+
+
 const diamondMask = document.getElementById('diamond-mask');
 let tick=-50;
 
 function animate(){
-  tick++;
+  tick+=1.5;
   diamondMask.style.setProperty('--start',tick*20+'deg');
   diamondMask.style.setProperty('--falloff',(360-(tick*5))+'deg');
+  if(tick>360){
+    clearInterval(interval);
+  }
 }
 
-setInterval(animate,10);
+var interval = setInterval(animate,16.666);
     </script>
   </body>
 </html>
