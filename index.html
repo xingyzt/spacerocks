@@ -11,6 +11,13 @@ html,body{
   overflow:hidden;
   height:100%;
 }
+body{
+  /*animation:10s hue linear infinite 10s;*/
+}
+@keyframes hue{
+  0%{filter:hue-rotate(0)}
+  100%{filter:hue-rotate(360deg)}
+}
 /**{*/
 /*  outline:1px solid #f00;*/
 /*}*/
@@ -153,7 +160,7 @@ path#diamond,path#logo,path#wire,#directory{
 const doc = document;
 const ref = doc.referrer;
 function fr(fps){
-  if(fps>16&&(!(ref.includes('15303')||ref.includes('spacerocks')))){
+  if(fps>16&&(!(ref.includes('robotics.majorstem.org'))){
     const logoWrapper = doc.getElementById('logo-wrapper');
     const svgWrapper = doc.getElementById('svg-wrapper');
     let time = Date.now(),timeNow = time;
