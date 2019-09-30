@@ -10,6 +10,7 @@ html,body{
   background:#000;
   overflow:hidden;
   height:100%;
+  cursor:none;
 }
 body{
   /*animation:10s hue linear infinite 10s;*/
@@ -35,7 +36,7 @@ body{
   width:100%;
   height:100%;
 }
-path#diamond,path#logo,path#wire,#directory{
+path#diamond,path#logo,path#wire,#directory,#cursor{
   animation:.2s flicker forwards .2s steps(3,end);
   opacity:0;
 }
@@ -55,14 +56,14 @@ path#diamond,path#logo,path#wire,#directory{
     opacity:1;
     animation:3s thicken ease-in forwards;
   }
-  .fresh>path#wire{
+  .fresh>path#wire,.fresh>#cursor{
     animation-delay:4s;
   }
   .fresh>path#logo,.fresh>#directory{
     animation-delay:5s;
   }
 }
-#svg-wrapper{
+#svg-wrapper,#cursor{
   stroke-width:.8vmin;
 }
 #directory{
@@ -74,12 +75,9 @@ path#diamond,path#logo,path#wire,#directory{
   pointer-events:none;
   z-index:99;
 }
-#directory,#svg-wrapper{
+#directory,#svg-wrapper,#asteroids{
   color:#fff;
   filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f);
-}
-#directory:hover,#directory:focus-within{
-  opacity:1;
 }
 #directory>a{
   font-family:hyperspace,sans-serif;
@@ -90,12 +88,15 @@ path#diamond,path#logo,path#wire,#directory{
   padding-left:calc(.1*(4vmax + 2vmin + .2rem));
   position:absolute;
   pointer-events:auto;
+  cursor:none;
+  user-select:none;
 }
 #directory>a:focus{
   outline:.15rem solid #fff;
+  animation:.5s blink infinite;
 }
 #directory>a:hover,#directory>a:focus{
-  animation:.2s flicker;
+  
 }
 #directory>#robot{
   bottom:0;
@@ -112,19 +113,57 @@ path#diamond,path#logo,path#wire,#directory{
   100%{stroke-width:.8vmin}
 }
 @keyframes flicker{
-  0%{opacity:0}
-  20%{opacity:1}
+  0%{opacity:0;display:none}
+  20%{opacity:1;display:block}
   50%{opacity:0}
   100%{opacity:1}
+}
+@keyframes blink{
+  0%{opacity:0.5}
+  50%{opacity:1}
+  100%{opacity:.5}
+}
+#asteroids{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  pointer-events:none;
+  mix-blend-mode:lighten;
+}
+#cursor{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:199;
+  width:32px;
+  height:32px;
+  transform-origin:11.1px 18.5px;
+}
+.beam{
+  position:absolute;
+  left:0;
+  bottom:0;
+  z-index:189;
+  width:.3vmin;
+  background-image:linear-gradient(#fff,#fff0 128px);
+  transform-origin:bottom;
+  animation:1s fire forwards;
+}
+@keyframes fire{
+  0%{height:5px}
+  99%{height:200vmax}
+  100%{display:none}
 }
     </style>
   </head>
   <body>
     <div id='directory'>
-      <a id='about' href='about'>About us</a>
-      <a id='robot' href='robot'>robot</a>
-      <a id='blog' href='blog'>blog</a>
-      <a id='git' target='_blank' href='https://github.com/15303'>github</a>
+      <a id='about' href='about' onmouseover='this.focus()'>About us</a>
+      <a id='robot' href='robot' onmouseover='this.focus()'>robot</a>
+      <a id='blog' href='blog'   onmouseover='this.focus()'>blog</a>
+      <a id='git' target='_blank' href='https://github.com/15303' onmouseover='this.focus()'>github</a>
     </div>
     <div id='logo-wrapper'>
       <svg id='svg-wrapper' viewBox='0 0 1800 1800' stroke-linejoin='round' stroke-linecap='round' fill='none' stroke='#fff'>
@@ -156,20 +195,27 @@ path#diamond,path#logo,path#wire,#directory{
         '/>
       </svg>
     </div>
+    <div id='asteroids'>
+      <svg id='cursor' viewBox='0 0 128 128'>
+        <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
+      </svg>
+      <div id='beamWrapper'></div>
+    </div>
     <script>
-const doc = document;
-const ref = doc.referrer;
-function fr(fps){
-  if(fps>16&&(!(ref.includes('robotics.majorstem.org'))){
-    const logoWrapper = doc.getElementById('logo-wrapper');
-    const svgWrapper = doc.getElementById('svg-wrapper');
+const doc = document, ref = doc.referrer;
+doc.getElementById('about').focus();
+const logoWrapper = doc.getElementById('logo-wrapper');
+const svgWrapper = doc.getElementById('svg-wrapper');
+function f(fps){
+  if(false){
+  // if(fps>16&&(!ref.includes('robotics.majorstem.org'))){
     let time = Date.now(),timeNow = time;
   
     logoWrapper.classList.add('fresh');
     svgWrapper.classList.add('fresh');
     doc.body.classList.add('fresh');
     
-    function animate(){
+    var animate = function(){
       timeNow = Date.now() - time;
       svgWrapper.style.setProperty('--start',timeNow*2+'deg');
       svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
@@ -179,19 +225,57 @@ function fr(fps){
       }else{
         window.requestAnimationFrame(animate);
       }
-    }
+    };
     window.requestAnimationFrame(animate);
   }
 }
+
+var beam;
 
 const getFPS = () =>
   new Promise(resolve =>
     requestAnimationFrame(t1 =>
       requestAnimationFrame(t2 => resolve(1000 / (t2 - t1)))
     )
-  )
-getFPS().then(fps => fr(fps));
+  );
+getFPS().then(fps => f(fps));
 
+const cursor = doc.getElementById('cursor');
+disappear();
+cursor.rotation = 0;
+
+doc.onmousemove = function(e){
+  cursor.xcoord = e.pageX;
+  cursor.ycoord = e.pageY;
+  window.requestAnimationFrame(update);
+};
+doc.onkeydown = function(e){
+  if(e.keyCode===37){
+    cursor.rotation-=6;
+  }else if(e.keyCode===39){
+    cursor.rotation+=6;
+  }else if(e.code==='Space'){
+    logoWrapper.style.display='none';
+    beam = doc.createElement('div');
+    beam.classList = 'beam';
+    doc.getElementById('beamWrapper').appendChild(beam);
+  }
+  window.requestAnimationFrame(update);
+};
+window.onmouseout = function(){
+  disappear();
+};
+function update(){
+  cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+cursor.rotation+'deg)';
+  beam.style.left=(cursor.xcoord+10+20*Math.sin(((cursor.rotation-30)*Math.PI)/180))+'px';
+  beam.style.bottom=((window.innerHeight-cursor.ycoord)-18+20*Math.cos(((cursor.rotation-30)*Math.PI)/180))+'px';
+  beam.style.transform = 'rotate('+(cursor.rotation-30)+'deg)';
+}
+function disappear(){
+  cursor.style.transform='translate(-64px,-64px)';
+}
+
+const directory = doc.getElementById('directory');
     </script>
   </body>
 </html>
