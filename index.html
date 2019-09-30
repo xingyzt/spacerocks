@@ -152,10 +152,31 @@ path#diamond,path#logo,path#wire,#directory{
     <script>
 const doc = document;
 const ref = doc.referrer;
-var fps;
-function fr(rate){
- fps = rate;
+function fr(fps){
+  if(fps>16&&(!(ref.includes('15303')||ref.includes('spacerocks')))){
+    const logoWrapper = doc.getElementById('logo-wrapper');
+    const svgWrapper = doc.getElementById('svg-wrapper');
+    let time = Date.now(),timeNow = time;
+  
+    logoWrapper.classList.add('fresh');
+    svgWrapper.classList.add('fresh');
+    doc.body.classList.add('fresh');
+    
+    function animate(){
+      timeNow = Date.now() - time;
+      svgWrapper.style.setProperty('--start',timeNow*2+'deg');
+      svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
+      if(timeNow>3600){
+        svgWrapper.style.maskImage='none';
+        svgWrapper.style.webkitMaskImage='none';
+      }else{
+        window.requestAnimationFrame(animate);
+      }
+    }
+    window.requestAnimationFrame(animate);
+  }
 }
+
 const getFPS = () =>
   new Promise(resolve =>
     requestAnimationFrame(t1 =>
@@ -163,29 +184,6 @@ const getFPS = () =>
     )
   )
 getFPS().then(fps => fr(fps));
-
-if(fps>16&&(!(ref.includes('15303')||ref.includes('spacerocks')))){
-  const logoWrapper = doc.getElementById('logo-wrapper');
-  const svgWrapper = doc.getElementById('svg-wrapper');
-  let time = Date.now(),timeNow = time;
-
-  logoWrapper.classList.add('fresh');
-  svgWrapper.classList.add('fresh');
-  doc.body.classList.add('fresh');
-  
-  function animate(){
-    timeNow = Date.now() - time;
-    svgWrapper.style.setProperty('--start',timeNow*2+'deg');
-    svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
-    if(timeNow>3600){
-      svgWrapper.style.maskImage='none';
-      svgWrapper.style.webkitMaskImage='none';
-    }else{
-      window.requestAnimationFrame(animate);
-    }
-  }
-  window.requestAnimationFrame(animate);
-}
 
     </script>
   </body>
