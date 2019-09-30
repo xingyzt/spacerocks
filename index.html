@@ -37,7 +37,7 @@ path#diamond,path#logo,path#wire,#directory{
     filter:invert(1) hue-rotate(180deg);
   }
 }
-@media(update:fast and prefers-reduced-motion:no-preference) {
+@media(prefers-reduced-motion:no-preference) {
   .fresh>path#diamond{
     opacity:1;
     animation:3s thicken ease-in forwards;
@@ -66,12 +66,11 @@ path#diamond,path#logo,path#wire,#directory{
   mix-blend-mode:lighten;
 }
 #directory{
-  position:fixed;
   width:calc(100vw - 4rem);
   height:calc(100vh - 4rem);
   position:fixed;
   left:2rem;
-  bottom:2rem;
+  top:2rem;
   pointer-events:none;
   z-index:99;
 }
