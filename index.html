@@ -59,11 +59,11 @@ path#diamond,path#logo,path#wire,#directory{
   stroke-width:.8vmin;
 }
 #directory{
-  width:calc(100vw - 4rem);
-  height:calc(100% - 4rem);
+  width:calc(100vw - 2vmin);
+  height:calc(100% - 2vmin);
   position:fixed;
-  left:2rem;
-  top:2rem;
+  left:1vmin;
+  top:1vmin;
   pointer-events:none;
   z-index:99;
 }
@@ -155,24 +155,24 @@ const ref = doc.referrer;
 if(!(ref.includes('15303')||ref.includes('spacerocks'))){
   const logoWrapper = doc.getElementById('logo-wrapper');
   const svgWrapper = doc.getElementById('svg-wrapper');
-  let tick=-50;
-  
+  let time = Date.now(),timeNow = time;
+
   logoWrapper.classList.add('fresh');
   svgWrapper.classList.add('fresh');
   doc.body.classList.add('fresh');
   
   function animate(){
-    tick+=1.5;
-    svgWrapper.style.setProperty('--start',tick*20+'deg');
-    svgWrapper.style.setProperty('--falloff',(360-(tick*5))+'deg');
-    if(tick>360){
+    timeNow = Date.now() - time;
+    svgWrapper.style.setProperty('--start',timeNow*2+'deg');
+    svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
+    if(timeNow>3600){
       svgWrapper.style.maskImage='none';
       svgWrapper.style.webkitMaskImage='none';
-      clearInterval(interval);
+    }else{
+      window.requestAnimationFrame(animate);
     }
   }
-  
-  var interval = setInterval(animate,16.666);
+  window.requestAnimationFrame(animate);
 }
 
     </script>
