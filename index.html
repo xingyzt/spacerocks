@@ -21,7 +21,7 @@ html,body{
   left:calc(50vw - 50vmin);
   top:calc(50% - 50vmin);
 }
-#svg-wrapper,#diamond-mask{
+#svg-wrapper{
   position:absolute;
   left:0;
   top:0;
@@ -29,7 +29,7 @@ html,body{
   height:100%;
 }
 path#diamond,path#logo,path#wire,#directory{
-  animation:.2s flicker forwards .2s;
+  animation:.2s flicker forwards .2s steps(3,end);
   opacity:0;
 }
 @media(inverted-colors:inverted){
@@ -38,6 +38,12 @@ path#diamond,path#logo,path#wire,#directory{
   }
 }
 @media(prefers-reduced-motion:no-preference) {
+  .fresh>#svg-wrapper{
+    --start:0deg;
+    --falloff:360deg;
+    -webKit-mask-image:conic-gradient(from var(--start),#0000 var(--falloff),#000);
+    mask-image:conic-gradient(from var(--start),#0000 var(--falloff),#000);
+  }
   .fresh>path#diamond{
     opacity:1;
     animation:3s thicken ease-in forwards;
@@ -48,22 +54,9 @@ path#diamond,path#logo,path#wire,#directory{
   .fresh>path#logo,.fresh>#directory{
     animation-delay:5s;
   }
-  .fresh>#diamond-mask{
-    display:block;
-    --start:0deg;
-    --falloff:360deg;
-    left:0;
-    top:0;
-    background:conic-gradient(from var(--start),#000 var(--falloff),#fff);
-    mix-blend-mode:darken;
-  }
-}
-#diamond-mask{
-  display:none;
 }
 #svg-wrapper{
   stroke-width:.8vmin;
-  mix-blend-mode:lighten;
 }
 #directory{
   width:calc(100vw - 4rem);
@@ -155,7 +148,6 @@ path#diamond,path#logo,path#wire,#directory{
     M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
       </svg>
-      <div id='diamond-mask'></div>
     </div>
     <script>
 const doc = document;
@@ -163,7 +155,6 @@ const ref = doc.referrer;
 if(!(ref.includes('15303')||ref.includes('spacerocks'))){
   const logoWrapper = doc.getElementById('logo-wrapper');
   const svgWrapper = doc.getElementById('svg-wrapper');
-  const diamondMask = doc.getElementById('diamond-mask');
   let tick=-50;
   
   logoWrapper.classList.add('fresh');
@@ -172,9 +163,11 @@ if(!(ref.includes('15303')||ref.includes('spacerocks'))){
   
   function animate(){
     tick+=1.5;
-    diamondMask.style.setProperty('--start',tick*20+'deg');
-    diamondMask.style.setProperty('--falloff',(360-(tick*5))+'deg');
+    svgWrapper.style.setProperty('--start',tick*20+'deg');
+    svgWrapper.style.setProperty('--falloff',(360-(tick*5))+'deg');
     if(tick>360){
+      svgWrapper.style.maskImage='none';
+      svgWrapper.style.webkitMaskImage='none';
       clearInterval(interval);
     }
   }
