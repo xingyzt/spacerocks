@@ -67,7 +67,8 @@ path#diamond,path#logo,path#wire,#directory{
   position:fixed;
   left:2rem;
   top:2rem;
-  pointer-events:none
+  pointer-events:none;
+  z-index:99;
 }
 #directory,#directory>a:hover,#directory>a:focus,#svg-wrapper{
   color:#fff;
@@ -117,6 +118,12 @@ path#diamond,path#logo,path#wire,#directory{
     </style>
   </head>
   <body>
+    <div id='directory'>
+      <a id='about' href='about'>About us</a>
+      <a id='robot' href='robot'>robot</a>
+      <a id='blog' href='blog'>blog</a>
+      <a id='git' target='_blank' href='https://github.com/15303'>github</a>
+    </div>
     <div id='logo-wrapper'>
       <svg id='svg-wrapper' viewBox='0 0 1800 1800' stroke-linejoin='round' stroke-linecap='round' fill='none' stroke='#fff'>
         <path id='diamond' d='
@@ -147,12 +154,6 @@ path#diamond,path#logo,path#wire,#directory{
         '/>
       </svg>
       <div id='diamond-mask'></div>
-    </div>
-    <div id='directory'>
-      <a id='about' href='about'>About us</a>
-      <a id='robot' href='robot'>robot</a>
-      <a id='blog' href='blog'>blog</a>
-      <a id='git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
     <script>
 const doc = document;
