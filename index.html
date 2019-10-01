@@ -223,7 +223,7 @@ var beam;
 
 function f(fps){
   if(fps>24){
-    if(!(ref&&ref.includes('robotics.majorstem.org'))){
+    if(!(ref&&ref.includes('robotics.majorstem.org')&&sessionStorage.getItem('is_reloaded'))){
       let time = Date.now(),timeNow = time;
     
       logoWrapper.classList.add('fresh');
@@ -243,11 +243,7 @@ function f(fps){
       };
       window.requestAnimationFrame(animate);
     }
-    doc.onmousemove = function(e){
-      cursor.xcoord = e.pageX;
-      cursor.ycoord = e.pageY;
-      window.requestAnimationFrame(update);
-    };
+    
     doc.onkeydown = function(e){
       if(e.keyCode===37||e.code==='KeyA'){
         cursor.rotation-=6;
@@ -276,6 +272,12 @@ const getFPS = () => new Promise(resolve=>requestAnimationFrame(t1=>requestAnima
 getFPS().then(fps => f(fps));
 disappear();
 cursor.rotation = 0;
+
+doc.onmousemove = function(e){
+  cursor.xcoord = e.pageX;
+  cursor.ycoord = e.pageY;
+  window.requestAnimationFrame(update);
+};
 
 function shoot(){
   enterGame();
@@ -315,6 +317,7 @@ function addAsteroid(){
   asteroids.style.display='block';
   asteroids.innerHTML+=proto;
 }
+sessionStorage.setItem('is_reloaded',true);
     </script>
   </body>
 </html>
