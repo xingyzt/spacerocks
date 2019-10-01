@@ -217,8 +217,7 @@ const doc = document,
       directory = doc.getElementById('directory');
       
 function f(fps){
-  alert(fps);
-  if(fps>16&&!(ref&&ref.includes('robotics.majorstem.org'))){
+  if(fps>12&&!(ref&&ref.includes('robotics.majorstem.org'))){
     let time = Date.now(),timeNow = time;
   
     logoWrapper.classList.add('fresh');
@@ -242,20 +241,8 @@ function f(fps){
 
 var beam;
 
-const getFPS = () =>
-  new Promise(resolve =>
-    requestAnimationFrame(t1 =>
-      requestAnimationFrame(t2 =>
-        requestAnimationFrame(t3 =>
-          requestAnimationFrame(t4 =>
-            requestAnimationFrame(t5 => resolve(4000 / (t5 - t1)))
-          )
-        )
-      )
-    )
-  );
+const getFPS = () => new Promise(resolve=>requestAnimationFrame(t1=>requestAnimationFrame(t2=>requestAnimationFrame(t3=>resolve(2000/(t3-t1))))));
 getFPS().then(fps => f(fps));
-
 disappear();
 cursor.rotation = 0;
 
