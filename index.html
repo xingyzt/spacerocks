@@ -56,7 +56,7 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
     opacity:1;
     animation:3s thicken ease-in forwards;
   }
-  .fresh>path#wire,.fresh>#cursor{
+  .fresh>path#wire,.fresh>#arcade>#cursor{
     animation-delay:4s;
   }
   .fresh>path#logo,.fresh>#directory{
@@ -75,7 +75,7 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
   pointer-events:none;
   z-index:99;
 }
-#directory,#svg-wrapper,#asteroids{
+#directory,#svg-wrapper,#arcade{
   color:#fff;
   filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f);
 }
@@ -91,12 +91,9 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
   cursor:none;
   user-select:none;
 }
-#directory>a:focus{
+#directory>a:hover,#directory>a:focus{
   outline:.15rem solid #fff;
   animation:.5s blink infinite;
-}
-#directory>a:hover,#directory>a:focus{
-  
 }
 #directory>#robot{
   bottom:0;
@@ -123,7 +120,7 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
   50%{opacity:1}
   100%{opacity:.5}
 }
-#asteroids{
+#arcade{
   position:absolute;
   top:0;
   left:0;
@@ -149,21 +146,27 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
   width:.3vmin;
   background-image:linear-gradient(#fff,#fff0 128px);
   transform-origin:bottom;
-  animation:1s fire forwards;
+  animation:2s fire forwards;
+  border-radius:.15vmin;
 }
 @keyframes fire{
   0%{height:5px}
   99%{height:200vmax}
   100%{display:none}
 }
+#asteroids{
+  left:0;
+  width:100vmax;
+  height:100vmax;
+}
     </style>
   </head>
   <body>
     <div id='directory'>
-      <a id='about' href='about' onmouseover='this.focus()'>About us</a>
-      <a id='robot' href='robot' onmouseover='this.focus()'>robot</a>
-      <a id='blog' href='blog'   onmouseover='this.focus()'>blog</a>
-      <a id='git' target='_blank' href='https://github.com/15303' onmouseover='this.focus()'>github</a>
+      <a id='about' href='about'>About us</a>
+      <a id='robot' href='robot'>robot</a>
+      <a id='blog' href='blog'>blog</a>
+      <a id='git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
     <div id='logo-wrapper'>
       <svg id='svg-wrapper' viewBox='0 0 1800 1800' stroke-linejoin='round' stroke-linecap='round' fill='none' stroke='#fff'>
@@ -195,20 +198,25 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
         '/>
       </svg>
     </div>
-    <div id='asteroids'>
+    <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
         <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
       </svg>
       <div id='beamWrapper'></div>
+      <svg id='asteroids' viewBox='0 0 1000 1000' fill='none' stroke='#fff'>
+      </svg>
     </div>
     <script>
-const doc = document, ref = doc.referrer;
-doc.getElementById('about').focus();
-const logoWrapper = doc.getElementById('logo-wrapper');
-const svgWrapper = doc.getElementById('svg-wrapper');
+const doc = document,
+      ref = doc.referrer,
+      logoWrapper = doc.getElementById('logo-wrapper'),
+      svgWrapper = doc.getElementById('svg-wrapper'),
+      beamWrapper = doc.getElementById('beamWrapper'),
+      cursor = doc.getElementById('cursor');
+      directory = doc.getElementById('directory');
+      
 function f(fps){
-  if(false){
-  // if(fps>16&&(!ref.includes('robotics.majorstem.org'))){
+  if(fps>16&&(!ref.includes('robotics.majorstem.org'))){
     let time = Date.now(),timeNow = time;
   
     logoWrapper.classList.add('fresh');
@@ -240,7 +248,6 @@ const getFPS = () =>
   );
 getFPS().then(fps => f(fps));
 
-const cursor = doc.getElementById('cursor');
 disappear();
 cursor.rotation = 0;
 
@@ -250,32 +257,61 @@ doc.onmousemove = function(e){
   window.requestAnimationFrame(update);
 };
 doc.onkeydown = function(e){
-  if(e.keyCode===37){
+  if(e.keyCode===37||e.code==='KeyA'){
     cursor.rotation-=6;
-  }else if(e.keyCode===39){
+    enterGame();
+  }else if(e.keyCode===39||e.code==='KeyD'){
     cursor.rotation+=6;
-  }else if(e.code==='Space'){
-    logoWrapper.style.display='none';
-    beam = doc.createElement('div');
-    beam.classList = 'beam';
-    doc.getElementById('beamWrapper').appendChild(beam);
+    enterGame();
   }
   window.requestAnimationFrame(update);
 };
+doc.onkeyup = function(e){
+  if(e.code==='Space'){
+    shoot();
+  }
+}
+doc.onmousedown = function(){
+  shoot();
+}
 window.onmouseout = function(){
   disappear();
 };
-function update(){
-  cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+cursor.rotation+'deg)';
+function shoot(){
+  enterGame();
+  beam = doc.createElement('div');
+  beam.classList = 'beam';
   beam.style.left=(cursor.xcoord+10+20*Math.sin(((cursor.rotation-30)*Math.PI)/180))+'px';
   beam.style.bottom=((window.innerHeight-cursor.ycoord)-18+20*Math.cos(((cursor.rotation-30)*Math.PI)/180))+'px';
   beam.style.transform = 'rotate('+(cursor.rotation-30)+'deg)';
+  beamWrapper.appendChild(beam);
+  setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild)},3000);
+  window.requestAnimationFrame(update);
+}
+function update(){
+  cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+cursor.rotation+'deg)';
 }
 function disappear(){
   cursor.style.transform='translate(-64px,-64px)';
 }
+function enterGame(){
+  if(logoWrapper.style.display!=='none'){
+    for(let j = 0;j<12;j++){
+      let proto=`<path d='M`+Math.random()*window.innerWidth+` `+Math.random()*window.innerHeight+`l`;
+      for(let i = 0;i<19;i++){
+        if(i%2){
+          proto+=String((Math.random()*50*Math.cos(Math.PI*i/10.5))+'l');
+        }else{
+          proto+=String((Math.random()*50*Math.sin(Math.PI*i/10.5))+' ');
+        }
+      }
+      proto+=String(Math.floor(Math.random()*50)+`z'/>`);
+      doc.getElementById('asteroids').innerHTML+=proto;
+    }
+    logoWrapper.style.display='none';
+  }
+}
 
-const directory = doc.getElementById('directory');
     </script>
   </body>
 </html>
