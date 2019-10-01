@@ -147,7 +147,7 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
   width:.3vmin;
   background-image:linear-gradient(#fff,#fff0 128px);
   transform-origin:bottom;
-  animation:2s fire forwards;
+  animation:2s fire forwards linear;
   border-radius:.15vmin;
 }
 @keyframes fire{
@@ -217,7 +217,8 @@ const doc = document,
       directory = doc.getElementById('directory');
       
 function f(fps){
-  if(fps>16&&(!ref.includes('robotics.majorstem.org'))){
+  alert(fps);
+  if(fps>16&&!(ref&&ref.includes('robotics.majorstem.org'))){
     let time = Date.now(),timeNow = time;
   
     logoWrapper.classList.add('fresh');
@@ -226,7 +227,7 @@ function f(fps){
     
     var animate = function(){
       timeNow = Date.now() - time;
-      svgWrapper.style.setProperty('--start',timeNow*(1+0.00001*timeNow)+'deg');
+      svgWrapper.style.setProperty('--start',timeNow*(1.2+0.00005*timeNow)+'deg');
       svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
       if(timeNow>3600){
         svgWrapper.style.maskImage='none';
@@ -244,7 +245,13 @@ var beam;
 const getFPS = () =>
   new Promise(resolve =>
     requestAnimationFrame(t1 =>
-      requestAnimationFrame(t2 => resolve(1000 / (t2 - t1)))
+      requestAnimationFrame(t2 =>
+        requestAnimationFrame(t3 =>
+          requestAnimationFrame(t4 =>
+            requestAnimationFrame(t5 => resolve(4000 / (t5 - t1)))
+          )
+        )
+      )
     )
   );
 getFPS().then(fps => f(fps));
@@ -298,19 +305,22 @@ function disappear(){
 function enterGame(){
   if(logoWrapper.style.display!=='none'){
     for(let j = 0;j<12;j++){
-      let proto=`<path d='M`+Math.random()*window.innerWidth+` `+Math.random()*window.innerHeight+`l`;
-      for(let i = 0;i<19;i++){
-        if(i%2){
-          proto+=String((Math.random()*50*Math.cos(Math.PI*i/10.5))+'l');
-        }else{
-          proto+=String((Math.random()*50*Math.sin(Math.PI*i/10.5))+' ');
-        }
-      }
-      proto+=String(Math.floor(Math.random()*50)+`z'/>`);
-      doc.getElementById('asteroids').innerHTML+=proto;
+      addAsteroid();
     }
     logoWrapper.style.display='none';
   }
+}
+function addAsteroid(){
+  let proto=`<path d='M`+Math.random()*window.innerWidth+` `+Math.random()*window.innerHeight+`l`;
+  for(let i = 0;i<19;i++){
+    if(i%2){
+      proto+=String((Math.random()*50*Math.cos(Math.PI*i/10.5))+'l');
+    }else{
+      proto+=String((Math.random()*50*Math.sin(Math.PI*i/10.5))+' ');
+    }
+  }
+  proto+=String(Math.floor(Math.random()*50)+`z'/>`);
+  doc.getElementById('asteroids').innerHTML+=proto;
 }
     </script>
   </body>
