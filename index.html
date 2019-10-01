@@ -7,6 +7,7 @@
   src: url('fonts/hyperspace/regular.otf');
 }
 html,body{
+  margin:0;
   background:#000;
   overflow:hidden;
   width:100vw;
@@ -169,6 +170,12 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
   height:100vmax;
   display:none;
 }
+#divvy{
+  position:absolute;
+  top:0;
+  width:100vw;
+  height:100vh;
+}
     </style>
   </head>
   <body>
@@ -210,6 +217,7 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
         '/>
       </svg>
     </div>
+    <div id='divvy' onclick='enterGame()'></div>
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
         <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
@@ -254,27 +262,6 @@ if(!sessionStorage.getItem('notFresh')){
   };
   window.requestAnimationFrame(animate);
 }
-doc.onkeydown = function(e){
-  if(e.keyCode===37||e.code==='KeyA'){
-    cursor.rotation-=6;
-    enterGame();
-  }else if(e.keyCode===39||e.code==='KeyD'){
-    cursor.rotation+=6;
-    enterGame();
-  }
-  requestUpdate();
-};
-doc.onkeyup = function(e){
-  if(e.code==='Space'){
-    shoot();
-  }
-}
-doc.onmousedown = function(){
-  shoot();
-}
-window.onmouseout = function(){
-  disappear();
-};
 sessionStorage.setItem('notFresh',true);
 disappear();
 cursor.rotation = 0;
@@ -283,8 +270,39 @@ doc.onmousemove = function(e){
   cursor.ycoord = e.pageY;
   requestUpdate();
 };
+doc.onkeyup = function(e){
+  if(e.code==='Space'){
+    enterGame();
+  }
+};
+function enterGame(){
+  if(logoWrapper.style.display!=='none'){
+    for(let j = 0;j<12;j++){
+      addAsteroid();
+    }
+    doc.onkeydown = function(e){
+      if(e.keyCode===37||e.code==='KeyA'){
+        cursor.rotation-=6;
+      }else if(e.keyCode===39||e.code==='KeyD'){
+        cursor.rotation+=6;
+      }
+      requestUpdate();
+    };
+    doc.onkeyup = function(e){
+      if(e.code==='Space'){
+        shoot();
+      }
+    }
+    doc.onmousedown = function(){
+      shoot();
+    }
+    window.onmouseout = function(){
+      disappear();
+    };
+    logoWrapper.style.display='none';
+  }
+}
 function shoot(){
-  enterGame();
   beam = doc.createElement('div');
   beam.classList = 'beam';
   beam.style.left=(cursor.xcoord+10+20*Math.sin(((cursor.rotation-30)*Math.PI)/180))+'px';
@@ -302,14 +320,6 @@ function update(){
 }
 function disappear(){
   cursor.style.transform='translate(-64px,-64px)';
-}
-function enterGame(){
-  if(logoWrapper.style.display!=='none'){
-    for(let j = 0;j<12;j++){
-      addAsteroid();
-    }
-    logoWrapper.style.display='none';
-  }
 }
 function addAsteroid(){
   let proto=`<path d='M`+Math.random()*window.innerWidth+` `+Math.random()*window.innerHeight+`l`;
