@@ -266,6 +266,7 @@ function f(fps){
       disappear();
     };
   }
+  sessionStorage.setItem('notFresh',true);
 }
 
 const getFPS = () => new Promise(resolve=>requestAnimationFrame(t1=>requestAnimationFrame(t2=>requestAnimationFrame(t3=>resolve(2000/(t3-t1))))));
@@ -317,7 +318,6 @@ function addAsteroid(){
   asteroids.style.display='block';
   asteroids.innerHTML+=proto;
 }
-sessionStorage.setItem('notFresh',true);
     </script>
   </body>
 </html>
