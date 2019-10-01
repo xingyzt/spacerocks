@@ -223,7 +223,7 @@ var beam;
 
 function f(fps){
   if(fps>24){
-    if(!(ref.includes('robotics.majorstem.org')||sessionStorage.getItem('is_reloaded'))){
+    if(!sessionStorage.getItem('notFresh')){
       let time = Date.now(),timeNow = time;
     
       logoWrapper.classList.add('fresh');
@@ -317,7 +317,7 @@ function addAsteroid(){
   asteroids.style.display='block';
   asteroids.innerHTML+=proto;
 }
-sessionStorage.setItem('is_reloaded',true);
+sessionStorage.setItem('notFresh',true);
     </script>
   </body>
 </html>
