@@ -223,7 +223,7 @@ var beam;
 
 function f(fps){
   if(fps>24){
-    if(!(ref&&ref.includes('robotics.majorstem.org')&&sessionStorage.getItem('is_reloaded'))){
+    if(!(ref.includes('robotics.majorstem.org')||sessionStorage.getItem('is_reloaded'))){
       let time = Date.now(),timeNow = time;
     
       logoWrapper.classList.add('fresh');
