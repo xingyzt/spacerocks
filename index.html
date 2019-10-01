@@ -9,6 +9,7 @@
 html,body{
   background:#000;
   overflow:hidden;
+  width:100vw;
   height:100%;
   cursor:none;
 }
@@ -159,6 +160,7 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
   left:0;
   width:100vmax;
   height:100vmax;
+  display:none;
 }
     </style>
   </head>
@@ -214,6 +216,7 @@ const doc = document,
       svgWrapper = doc.getElementById('svg-wrapper'),
       beamWrapper = doc.getElementById('beamWrapper'),
       cursor = doc.getElementById('cursor'),
+      asteroids = doc.getElementById('asteroids'),
       directory = doc.getElementById('directory');
 
 var beam;
@@ -309,7 +312,8 @@ function addAsteroid(){
     }
   }
   proto+=String(Math.floor(Math.random()*50)+`z'/>`);
-  doc.getElementById('asteroids').innerHTML+=proto;
+  asteroids.style.display='block';
+  asteroids.innerHTML+=proto;
 }
     </script>
   </body>
