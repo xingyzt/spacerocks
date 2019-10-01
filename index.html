@@ -232,7 +232,7 @@ if(!sessionStorage.getItem('notFresh')){
     timeNow = Date.now() - time;
     svgWrapper.style.setProperty('--start',timeNow*(1.2+0.00005*timeNow)+'deg');
     svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
-    if(animateTick===10&&(timeNow>1000)){
+    if(timeNow>1000&&animateTick<10){
       logoWrapper.classList.remove('fresh');
       svgWrapper.classList.remove('fresh');
       doc.body.classList.remove('fresh');
@@ -257,7 +257,7 @@ doc.onkeydown = function(e){
     cursor.rotation+=6;
     enterGame();
   }
-  window.requestAnimationFrame(update);
+  requestUpdate();
 };
 doc.onkeyup = function(e){
   if(e.code==='Space'){
@@ -278,7 +278,7 @@ cursor.rotation = 0;
 doc.onmousemove = function(e){
   cursor.xcoord = e.pageX;
   cursor.ycoord = e.pageY;
-  window.requestAnimationFrame(update);
+  requestUpdate();
 };
 
 function shoot(){
@@ -290,6 +290,9 @@ function shoot(){
   beam.style.transform = 'rotate('+(cursor.rotation-30)+'deg)';
   beamWrapper.appendChild(beam);
   setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild)},3000);
+  requestUpdate();
+}
+function requestUpdate(){
   window.requestAnimationFrame(update);
 }
 function update(){
