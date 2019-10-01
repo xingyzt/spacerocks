@@ -219,58 +219,59 @@ const doc = document,
       asteroids = doc.getElementById('asteroids'),
       directory = doc.getElementById('directory');
 
-var beam;
+let beam,animateTick = 0;
 
-function f(fps){
-  if(fps>16){
-    if(!sessionStorage.getItem('notFresh')){
-      let time = Date.now(),timeNow = time;
-    
-      logoWrapper.classList.add('fresh');
-      svgWrapper.classList.add('fresh');
-      doc.body.classList.add('fresh');
-      
-      var animate = function(){
-        timeNow = Date.now() - time;
-        svgWrapper.style.setProperty('--start',timeNow*(1.2+0.00005*timeNow)+'deg');
-        svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
-        if(timeNow>3600){
-          svgWrapper.style.maskImage='none';
-          svgWrapper.style.webkitMaskImage='none';
-        }else{
-          window.requestAnimationFrame(animate);
-        }
-      };
+if(!sessionStorage.getItem('notFresh')){
+  let time = Date.now(),timeNow = time;
+
+  logoWrapper.classList.add('fresh');
+  svgWrapper.classList.add('fresh');
+  doc.body.classList.add('fresh');
+  
+  var animate = function(){
+    timeNow = Date.now() - time;
+    svgWrapper.style.setProperty('--start',timeNow*(1.2+0.00005*timeNow)+'deg');
+    svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
+    if(animateTick===10&&(timeNow>1000)){
+      logoWrapper.classList.remove('fresh');
+      svgWrapper.classList.remove('fresh');
+      doc.body.classList.remove('fresh');
+      return
+    }
+    if(timeNow>3600){
+      svgWrapper.style.maskImage='none';
+      svgWrapper.style.webkitMaskImage='none';
+    }else{
+      animateTick++;
       window.requestAnimationFrame(animate);
     }
-    
-    doc.onkeydown = function(e){
-      if(e.keyCode===37||e.code==='KeyA'){
-        cursor.rotation-=6;
-        enterGame();
-      }else if(e.keyCode===39||e.code==='KeyD'){
-        cursor.rotation+=6;
-        enterGame();
-      }
-      window.requestAnimationFrame(update);
-    };
-    doc.onkeyup = function(e){
-      if(e.code==='Space'){
-        shoot();
-      }
-    }
-    doc.onmousedown = function(){
-      shoot();
-    }
-    window.onmouseout = function(){
-      disappear();
-    };
-  }
-  sessionStorage.setItem('notFresh',true);
+  };
+  window.requestAnimationFrame(animate);
 }
 
-const getFPS = () => new Promise(resolve=>requestAnimationFrame(t1=>requestAnimationFrame(t2=>requestAnimationFrame(t3=>resolve(2000/(t3-t1))))));
-getFPS().then(fps => f(fps));
+doc.onkeydown = function(e){
+  if(e.keyCode===37||e.code==='KeyA'){
+    cursor.rotation-=6;
+    enterGame();
+  }else if(e.keyCode===39||e.code==='KeyD'){
+    cursor.rotation+=6;
+    enterGame();
+  }
+  window.requestAnimationFrame(update);
+};
+doc.onkeyup = function(e){
+  if(e.code==='Space'){
+    shoot();
+  }
+}
+doc.onmousedown = function(){
+  shoot();
+}
+window.onmouseout = function(){
+  disappear();
+};
+sessionStorage.setItem('notFresh',true);
+
 disappear();
 cursor.rotation = 0;
 
