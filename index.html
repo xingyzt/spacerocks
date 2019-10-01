@@ -285,21 +285,40 @@ function enterGame(){
       addAsteroid();
     }
     doc.onkeydown = function(e){
-      if(e.keyCode===37||e.code==='KeyA'){
-        cursor.rotation-=6;
-      }else if(e.keyCode===39||e.code==='KeyD'){
-        cursor.rotation+=6;
+      switch(e.code){
+        case 'ArrowLeft':
+          cursor.rotation-=6;
+          break;
+        case 'ArrowRight':
+          cursor.rotation+=6;
+          break;
+        case 'KeyA':
+          cursor.xcoord-=6;
+          break;
+        case 'KeyD':
+          cursor.xcoord+=6;
+          break;
+        case 'KeyW':
+          cursor.ycoord-=6;
+          break;
+        case 'KeyS':
+          cursor.ycoord+=6;
+          break;
       }
       requestUpdate();
     };
+    doc.onwheel = function(e){
+      cursor.rotation+=e.deltaY;
+      requestUpdate();
+    }
     doc.onkeyup = function(e){
-      if(e.code==='Space'){
+      if(e.code==='Space'||e.code==='ArrowUp'){
         shoot();
       }
-    }
+    };
     doc.onmousedown = function(){
       shoot();
-    }
+    };
     window.onmouseout = function(){
       disappear();
     };
