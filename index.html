@@ -74,14 +74,15 @@ path#diamond,path#logo,path#wire,#directory,#cursor{
   top:1vmin;
   pointer-events:none;
   z-index:99;
+  mix-blend-mode:lighten;
+  font-family:hyperspace,sans-serif;
+  font-size:calc(4vmax + 2vmin + .5rem);
 }
 #directory,#svg-wrapper,#arcade{
   color:#fff;
   filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f);
 }
 #directory>a{
-  font-family:hyperspace,sans-serif;
-  font-size:calc(4vmax + 2vmin + .5rem);
   text-decoration:none;
   color:inherit;
   display:block;
@@ -225,7 +226,7 @@ function f(fps){
     
     var animate = function(){
       timeNow = Date.now() - time;
-      svgWrapper.style.setProperty('--start',timeNow*2+'deg');
+      svgWrapper.style.setProperty('--start',timeNow*(1+0.00001*timeNow)+'deg');
       svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
       if(timeNow>3600){
         svgWrapper.style.maskImage='none';
@@ -311,7 +312,6 @@ function enterGame(){
     logoWrapper.style.display='none';
   }
 }
-
     </script>
   </body>
 </html>
