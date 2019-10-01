@@ -213,65 +213,67 @@ const doc = document,
       logoWrapper = doc.getElementById('logo-wrapper'),
       svgWrapper = doc.getElementById('svg-wrapper'),
       beamWrapper = doc.getElementById('beamWrapper'),
-      cursor = doc.getElementById('cursor');
+      cursor = doc.getElementById('cursor'),
       directory = doc.getElementById('directory');
-      
-function f(fps){
-  if(fps>12&&!(ref&&ref.includes('robotics.majorstem.org'))){
-    let time = Date.now(),timeNow = time;
-  
-    logoWrapper.classList.add('fresh');
-    svgWrapper.classList.add('fresh');
-    doc.body.classList.add('fresh');
-    
-    var animate = function(){
-      timeNow = Date.now() - time;
-      svgWrapper.style.setProperty('--start',timeNow*(1.2+0.00005*timeNow)+'deg');
-      svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
-      if(timeNow>3600){
-        svgWrapper.style.maskImage='none';
-        svgWrapper.style.webkitMaskImage='none';
-      }else{
-        window.requestAnimationFrame(animate);
-      }
-    };
-    window.requestAnimationFrame(animate);
-  }
-}
 
 var beam;
+
+function f(fps){
+  if(fps>12){
+    if(!(ref&&ref.includes('robotics.majorstem.org'))){
+      let time = Date.now(),timeNow = time;
+    
+      logoWrapper.classList.add('fresh');
+      svgWrapper.classList.add('fresh');
+      doc.body.classList.add('fresh');
+      
+      var animate = function(){
+        timeNow = Date.now() - time;
+        svgWrapper.style.setProperty('--start',timeNow*(1.2+0.00005*timeNow)+'deg');
+        svgWrapper.style.setProperty('--falloff',(360-(timeNow/2))+'deg');
+        if(timeNow>3600){
+          svgWrapper.style.maskImage='none';
+          svgWrapper.style.webkitMaskImage='none';
+        }else{
+          window.requestAnimationFrame(animate);
+        }
+      };
+      window.requestAnimationFrame(animate);
+    }
+    doc.onmousemove = function(e){
+      cursor.xcoord = e.pageX;
+      cursor.ycoord = e.pageY;
+      window.requestAnimationFrame(update);
+    };
+    doc.onkeydown = function(e){
+      if(e.keyCode===37||e.code==='KeyA'){
+        cursor.rotation-=6;
+        enterGame();
+      }else if(e.keyCode===39||e.code==='KeyD'){
+        cursor.rotation+=6;
+        enterGame();
+      }
+      window.requestAnimationFrame(update);
+    };
+    doc.onkeyup = function(e){
+      if(e.code==='Space'){
+        shoot();
+      }
+    }
+    doc.onmousedown = function(){
+      shoot();
+    }
+    window.onmouseout = function(){
+      disappear();
+    };
+  }
+}
 
 const getFPS = () => new Promise(resolve=>requestAnimationFrame(t1=>requestAnimationFrame(t2=>requestAnimationFrame(t3=>resolve(2000/(t3-t1))))));
 getFPS().then(fps => f(fps));
 disappear();
 cursor.rotation = 0;
 
-doc.onmousemove = function(e){
-  cursor.xcoord = e.pageX;
-  cursor.ycoord = e.pageY;
-  window.requestAnimationFrame(update);
-};
-doc.onkeydown = function(e){
-  if(e.keyCode===37||e.code==='KeyA'){
-    cursor.rotation-=6;
-    enterGame();
-  }else if(e.keyCode===39||e.code==='KeyD'){
-    cursor.rotation+=6;
-    enterGame();
-  }
-  window.requestAnimationFrame(update);
-};
-doc.onkeyup = function(e){
-  if(e.code==='Space'){
-    shoot();
-  }
-}
-doc.onmousedown = function(){
-  shoot();
-}
-window.onmouseout = function(){
-  disappear();
-};
 function shoot(){
   enterGame();
   beam = doc.createElement('div');
