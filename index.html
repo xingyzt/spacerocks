@@ -1,10 +1,14 @@
+
 <!doctype html>
 <html lang='en-us'>
   <head>
-    <title>FTC 15303 Space Rocks</title>
+    <title>Space Rocks | FTC 15303</title>
     <meta charset='utf-8'>
-    <meta name='description' content='A second-year robotics team based in southern California. Part of MajorStem.org and sponsored by Collins Aerospace.'>
+    <meta name='description' content='A robotics team based in southern California. Part of MajorStem.org and sponsored by Collins Aerospace.'>
+    <meta name="keywords" content="15303,space rocks,15303 space rocks,FIRST,FTC,robotics">
     <meta name='viewpoint' content='width=device-width, initial-scale=1'>
+    <link rel="shortcut icon" href="fav.png">
+    <link rel="prefetch" href='http://majorstem.org/index.php/feed'>
     <style>
 @font-face{
   font-family:'hyperspace';
@@ -16,18 +20,11 @@ html,body{
   overflow:hidden;
   width:100vw;
   height:100%;
-  cursor:none;
-}
-body{
-  /*animation:10s hue linear infinite 10s;*/
 }
 @keyframes hue{
   0%{filter:hue-rotate(0)}
   100%{filter:hue-rotate(360deg)}
 }
-/**{*/
-/*  outline:1px solid #f00;*/
-/*}*/
 #logo-wrapper{
   position:relative;
   width:99vmin;
@@ -35,47 +32,12 @@ body{
   left:calc(50vw - 50vmin);
   top:calc(50% - 50vmin);
 }
-#svg-wrapper{
-  position:absolute;
-  left:0;
-  top:0;
-  width:100%;
-  height:100%;
-}
-path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
-  animation:.2s flicker forwards .2s steps(3,end);
-  opacity:0;
-}
 @media(inverted-colors:inverted){
   body{
     filter:invert(1) hue-rotate(180deg);
   }
 }
-@media(prefers-reduced-motion:no-preference) {
-  .fresh>#svg-wrapper{
-    --start:0deg;
-    --falloff:360deg;
-    -webKit-mask-image:conic-gradient(from var(--start),#0000 var(--falloff),#000);
-    mask-image:conic-gradient(from var(--start),#0000 var(--falloff),#000);
-  }
-  .fresh>path#wire0{
-    opacity:1;
-    animation:3.1s thicken linear forwards;
-  }
-  .fresh>path#wire1{
-    animation-delay:3s;
-  }
-  .fresh>path#wire2,.fresh>#arcade>#cursor{
-    animation-delay:3.15s;
-  }
-  .fresh>path#logo{
-    animation-delay:3.3s;
-  }
-  .fresh>#directory{
-    animation-delay:3.45s;
-  }
-}
-#svg-wrapper,#cursor{
+#logo-wrapper,#cursor,path#wire0{
   stroke-width:.8vmin;
 }
 #directory{
@@ -90,9 +52,9 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
   font-family:hyperspace,sans-serif;
   font-size:calc(4vmax + 2vmin + .5rem);
 }
-#directory,#svg-wrapper,#arcade{
+#directory,#logo-wrapper,#arcade{
   color:#fff;
-  filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f);
+  filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);
 }
 #directory>a{
   text-decoration:none;
@@ -101,12 +63,11 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
   padding-left:calc(.1*(4vmax + 2vmin + .2rem));
   position:absolute;
   pointer-events:auto;
-  cursor:none;
   user-select:none;
+  cursor:inherit;
 }
 #directory>a:hover,#directory>a:focus{
   outline:.15rem solid #fff;
-  animation:.5s blink infinite;
 }
 #directory>#robot{
   bottom:0;
@@ -117,22 +78,6 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
 #directory>#git{
   right:0;
   bottom:0;
-}
-@keyframes thicken{
-  0%{stroke-width:0}
-  99%{stroke-width:3.2vmin;stroke-linejoin:miter}
-  100%{stroke-width:.8vmin;stroke-linejoin:round}
-}
-@keyframes flicker{
-  0%{opacity:0;display:none}
-  20%{opacity:1;display:block}
-  50%{opacity:0}
-  100%{opacity:1}
-}
-@keyframes blink{
-  0%{opacity:0.5}
-  50%{opacity:1}
-  100%{opacity:.5}
 }
 #arcade{
   position:absolute;
@@ -157,19 +102,20 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
   left:0;
   bottom:0;
   z-index:189;
-  width:.3vmin;
-  background-image:linear-gradient(#fff,#fff0 128px);
-  transform-origin:bottom;
+  height:.3vmin;
+  background-image:linear-gradient(270deg,#fff,#fff0 128px);
+  transform-origin:left;
   animation:2s fire forwards linear;
   border-radius:.15vmin;
 }
 @keyframes fire{
-  0%{height:5px}
-  99%{height:200vmax}
+  0%{width:5px}
+  99%{width:200vmax}
   100%{display:none}
 }
 #asteroids{
   left:0;
+  top:0;
   width:100vmax;
   height:100vmax;
   display:none;
@@ -180,6 +126,14 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
   width:100vw;
   height:100vh;
 }
+.hitAsteroid{
+  animation:.1s hitAsteroid forwards;
+}
+@keyframes hitAsteroid{
+  0%{fill:#fff}
+  99%{opacity:0;fill:#fff}
+  100%{opacity:0}
+}
     </style>
   </head>
   <body>
@@ -189,17 +143,21 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
       <a id='blog' href='blog'>blog</a>
       <a id='git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
-    <div id='logo-wrapper'>
-      <svg id='svg-wrapper' viewBox='0 0 1800 2000' stroke-linecap='round' fill='none' stroke='#fff'>
+      <svg id='logo-wrapper' viewBox='0 0 1800 2000' stroke-linecap='round' fill='none' stroke='#fff'>
+        <path id='wirex' d='
+        M900 500l500 500l-500 500l-500 -500z
+        '/>
         <path id='wire0' d='
         M900 500l500 500l-500 500l-500 -500z
         '/>
         <path id='wire1' d='
         M400 1000l600 -100l400 100l-600 100z
         '/>
-        <path id='wire2' d='
-        M900 500l100 400l-100 600l-100 -400z
-        '/>
+        <ellipse cx='900' cy='1000' rx='500' ry='100'/>
+        <path id='wire2'/>
+        <!--<path id='wire2' d='-->
+        <!--M900 500l100 400l-100 600l-100 -400z-->
+        <!--'/>-->
         <path id='logo' d='
     M682.5 667.5l-150 -150v50v-50z
     M707.5 642.5l100 -100l-50 -100l-125 125l-75 -75l150 -150
@@ -220,7 +178,6 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
     M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
       </svg>
-    </div>
     <div id='divvy' onclick='enterGame()'></div>
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
@@ -230,49 +187,26 @@ path#wire0,path#wire1,path#wire2,path#logo,#directory,#cursor{
       <svg id='asteroids' viewBox='0 0 1000 1000' fill='none' stroke='#fff'>
       </svg>
     </div>
+    <!--<div id='indicator' style='position:absolute;width:5px;height:5px;background-color:#f00'></div>-->
     <script>
 const doc = document,
       ref = doc.referrer,
       logoWrapper = doc.getElementById('logo-wrapper'),
-      svgWrapper = doc.getElementById('svg-wrapper'),
+      wire = [doc.getElementById('wire0'),doc.getElementById('wire1'),doc.getElementById('wire2')],
       beamWrapper = doc.getElementById('beamWrapper'),
       cursor = doc.getElementById('cursor'),
       asteroids = doc.getElementById('asteroids'),
       directory = doc.getElementById('directory');
-let beam,animateTick = 0;
-if(!sessionStorage.getItem('notFresh')){
-  let time = Date.now(),timeNow = time;
-  logoWrapper.classList.add('fresh');
-  svgWrapper.classList.add('fresh');
-  doc.body.classList.add('fresh');
-  
-  var animate = function(){
-    timeNow = Date.now() - time;
-    svgWrapper.style.setProperty('--start',timeNow*(1.2+0.00005*timeNow)+'deg');
-    svgWrapper.style.setProperty('--falloff',(480-(timeNow**1.1/5))+'deg');
-    if(timeNow>1000&&animateTick<10){
-      logoWrapper.classList.remove('fresh');
-      svgWrapper.classList.remove('fresh');
-      doc.body.classList.remove('fresh');
-      return
-    }
-    if(timeNow>3000){
-      svgWrapper.style.maskImage='none';
-      svgWrapper.style.webkitMaskImage='none';
-    }else{
-      animateTick++;
-      window.requestAnimationFrame(animate);
-    }
-  };
-  window.requestAnimationFrame(animate);
-}
-sessionStorage.setItem('notFresh',true);
+let beam,animateTick = 0,asteroidTick=0;
+doc.body.style.cursor='none';
 disappear();
-cursor.rotation = 0;
+cursor.angle = 120;
+requestUpdate();
+wire.time = Date.now();
+var proto;
 doc.onmousemove = function(e){
   cursor.xcoord = e.pageX;
   cursor.ycoord = e.pageY;
-  requestUpdate();
 };
 doc.onkeyup = function(e){
   if(e.code==='Space'){
@@ -281,38 +215,35 @@ doc.onkeyup = function(e){
 };
 function enterGame(){
   if(logoWrapper.style.display!=='none'){
-    for(let j = 0;j<12;j++){
-      addAsteroid();
-    }
+
+    addAsteroid();
     doc.onkeydown = function(e){
       switch(e.code){
         case 'ArrowLeft':
-          cursor.rotation-=6;
+          cursor.angle-=6;
           break;
         case 'ArrowRight':
-          cursor.rotation+=6;
+          cursor.angle+=6;
           break;
         case 'KeyA':
-          cursor.xcoord-=6;
+          cursor.angle-=6;
           break;
         case 'KeyD':
-          cursor.xcoord+=6;
-          break;
-        case 'KeyW':
-          cursor.ycoord-=6;
-          break;
-        case 'KeyS':
-          cursor.ycoord+=6;
+          cursor.angle+=6;
           break;
       }
       requestUpdate();
     };
     doc.onwheel = function(e){
-      cursor.rotation+=e.deltaY;
+      if(e.deltaY>0){
+        cursor.angle-=Math.ceil(e.deltaY/8);
+      }else{
+        cursor.angle-=Math.floor(e.deltaY/8);
+      }
       requestUpdate();
-    }
+    };
     doc.onkeyup = function(e){
-      if(e.code==='Space'||e.code==='ArrowUp'){
+      if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){
         shoot();
       }
     };
@@ -328,35 +259,99 @@ function enterGame(){
 function shoot(){
   beam = doc.createElement('div');
   beam.classList = 'beam';
-  beam.style.left=(cursor.xcoord+10+20*Math.sin(((cursor.rotation-30)*Math.PI)/180))+'px';
-  beam.style.bottom=((window.innerHeight-cursor.ycoord)-18+20*Math.cos(((cursor.rotation-30)*Math.PI)/180))+'px';
-  beam.style.transform = 'rotate('+(cursor.rotation-30)+'deg)';
+  beam.xstart = cursor.xcoord;
+  beam.ystart = cursor.ycoord;
+  beam.style.left=(beam.xstart)+'px';
+  beam.style.top=(beam.ystart)+'px';
+  beam.style.transform = 'rotate('+(-cursor.angle)+'deg)';
+  beam.style.display='block';
   beamWrapper.appendChild(beam);
-  setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild)},3000);
-  requestUpdate();
+  
+  beam.angle = cursor.angle/180*Math.PI;
+  beam.time = Date.now();
+  beam.max = 2*Math.max(window.innerWidth,window.innerHeight);
+  
+  let hitChecker = setInterval(function(){
+    beam.elapsed = (Date.now() - beam.time)/2000;
+    beam.xcoord = beam.elapsed*beam.max*Math.cos(beam.angle)+beam.xstart;
+    beam.ycoord = -beam.elapsed*beam.max*Math.sin(beam.angle)+beam.ystart;
+    
+  // doc.getElementById('indicator').style.transform='translate('+proto.pathcoords[0][0]+'px,'+proto.pathcoords[0][1]+'px)';
+    
+    if(inside([beam.xcoord,beam.ycoord],proto.pathcoords)){
+      clearInterval(hitChecker);
+      doc.getElementById('asteroid'+asteroidTick).classList.add('hitAsteroid');
+      beam.style.display='none';
+      addAsteroid();
+      setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild)},200)
+    }
+    
+  },5);
+  setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild);clearInterval(hitChecker)},1500);
+  
 }
 function requestUpdate(){
-  window.requestAnimationFrame(update);
+  window.requestAnimationFrame(cursorMove);
 }
-function update(){
-  cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+cursor.rotation+'deg)';
+function cursorMove(){
+  cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+(-cursor.angle+120)+'deg)';
+  requestUpdate();
 }
+function wire3D(){
+  wire.tick = Date.now() - wire.time;
+  wire.center = [900,1000];
+  wire[2].setAttribute('d','M'+(Math.cos(tick)+wire.center[0])+' 500'+'L1000 900L900 1500L800 1100z');
+}
+setInterval(wire3D(),500);
 function disappear(){
   cursor.style.transform='translate(-64px,-64px)';
 }
 function addAsteroid(){
-  let proto=`<path d='M`+Math.random()*window.innerWidth+` `+Math.random()*window.innerHeight+`l`;
+  // let proto=`<path id='asteroid`+asteroidTick+`' d='M`+Math.random()*1000+` `+(Math.round(Math.random())*2000-500)+`l`;
+  asteroidTick++;
+  let scaler = Math.max(window.innerWidth,window.innerHeight)/1000;
+  proto={
+    ycoord:400*Math.random()+100,
+    xcoord:800*Math.random()+100,
+  };
+  proto.path=`<path class='asteroid' id='asteroid`+asteroidTick+`' d='M`+proto.xcoord+` `+proto.ycoord+`L`;
+  proto.pathcoords=[[proto.xcoord*scaler,proto.ycoord*scaler]];
   for(let i = 0;i<19;i++){
+    proto.coord=Math.random()*20;
+    proto.i=Math.PI*i/10.5;
     if(i%2){
-      proto+=String((Math.random()*50*Math.cos(Math.PI*i/10.5))+'l');
+      proto.ycoord+=3*Math.round(proto.coord*Math.sin(proto.i));
+      proto.pathcoords.push([proto.xcoord*scaler,proto.ycoord*scaler]);
+      proto.path+=(proto.ycoord+'L');
     }else{
-      proto+=String((Math.random()*50*Math.sin(Math.PI*i/10.5))+' ');
+      proto.xcoord+=3*Math.round(proto.coord*Math.cos(proto.i));
+      proto.path+=(proto.xcoord+' ');
     }
   }
-  proto+=String(Math.floor(Math.random()*50)+`z'/>`);
+  proto.path+=(proto.pathcoords[0][1]+`Z'/>`);
+  proto.pathcoords[9][1] = 300;
   asteroids.style.display='block';
-  asteroids.innerHTML+=proto;
+  asteroids.innerHTML+=proto.path;
 }
+function inside(point, vs) {
+  // ray-casting algorithm based on
+  // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+
+  let x = point[0], y = point[1];
+
+  let inside = false;
+  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+    let xi = vs[i][0], yi = vs[i][1];
+    let xj = vs[j][0], yj = vs[j][1];
+
+    let intersect = ((yi > y) != (yj > y))
+        && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+
+  return inside;
+};
+
     </script>
   </body>
 </html>
