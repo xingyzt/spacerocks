@@ -48,10 +48,6 @@ body{
   font-size:1.8rem;
   /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
-p::selection{
-  background:#fff;
-  color:#000;
-}
 h1::first-letter,a{
   font-family:hyperspace,sans-serif;
 }
@@ -104,8 +100,7 @@ p{
   top:1vmin;
   pointer-events:none;
   z-index:99;
-  font-weight:bold;
-  font-size:2.5rem;
+  font-size:4rem;
   cursor:pointer;
 }
 #directory,#logo-wrapper,#arcade{
@@ -194,7 +189,7 @@ p{
   <body>
     <div aria-hidden='true' id='divvy' ondblclick='enterGame()'></div>
     <div id='content-wrapper'>
-      <svg aria-hidden='true' id='logo-wrapper' viewBox='0 0 1800 1800' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' ondblclick='enterGame()'>
+      <svg aria-hidden='true' id='logo-wrapper' viewBox='0 0 1800 1800' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' ondblclick='enterGame()' aria-label='15303 Space Rocks'>
         <path id='wirex' d='
         M900 500l500 500l-500 500l-500 -500z
         '/>
@@ -228,11 +223,14 @@ p{
         '/>
       </svg>
 
-      <h1 id='about'>We are a second-year robotics team based in Southern California.</h1>
-      <p>Created in August 2018 as part of Major STEM Academy, our team consists of a group of students who are not only passionate towards science, technology, engineering, and mathematics, but also eager to develop skills in communication, collaboration, teamwork, and leadership.</p>
+      <h1 id='about'>We are a youth robotics team based in Southern California.</h1>
+      <p>Created in August 2018 as part of MajorStem.org, our team consists of a group of students who are not only passionate towards science, but also eager to develop skills in communication, collaboration, teamwork, and leadership.</p>
+      <p>Every year we participate in the FIRST Tech Challenge, a nationwide robotics challenge where teams of middle and high school students are challenged to design, build, and program machines that compete against each other in games.</p>
 
-      <h1 id='robot'>Our robot is hacked together with innovative bodges.</h1>
-      <p>~insert propaganda here~</p>
+      <h1 id='robot'>Our FTC robot is built using the REV Robotics Kit and parts we made in-house.</h1>
+      <p>Through the combination of 3D printing and cutting, we are able to rapidly build and prototype innovative designs for our robot.</p>
+      <p>For our mecanum wheel drivetrain, we rely on REV motors, controllers and extrusions.</p>
+      <p>At the heart of our robot is a pair of linear sliders, used to move the device that collects and deposits the stone.</p>
 
       <h1 id='blog'>Blog</h1>
       <p>~insert RSS feed here~</p>
