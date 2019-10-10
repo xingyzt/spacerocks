@@ -12,29 +12,88 @@
     <style>
 @font-face{
   font-family:'hyperspace';
+  font-weight:normal;
   src: url('fonts/hyperspace/regular.otf');
+}
+@font-face{
+  font-family:'hyperspace';
+  font-weight:bold;
+  src: url('fonts/hyperspace/bold.otf');
+}
+@font-face{
+  font-family:'raleway';
+  font-weight:400;
+  src: url('fonts/raleway/regular.ttf');
+}
+@font-face{
+  font-family:'raleway';
+  font-weight:300;
+  src: url('fonts/raleway/light.ttf');
+}
+@font-face{
+  font-family:'raleway';
+  font-weight:100;
+  src: url('fonts/raleway/thin.ttf');
+}
+@font-face{
+  font-family:'raleway';
+  font-weight:700;
+  src: url('fonts/raleway/bold.ttf');
 }
 html,body{
   margin:0;
+}
+body{
   background:#000;
   overflow:hidden;
   width:100vw;
   height:100%;
+  color:#fff;
+  font-family:raleway,sans-serif;
+  letter-spacing:.1rem;
+  font-weight:400;
+  font-size:1.8rem;
+  /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
+}
+p::selection{
+  background:#fff;
+  color:#000;
+}
+h1::first-letter,a{
+  font-family:hyperspace,sans-serif;
+  font-weight:normal;
+}
+h1:first-letter{
+  font-size:5rem;
+  margin-right:-.4rem;
+}
+h1{
+  font-weight:300;
+  font-size:3rem;
+}
+p{
+  box-sizing:border-box;
+  padding:0 1rem;
 }
 @keyframes hue{
   0%{filter:hue-rotate(0)}
   100%{filter:hue-rotate(360deg)}
 }
-#logo-wrapper{
+#content-wrapper{
   position:relative;
-  width:99vmin;
-  height:110vmin;
+  height:100vh;
+  width:100vmin;
   left:calc(50vw - 50vmin);
-  top:calc(50% - 50vmin);
+  overflow:scroll;
+}
+#logo-wrapper{
+  width:100vmin;
+  height:110vmin;
 }
 @media(inverted-colors:inverted){
   body{
     filter:invert(1) hue-rotate(180deg);
+    filter:none;
   }
 }
 #logo-wrapper,#cursor,path#wire0{
@@ -49,12 +108,11 @@ html,body{
   pointer-events:none;
   z-index:99;
   mix-blend-mode:lighten;
-  font-family:hyperspace,sans-serif;
+  font-weight:normal;
   font-size:calc(4vmax + 2vmin + .5rem);
 }
 #directory,#logo-wrapper,#arcade{
   color:#fff;
-  filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);
 }
 #directory>a{
   text-decoration:none;
@@ -64,18 +122,17 @@ html,body{
   position:absolute;
   pointer-events:auto;
   user-select:none;
-  cursor:inherit;
 }
 #directory>a:hover,#directory>a:focus{
   outline:.15rem solid #fff;
 }
-#directory>#robot{
+#dir-robot{
   bottom:0;
 }
-#directory>#blog{
+#dir-blog{
   right:0;
 }
-#directory>#git{
+#dir-git{
   right:0;
   bottom:0;
 }
@@ -137,13 +194,15 @@ html,body{
     </style>
   </head>
   <body>
+    <div id='divvy' onclick='enterGame()'></div>
     <div id='directory'>
-      <a id='about' href='about'>About us</a>
-      <a id='robot' href='robot'>robot</a>
-      <a id='blog' href='blog'>blog</a>
-      <a id='git' target='_blank' href='https://github.com/15303'>github</a>
+      <a id='dir-about' href='#about'>About us</a>
+      <a id='dir-robot' href='#robot'>robot</a>
+      <a id='dir-blog' href='#blog'>blog</a>
+      <a id='dir-git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
-      <svg id='logo-wrapper' viewBox='0 0 1800 2000' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff'>
+    <div id='content-wrapper'>
+      <svg id='logo-wrapper' viewBox='0 0 1800 2000' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' onclick='enterGame()'>
         <path id='wirex' d='
         M900 500l500 500l-500 500l-500 -500z
         '/>
@@ -176,7 +235,20 @@ html,body{
     M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
       </svg>
-    <div id='divvy' onclick='enterGame()'></div>
+      
+      <div id='about-text'>
+        <h1>We are a second-year robotics team based in Southern California.</h1>
+        <p>Created in August 2018 as part of Major STEM Academy, our team consists of a group of students who are not only passionate towards science, technology, engineering, and mathematics, but also eager to develop skills in communication, collaboration, teamwork, and leadership.</p>
+      </div>
+      <div id='robot-text'>
+        <h1>Our robot is hacked together with innovative bodges.</h1>
+        <p>~insert propaganda here~</p>
+      </div>
+      <div id='blog-text'>
+        <h1>Blog</h1>
+        <p>~insert RSS feed here~</p>
+      </div>
+    </div>
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
         <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
@@ -189,6 +261,7 @@ html,body{
     <script>
 const doc = document,
       ref = doc.referrer,
+      contentWrapper = doc.getElementById('content-wrapper'),
       logoWrapper = doc.getElementById('logo-wrapper'),
       wire = [doc.getElementById('wire0'),doc.getElementById('wire1'),doc.getElementById('wire2')],
       beamWrapper = doc.getElementById('beamWrapper'),
@@ -212,7 +285,7 @@ doc.onkeyup = function(e){
   }
 };
 function enterGame(){
-  if(logoWrapper.style.display!=='none'){
+  if(contentWrapper.style.display!=='none'){
 
     addAsteroid();
     doc.onkeydown = function(e){
@@ -249,7 +322,7 @@ function enterGame(){
     window.onmouseout = function(){
       disappear();
     };
-    logoWrapper.style.display='none';
+    contentWrapper.style.display='none';
   }
 }
 function shoot(){
