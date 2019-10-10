@@ -40,12 +40,13 @@ html,body{
 }
 body{
   background:#000;
+  cursor:url(cursor.svg),auto;
   overflow:hidden;
   color:#fff;
   font-family:raleway,sans-serif;
   letter-spacing:.1rem;
   font-weight:400;
-  font-size:1.8rem;
+  font-size:2rem;
   /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
 h1::first-letter,a{
@@ -78,10 +79,20 @@ p{
 }
 #logo-wrapper{
   position:absolute;
-  top:calc(50vh - 50vmin);
+  top:calc(50vh - 45vmin);
   left:calc(50% - 50vmin);
   width:100vmin;
   height:100vmin;
+  clip-path:polygon(0 50%, 50% 0, 100% 50%, 50% 100%);
+}
+#down,#wire{
+  pointer-events:all;
+}
+#wire:hover{
+  cursor:url(pointer.svg),pointer;
+}
+#down:hover{
+  cursor:url(pointer.svg),pointer;
 }
 @media(inverted-colors:inverted){
   body{
@@ -92,37 +103,32 @@ p{
 #logo-wrapper,#cursor,path#wire0{
   stroke-width:.4rem;
 }
-#directory{
-  width:calc(100vw - 2vmin);
-  height:calc(100% - 2vmin);
-  position:fixed;
-  left:1vmin;
-  top:1vmin;
-  pointer-events:none;
-  z-index:99;
-  font-size:4rem;
-  cursor:pointer;
-}
-#directory,#logo-wrapper,#arcade{
+.dir,#logo-wrapper,#arcade{
   color:#fff;
 }
-#directory>a{
+.dir{
+  position:fixed;
+  padding:0 1rem;
   text-decoration:none;
-  color:inherit;
   display:block;
-  padding-left:calc(.1*(4vmax + 2vmin + .2rem));
-  position:absolute;
   pointer-events:auto;
   user-select:none;
-  cursor:inherit;
+  cursor:url(pointer.svg),pointer;
+  font-size:calc(2rem + 6vmin);
 }
-#directory>a:hover,#directory>a:focus{
+.dir:hover,.dir:focus{
   outline:.15rem solid #fff;
 }
+#dir-about{
+  top:0;
+  left:0;
+}
 #dir-robot{
+  left:0;
   bottom:0;
 }
 #dir-blog{
+  top:0;
   right:0;
 }
 #dir-git{
@@ -170,12 +176,6 @@ p{
   height:100vmax;
   display:none;
 }
-#divvy{
-  position:absolute;
-  top:0;
-  width:100vw;
-  height:100vh;
-}
 .hitAsteroid{
   animation:.1s hitAsteroid forwards;
 }
@@ -187,21 +187,22 @@ p{
     </style>
   </head>
   <body>
-    <div aria-hidden='true' id='divvy' ondblclick='enterGame()'></div>
     <div id='content-wrapper'>
-      <svg aria-hidden='true' id='logo-wrapper' viewBox='0 0 1800 1800' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' ondblclick='enterGame()' aria-label='15303 Space Rocks'>
-        <path id='wirex' d='
-        M900 500l500 500l-500 500l-500 -500z
-        '/>
-        <path id='wire0' d='
-        M900 500l500 500l-500 500l-500 -500z
-        '/>
-        <path id='wire1' d='
-        M400 1000l600 -100l400 100l-600 100z
-        '/>
-        <path id='wire2' d='
-        M900 500l100 400l-100 600l-100 -400z
-        '/>
+      <svg aria-hidden='true' id='logo-wrapper' viewBox='0 100 1800 1900' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' aria-label='15303 Space Rocks'>
+        <g id='wire' onclick='enterGame()' onmouseover='wire.speed=10,down.speed=.5' onmouseout='wire.speed=1,down.speed=1'>
+          <path id='wirex' d='
+          M900 500l500 500l-500 500l-500 -500z
+          '/>
+          <path id='wire0' d='
+          M900 500l500 500l-500 500l-500 -500z
+          '/>
+          <path id='wire1' d='
+          M400 1000l600 -100l400 100l-600 100z
+          '/>
+          <path id='wire2' d='
+          M900 500l100 400l-100 600l-100 -400z
+          '/>
+        </g>
         <path id='logo' d='
     M682.5 667.5l-150 -150v50v-50z
     M707.5 642.5l100 -100l-50 -100l-125 125l-75 -75l150 -150
@@ -221,6 +222,17 @@ p{
     M1250 1200l150 150l-75 -75h150h-150v-150
     M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
+        <g id='down' onclick='window.location=`#about`' onmouseover='down.speed=10,wire.speed=.5' onmouseout='down.speed=1,wire.speed=1'>
+          <path id='down0' d='
+          M800 1700L900 1750L1000 1700
+          '/>
+          <path id='down1' d='
+          M800 1700L900 1800L1000 1700
+          '/>
+          <path id='down2' d='
+          M800 1700L900 1850L1000 1700
+          '/>
+        </g>
       </svg>
 
       <h1 id='about'>We are a youth robotics team based in Southern California.</h1>
@@ -235,12 +247,10 @@ p{
       <h1 id='blog'>Blog</h1>
       <p>~insert RSS feed here~</p>
     </div>
-    <div id='directory'>
-      <a id='dir-about' href='#about'>about</a>
-      <a id='dir-robot' href='#robot'>robot</a>
-      <a id='dir-blog' href='#blog'>blog</a>
-      <a id='dir-git' target='_blank' href='https://github.com/15303'>github</a>
-    </div>
+    <a class='dir' id='dir-about' href='#about'>about</a>
+    <a class='dir' id='dir-robot' href='#robot'>robot</a>
+    <a class='dir' id='dir-blog' href='#blog'>blog</a>
+    <a class='dir' id='dir-git' target='_blank' href='https://github.com/15303'>github</a>
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
         <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
@@ -256,30 +266,31 @@ const doc = document,
       contentWrapper = doc.getElementById('content-wrapper'),
       logoWrapper = doc.getElementById('logo-wrapper'),
       wire = [doc.getElementById('wire0'),doc.getElementById('wire1'),doc.getElementById('wire2')],
+      down = [doc.getElementById('down0'),doc.getElementById('down1'),doc.getElementById('down2')],
       beamWrapper = doc.getElementById('beamWrapper'),
       cursor = doc.getElementById('cursor'),
-      asteroids = doc.getElementById('asteroids'),
-      directory = doc.getElementById('directory');
+      asteroids = doc.getElementById('asteroids');
 let beam,animateTick = 0,asteroidTick=0;
-doc.body.style.cursor='none';
-directory.style.cursor='none';
 disappear();
-cursor.angle = 120;
 requestUpdate();
+
+wire.tick = 0;
 wire.time = Date.now();
+wire.speed = 1;
+
+down.tick = 0;
+down.time = wire.time;
+down.speed = 1;
+
 var proto;
-doc.onmousemove = function(e){
-  cursor.xcoord = e.pageX;
-  cursor.ycoord = e.pageY;
-};
-doc.onkeyup = function(e){
-  if(e.code==='Space'){
-    enterGame();
-  }
-};
 function enterGame(){
   if(contentWrapper.style.display!=='none'){
-
+    doc.body.style.cursor='none';
+    cursor.angle = 120;
+    doc.onmousemove = function(e){
+      cursor.xcoord = e.pageX;
+      cursor.ycoord = e.pageY;
+    };
     addAsteroid();
     doc.onkeydown = function(e){
       switch(e.code){
@@ -316,7 +327,6 @@ function enterGame(){
       disappear();
     };
     contentWrapper.style.display='none';
-    directory.style.display='none';
   }
 }
 function shoot(){
@@ -366,12 +376,17 @@ function cursorMove(){
     collision();
   }
   cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+(-cursor.angle+120)+'deg)';
-  wire3D();
+  anim3D();
   requestUpdate();
 }
-function wire3D(){
-  wire.tick = (Date.now() - wire.time)/8000+100;
+function anim3D(){
+  wire.tick += (Date.now() - wire.time)/8000*wire.speed;
+  wire.time = Date.now();
   wire.center = [900,1000];
+
+  down.tick += (Date.now() - down.time)/4000*down.speed;
+  down.time = Date.now();
+  down.center = [900,1800]
   wire.ydevi = Math.sin(wire.tick/4-50)*100;
   wire[0].setAttribute('d',
   'M900 550'+
@@ -401,6 +416,24 @@ function wire3D(){
   'L'+(Math.cos(wire.tick+Math.PI*1.5)*450+wire.center[0])+
   ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.ydevi+wire.center[1])+
   'z'
+  );
+  down[0].setAttribute('d',
+  'M750 1700'+
+  'L'+(Math.cos(down.tick)*10+down.center[0])+
+  ' '+(Math.sin(down.tick)*50+down.center[1])+
+  'L1050 1700'
+  );
+  down[1].setAttribute('d',
+  'M750 1700'+
+  'L'+(Math.cos(down.tick+2*Math.PI/3)*10+down.center[0])+
+  ' '+(Math.sin(down.tick+2*Math.PI/3)*50+down.center[1])+
+  'L1050 1700'
+  );
+  down[2].setAttribute('d',
+  'M750 1700'+
+  'L'+(Math.cos(down.tick+4*Math.PI/3)*10+down.center[0])+
+  ' '+(Math.sin(down.tick+4*Math.PI/3)*50+down.center[1])+
+  'L1050 1700'
   );
 }
 function disappear(){
