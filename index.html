@@ -36,13 +36,11 @@
   src: url('fonts/raleway/bold.ttf');
 }
 html,body{
-  margin:0;
+  margin:0 1rem;
 }
 body{
   background:#000;
   overflow:hidden;
-  width:100vw;
-  height:100%;
   color:#fff;
   font-family:raleway,sans-serif;
   letter-spacing:.1rem;
@@ -56,7 +54,6 @@ p::selection{
 }
 h1::first-letter,a{
   font-family:hyperspace,sans-serif;
-  font-weight:normal;
 }
 h1:first-letter{
   font-size:5rem;
@@ -77,13 +74,18 @@ p{
 #content-wrapper{
   position:relative;
   height:100vh;
-  width:100vmin;
-  left:calc(50vw - 50vmin);
-  overflow:scroll;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  margin:0 calc(40vw - 40vmin);
+  box-sizing:border-box;
+  padding-top:100vh;
 }
 #logo-wrapper{
+  position:absolute;
+  top:calc(50vh - 50vmin);
+  left:calc(50% - 50vmin);
   width:100vmin;
-  height:110vmin;
+  height:100vmin;
 }
 @media(inverted-colors:inverted){
   body{
@@ -92,7 +94,7 @@ p{
   }
 }
 #logo-wrapper,#cursor,path#wire0{
-  stroke-width:.8vmin;
+  stroke-width:.4rem;
 }
 #directory{
   width:calc(100vw - 2vmin);
@@ -102,9 +104,9 @@ p{
   top:1vmin;
   pointer-events:none;
   z-index:99;
-  mix-blend-mode:lighten;
-  font-weight:normal;
-  font-size:5rem;
+  font-weight:bold;
+  font-size:2.5rem;
+  cursor:pointer;
 }
 #directory,#logo-wrapper,#arcade{
   color:#fff;
@@ -117,6 +119,7 @@ p{
   position:absolute;
   pointer-events:auto;
   user-select:none;
+  cursor:inherit;
 }
 #directory>a:hover,#directory>a:focus{
   outline:.15rem solid #fff;
@@ -189,15 +192,9 @@ p{
     </style>
   </head>
   <body>
-    <div id='divvy' onclick='enterGame()'></div>
-    <div id='directory'>
-      <a id='dir-about' href='#about'>about</a>
-      <a id='dir-robot' href='#robot'>robot</a>
-      <a id='dir-blog' href='#blog'>blog</a>
-      <a id='dir-git' target='_blank' href='https://github.com/15303'>github</a>
-    </div>
+    <div aria-hidden='true' id='divvy' ondblclick='enterGame()'></div>
     <div id='content-wrapper'>
-      <svg id='logo-wrapper' viewBox='0 0 1800 2000' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' onclick='enterGame()'>
+      <svg aria-hidden='true' id='logo-wrapper' viewBox='0 0 1800 1800' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' ondblclick='enterGame()'>
         <path id='wirex' d='
         M900 500l500 500l-500 500l-500 -500z
         '/>
@@ -230,19 +227,21 @@ p{
     M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
       </svg>
-      
-      <div id='about'>
-        <h1>We are a second-year robotics team based in Southern California.</h1>
-        <p>Created in August 2018 as part of Major STEM Academy, our team consists of a group of students who are not only passionate towards science, technology, engineering, and mathematics, but also eager to develop skills in communication, collaboration, teamwork, and leadership.</p>
-      </div>
-      <div id='robot'>
-        <h1>Our robot is hacked together with innovative bodges.</h1>
-        <p>~insert propaganda here~</p>
-      </div>
-      <div id='blog'>
-        <h1>Blog</h1>
-        <p>~insert RSS feed here~</p>
-      </div>
+
+      <h1 id='about'>We are a second-year robotics team based in Southern California.</h1>
+      <p>Created in August 2018 as part of Major STEM Academy, our team consists of a group of students who are not only passionate towards science, technology, engineering, and mathematics, but also eager to develop skills in communication, collaboration, teamwork, and leadership.</p>
+
+      <h1 id='robot'>Our robot is hacked together with innovative bodges.</h1>
+      <p>~insert propaganda here~</p>
+
+      <h1 id='blog'>Blog</h1>
+      <p>~insert RSS feed here~</p>
+    </div>
+    <div id='directory'>
+      <a id='dir-about' href='#about'>about</a>
+      <a id='dir-robot' href='#robot'>robot</a>
+      <a id='dir-blog' href='#blog'>blog</a>
+      <a id='dir-git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
@@ -265,6 +264,7 @@ const doc = document,
       directory = doc.getElementById('directory');
 let beam,animateTick = 0,asteroidTick=0;
 doc.body.style.cursor='none';
+directory.style.cursor='none';
 disappear();
 cursor.angle = 120;
 requestUpdate();
@@ -318,6 +318,7 @@ function enterGame(){
       disappear();
     };
     contentWrapper.style.display='none';
+    directory.style.display='none';
   }
 }
 function shoot(){
