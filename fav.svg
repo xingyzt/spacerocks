@@ -1,0 +1,9 @@
+<svg width='100%' height='100% ' viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" stroke-linejoin='round' stroke-linecap='round'>
+  <!--<rect width='100%' height='100%' fill='#0f0'/>-->
+  <path d='M50 600L600 50L1150 600L600 1150z' stroke-width='80' stroke='#000'/>
+  <path d='
+  M600 150l450 450l-450 450l-450 -450z
+  M150 600l550 -100l350 100l-550 100z
+  M600 150l100 350l-100 550l-100 -350z
+  ' stroke-width='80' stroke='#fff' fill='none'/>
+</svg>
