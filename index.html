@@ -143,7 +143,7 @@ html,body{
       <a id='blog' href='blog'>blog</a>
       <a id='git' target='_blank' href='https://github.com/15303'>github</a>
     </div>
-      <svg id='logo-wrapper' viewBox='0 0 1800 2000' stroke-linecap='round' fill='none' stroke='#fff'>
+      <svg id='logo-wrapper' viewBox='0 0 1800 2000' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff'>
         <path id='wirex' d='
         M900 500l500 500l-500 500l-500 -500z
         '/>
@@ -153,11 +153,9 @@ html,body{
         <path id='wire1' d='
         M400 1000l600 -100l400 100l-600 100z
         '/>
-        <ellipse cx='900' cy='1000' rx='500' ry='100'/>
-        <path id='wire2'/>
-        <!--<path id='wire2' d='-->
-        <!--M900 500l100 400l-100 600l-100 -400z-->
-        <!--'/>-->
+        <path id='wire2' d='
+        M900 500l100 400l-100 600l-100 -400z
+        '/>
         <path id='logo' d='
     M682.5 667.5l-150 -150v50v-50z
     M707.5 642.5l100 -100l-50 -100l-125 125l-75 -75l150 -150
@@ -232,7 +230,6 @@ function enterGame(){
           cursor.angle+=6;
           break;
       }
-      requestUpdate();
     };
     doc.onwheel = function(e){
       if(e.deltaY>0){
@@ -240,7 +237,6 @@ function enterGame(){
       }else{
         cursor.angle-=Math.floor(e.deltaY/8);
       }
-      requestUpdate();
     };
     doc.onkeyup = function(e){
       if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){
@@ -280,29 +276,66 @@ function shoot(){
     
     if(inside([beam.xcoord,beam.ycoord],proto.pathcoords)){
       clearInterval(hitChecker);
-      doc.getElementById('asteroid'+asteroidTick).classList.add('hitAsteroid');
-      beam.style.display='none';
-      addAsteroid();
-      setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild)},200)
+      collision();
     }
     
   },5);
   setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild);clearInterval(hitChecker)},1500);
   
 }
+function collision(){
+  doc.getElementById('asteroid'+asteroidTick).classList.add('hitAsteroid');
+  if(beam){
+    beam.style.display='none';
+  }
+  addAsteroid();
+  setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild)},200);
+}
 function requestUpdate(){
   window.requestAnimationFrame(cursorMove);
 }
 function cursorMove(){
+  if(asteroidTick&&inside([cursor.xcoord,cursor.ycoord],proto.pathcoords)){
+    collision();
+  }
   cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+(-cursor.angle+120)+'deg)';
+  wire3D();
   requestUpdate();
 }
 function wire3D(){
-  wire.tick = Date.now() - wire.time;
+  wire.tick = (Date.now() - wire.time)/8000+100;
   wire.center = [900,1000];
-  wire[2].setAttribute('d','M'+(Math.cos(tick)+wire.center[0])+' 500'+'L1000 900L900 1500L800 1100z');
+  wire.ydevi = Math.sin(wire.tick/4-50)*100;
+  wire[0].setAttribute('d',
+  'M900 550'+
+  'L'+(Math.cos(wire.tick)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick)*wire.ydevi+wire.center[1])+
+  'L900 1450'+
+  'L'+(Math.cos(wire.tick+Math.PI)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick+Math.PI)*wire.ydevi+wire.center[1])+
+  'z'
+  );
+  wire[1].setAttribute('d',
+  'M'+(Math.cos(wire.tick)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick)*wire.ydevi+wire.center[1])+
+  'L'+(Math.cos(wire.tick+Math.PI/2)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick+Math.PI/2)*wire.ydevi+wire.center[1])+
+  'L'+(Math.cos(wire.tick+Math.PI)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick+Math.PI)*wire.ydevi+wire.center[1])+
+  'L'+(Math.cos(wire.tick+Math.PI*1.5)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.ydevi+wire.center[1])+
+  'z'
+  );
+  wire[2].setAttribute('d',
+  'M900 550'+
+  'L'+(Math.cos(wire.tick+Math.PI/2)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick+Math.PI/2)*wire.ydevi+wire.center[1])+
+  'L900 1450'+
+  'L'+(Math.cos(wire.tick+Math.PI*1.5)*450+wire.center[0])+
+  ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.ydevi+wire.center[1])+
+  'z'
+  );
 }
-setInterval(wire3D(),500);
 function disappear(){
   cursor.style.transform='translate(-64px,-64px)';
 }
