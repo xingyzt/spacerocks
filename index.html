@@ -268,7 +268,7 @@ function shoot(){
   beamWrapper.appendChild(beam);
   
   beam.angle = cursor.angle/180*Math.PI;
-  beam.time = Date.now();
+  beam.time = Date.now()+10;
   beam.max = 2*Math.max(window.innerWidth,window.innerHeight);
   
   let hitChecker = setInterval(function(){
@@ -316,20 +316,22 @@ function addAsteroid(){
   };
   proto.path=`<path class='asteroid' id='asteroid`+asteroidTick+`' d='M`+proto.xcoord+` `+proto.ycoord+`L`;
   proto.pathcoords=[[proto.xcoord*scaler,proto.ycoord*scaler]];
-  for(let i = 0;i<19;i++){
-    proto.coord=Math.random()*20;
-    proto.i=Math.PI*i/10.5;
+  for(let i = 0;i<20;i++){
+    proto.coord=Math.round(Math.random()*20);
+    proto.i=Math.PI*i/11;
     if(i%2){
       proto.ycoord+=3*Math.round(proto.coord*Math.sin(proto.i));
       proto.pathcoords.push([proto.xcoord*scaler,proto.ycoord*scaler]);
-      proto.path+=(proto.ycoord+'L');
+      if(i===19){
+        proto.path+=(proto.ycoord+`Z'/>`);
+      }else{
+        proto.path+=(proto.ycoord+'L');
+      }
     }else{
       proto.xcoord+=3*Math.round(proto.coord*Math.cos(proto.i));
       proto.path+=(proto.xcoord+' ');
     }
   }
-  proto.path+=(proto.pathcoords[0][1]+`Z'/>`);
-  proto.pathcoords[9][1] = 300;
   asteroids.style.display='block';
   asteroids.innerHTML+=proto.path;
 }
