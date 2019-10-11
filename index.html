@@ -42,6 +42,9 @@ body{
   font-size:2rem;
   /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
+.day{
+  color:#444;
+}
 .day body{
   cursor:url(cursor/white/up-blank.svg),auto;
 }
@@ -93,6 +96,9 @@ p{
   width:100vmin;
   height:100vmin;
   clip-path:polygon(0 50%, 50% 0, 100% 50%, 50% 100%);
+}
+.day #logo-wrapper{
+  stroke:#444;
 }
 #down,#wire{
   pointer-events:all;
@@ -279,10 +285,7 @@ let hour = {time:Date.now().getHours,color:0};
 if(hour.time>=6&&hour.time<18){
   doc.body.classList.add('day');
   hour.color = (155*(1-Math.abs((hour.time-12)/12))+100).toString(16).slice(0,2);
-  hour.color = '#'+hour.color+hour.color+hour.color;
-  doc.body.style.background=hour.color;
-  logoWrapper.style.stroke='#444';
-  doc.body.style.color='#444';
+  doc.body.style.backgroundColor='#'+hour.color+hour.color+hour.color;
 }
 
 wire.tick = 0;
