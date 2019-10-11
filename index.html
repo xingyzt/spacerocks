@@ -50,7 +50,7 @@ body{
   /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
 a{
-  color:#fff;
+  color:inherit;
   text-decoration:none;
   cursor:url(pointer.svg),pointer;
 }
@@ -97,15 +97,11 @@ p{
 }
 @media(inverted-colors:inverted){
   body{
-    filter:invert(1) hue-rotate(180deg);
-    filter:none;
+    filter:invert(1);
   }
 }
 #logo-wrapper,#cursor,path#wire0{
   stroke-width:.4rem;
-}
-#logo-wrapper,#arcade{
-  color:#fff;
 }
 #arcade{
   position:absolute;
@@ -165,9 +161,6 @@ p{
   99%{opacity:0;fill:#fff}
   100%{opacity:0}
 }
-.hide{
-  display:none;
-}
     </style>
   </head>
   <body>
@@ -207,7 +200,7 @@ p{
     M1250 1200l150 150l-75 -75h150h-150v-150
     M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
-        <g id='down' href='#about' onmouseover='down.speed=10,wire.speed=.5' onmouseout='down.speed=1,wire.speed=1'>
+        <g id='down' href='#about' onmouseover='down.speed=5,wire.speed=.5' onmouseout='down.speed=1,wire.speed=1'>
           <path id='down0' d='
           M800 1700L900 1750L1000 1700
           '/>
@@ -229,8 +222,6 @@ p{
       <p>For our mecanum wheel drivetrain, we rely on REV motors, controllers and extrusions.</p>
       <p>At the heart of our robot is a pair of linear sliders, used to move the device that collects and deposits the stone.</p>
 
-      <a href='#blog'><h1 class='hide' id='blog'>Blog</h1></a>
-      <p id='blog-rss'></p>
     </div>
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
@@ -250,8 +241,6 @@ const doc = document,
       down = [doc.getElementById('down0'),doc.getElementById('down1'),doc.getElementById('down2')],
       beamWrapper = doc.getElementById('beamWrapper'),
       cursor = doc.getElementById('cursor'),
-      blog = doc.getElementById('blog'),
-      blogRSS = doc.getElementById('blog-rss'),
       asteroids = doc.getElementById('asteroids');
 let beam,animateTick = 0,asteroidTick=0;
 disappear();
@@ -266,6 +255,13 @@ doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
     });
   });
 });
+
+let hour = new Date().getHours();
+if(hour>5&&hour<18){
+  doc.body.style.background='#ccc';
+  logoWrapper.style.stroke='#444';
+  doc.body.style.color='#444';
+}
 
 wire.tick = 0;
 wire.time = Date.now();
@@ -377,7 +373,7 @@ function anim3D(){
   wire.time = Date.now();
   wire.center = [900,1000];
 
-  down.tick += (Date.now() - down.time)/4000*down.speed;
+  down.tick += (Date.now() - down.time)/1000*down.speed;
   down.time = Date.now();
   down.center = [900,1800];
   wire.ydevi = Math.sin(wire.tick/4-50)*100;
@@ -479,16 +475,6 @@ function inside(point, vs) {
 
   return inside;
 }
-
-function reqListener () {
-  blog.classList.remove('hide');
-  blogRSS.innerHTML = this.responseText;
-}
-
-let oReq = new XMLHttpRequest();
-oReq.addEventListener('load', reqListener);
-oReq.open('GET', 'http://majorstem.org/index.php/feed/');
-oReq.send();
     </script>
   </body>
 </html>
