@@ -5,10 +5,10 @@
     <title>Space Rocks | FTC 15303</title>
     <meta charset='utf-8'>
     <meta name='description' content='A robotics team based in southern California. Part of MajorStem.org and sponsored by Collins Aerospace.'>
-    <meta name="keywords" content="15303,space rocks,15303 space rocks,FIRST,FTC,robotics">
+    <meta name='keywords' content='15303,space rocks,15303 space rocks,FIRST,FTC,robotics'>
     <meta name='viewpoint' content='width=device-width, initial-scale=1'>
-    <link rel="shortcut icon" href="fav.png">
-    <!--<link rel="prefetch" href='http://majorstem.org/index.php/feed'>-->
+    <link rel='shortcut icon' href='fav.png'>
+    <!--<link rel='prefetch' href='http://majorstem.org/index.php/feed'>-->
     <style>
 @font-face{
   font-family:'hyperspace';
@@ -41,7 +41,7 @@ html,body{
 body{
   background:#000;
   cursor:url(cursor.svg),auto;
-  overflow:hidden;
+  overflow-y:scroll;
   color:#fff;
   font-family:raleway,sans-serif;
   letter-spacing:.1rem;
@@ -49,11 +49,16 @@ body{
   font-size:2rem;
   /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
-h1::first-letter,a{
+a{
+  color:#fff;
+  text-decoration:none;
+  cursor:url(pointer.svg),pointer;
+}
+h1::first-letter{
   font-family:hyperspace,sans-serif;
 }
 h1:first-letter{
-  font-size:5rem;
+  font-size:5.5rem;
   margin-right:-.4rem;
 }
 h1{
@@ -69,10 +74,6 @@ p{
   100%{filter:hue-rotate(360deg)}
 }
 #content-wrapper{
-  position:relative;
-  height:100vh;
-  overflow-x:hidden;
-  overflow-y:scroll;
   margin:0 calc(40vw - 40vmin);
   box-sizing:border-box;
   padding-top:100vh;
@@ -103,37 +104,8 @@ p{
 #logo-wrapper,#cursor,path#wire0{
   stroke-width:.4rem;
 }
-.dir,#logo-wrapper,#arcade{
+#logo-wrapper,#arcade{
   color:#fff;
-}
-.dir{
-  position:fixed;
-  padding:0 1rem;
-  text-decoration:none;
-  display:block;
-  pointer-events:auto;
-  user-select:none;
-  cursor:url(pointer.svg),pointer;
-  font-size:calc(2rem + 6vmin);
-}
-.dir:hover,.dir:focus{
-  outline:.15rem solid #fff;
-}
-#dir-about{
-  top:0;
-  left:0;
-}
-#dir-robot{
-  left:0;
-  bottom:0;
-}
-#dir-blog{
-  top:0;
-  right:0;
-}
-#dir-git{
-  right:0;
-  bottom:0;
 }
 #arcade{
   position:absolute;
@@ -179,14 +151,27 @@ p{
 .hitAsteroid{
   animation:.1s hitAsteroid forwards;
 }
+#up{
+  left:0;
+  position:fixed;
+  width:calc(10vw - 10vmin);
+  height:100vh;
+}
+#up:hover{
+  cursor:url(pointer.svg),auto;
+}
 @keyframes hitAsteroid{
   0%{fill:#fff}
   99%{opacity:0;fill:#fff}
   100%{opacity:0}
 }
+.hide{
+  display:none;
+}
     </style>
   </head>
   <body>
+    <div id='up' onclick='window.scrollTo({top:0,behavior:`smooth`})'></div>
     <div id='content-wrapper'>
       <svg aria-hidden='true' id='logo-wrapper' viewBox='0 100 1800 1900' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' aria-label='15303 Space Rocks'>
         <g id='wire' onclick='enterGame()' onmouseover='wire.speed=10,down.speed=.5' onmouseout='wire.speed=1,down.speed=1'>
@@ -222,7 +207,7 @@ p{
     M1250 1200l150 150l-75 -75h150h-150v-150
     M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
-        <g id='down' onclick='window.location=`#about`' onmouseover='down.speed=10,wire.speed=.5' onmouseout='down.speed=1,wire.speed=1'>
+        <g id='down' href='#about' onmouseover='down.speed=10,wire.speed=.5' onmouseout='down.speed=1,wire.speed=1'>
           <path id='down0' d='
           M800 1700L900 1750L1000 1700
           '/>
@@ -235,22 +220,18 @@ p{
         </g>
       </svg>
 
-      <h1 id='about'>We are a youth robotics team based in Southern California.</h1>
+      <a href='#about'><h1 id='about'>We are a youth robotics team based in Southern California.</h1></a>
       <p>Created in August 2018 as part of MajorStem.org, our team consists of a group of students who are not only passionate towards science, but also eager to develop skills in communication, collaboration, teamwork, and leadership.</p>
-      <p>Every year we participate in the FIRST Tech Challenge, a nationwide robotics challenge where teams of middle and high school students are challenged to design, build, and program machines that compete against each other in games.</p>
+      <p>Every year we participate in the FIRST Tech Challenge, a nationwide robotics challenge where teams of middle and high school students compete to design, build, and program machines that score points in the challenge's game.</p>
 
-      <h1 id='robot'>Our FTC robot is built using the REV Robotics Kit and parts we made in-house.</h1>
+      <a href='#robot'><h1 id='robot'>Our FTC robot is built using the REV Robotics Kit and parts we made in-house.</h1></a>
       <p>Through the combination of 3D printing and cutting, we are able to rapidly build and prototype innovative designs for our robot.</p>
       <p>For our mecanum wheel drivetrain, we rely on REV motors, controllers and extrusions.</p>
       <p>At the heart of our robot is a pair of linear sliders, used to move the device that collects and deposits the stone.</p>
 
-      <h1 id='blog'>Blog</h1>
-      <p>~insert RSS feed here~</p>
+      <a href='#blog'><h1 class='hide' id='blog'>Blog</h1></a>
+      <p id='blog-rss'></p>
     </div>
-    <a class='dir' id='dir-about' href='#about'>about</a>
-    <a class='dir' id='dir-robot' href='#robot'>robot</a>
-    <a class='dir' id='dir-blog' href='#blog'>blog</a>
-    <a class='dir' id='dir-git' target='_blank' href='https://github.com/15303'>github</a>
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
         <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
@@ -269,10 +250,22 @@ const doc = document,
       down = [doc.getElementById('down0'),doc.getElementById('down1'),doc.getElementById('down2')],
       beamWrapper = doc.getElementById('beamWrapper'),
       cursor = doc.getElementById('cursor'),
+      blog = doc.getElementById('blog'),
+      blogRSS = doc.getElementById('blog-rss'),
       asteroids = doc.getElementById('asteroids');
 let beam,animateTick = 0,asteroidTick=0;
 disappear();
 requestUpdate();
+
+doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    this.blur();
+    doc.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+    });
+  });
+});
 
 wire.tick = 0;
 wire.time = Date.now();
@@ -357,7 +350,7 @@ function shoot(){
     }
     
   },5);
-  setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild);clearInterval(hitChecker)},1500);
+  setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild);clearInterval(hitChecker);},1500);
   
 }
 function collision(){
@@ -366,7 +359,7 @@ function collision(){
     beam.style.display='none';
   }
   addAsteroid();
-  setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild)},200);
+  setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild);},200);
 }
 function requestUpdate(){
   window.requestAnimationFrame(cursorMove);
@@ -386,7 +379,7 @@ function anim3D(){
 
   down.tick += (Date.now() - down.time)/4000*down.speed;
   down.time = Date.now();
-  down.center = [900,1800]
+  down.center = [900,1800];
   wire.ydevi = Math.sin(wire.tick/4-50)*100;
   wire[0].setAttribute('d',
   'M900 550'+
@@ -485,8 +478,17 @@ function inside(point, vs) {
   }
 
   return inside;
-};
+}
 
+function reqListener () {
+  blog.classList.remove('hide');
+  blogRSS.innerHTML = this.responseText;
+}
+
+let oReq = new XMLHttpRequest();
+oReq.addEventListener('load', reqListener);
+oReq.open('GET', 'http://majorstem.org/index.php/feed/');
+oReq.send();
     </script>
   </body>
 </html>
