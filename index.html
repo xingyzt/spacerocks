@@ -33,7 +33,7 @@ html,body{
 }
 body{
   background:#000;
-  cursor:url(cursor/up-blank.svg),auto;
+  cursor:url(cursor/gray/up-blank.svg),auto;
   overflow-y:scroll;
   color:#fff;
   font-family:raleway,sans-serif;
@@ -42,14 +42,23 @@ body{
   font-size:2rem;
   /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
+.day body{
+  cursor:url(cursor/white/up-blank.svg),auto;
+}
 a[href^='#']{
   text-decoration:none;
-  cursor:url(cursor/right-blank.svg) 128 0,pointer;
+  cursor:url(cursor/white/right-blank.svg) 128 0,pointer;
+}
+.day a[href^='#']{
+  cursor:url(cursor/gray/right-blank.svg) 128 0,pointer;
 }
 a{
   color:inherit;
   text-decoration:underline;
-  cursor:url(cursor/out.svg) 128 0,pointer;
+  cursor:url(cursor/white/out.svg) 128 0,pointer;
+}
+.day a{
+  cursor:url(cursor/gray/out.svg) 128 0,pointer;
 }
 h1::first-letter{
   font-weight:300;
@@ -64,6 +73,9 @@ h1{
 p{
   box-sizing:border-box;
   padding:0 1rem;
+}
+::selection{
+  background:#fff;
 }
 @keyframes hue{
   0%{filter:hue-rotate(0)}
@@ -85,11 +97,17 @@ p{
 #down,#wire{
   pointer-events:all;
 }
-#wire:hover{
-  cursor:url(cursor/up.svg),pointer;
+#wire{
+  cursor:url(cursor/white/up.svg),pointer;
 }
-#down:hover{
-  cursor:url(cursor/down.svg) 128 128,pointer;
+.day #wire{
+  cursor:url(cursor/gray/up.svg),pointer;
+}
+#down{
+  cursor:url(cursor/white/down.svg) 128 128,pointer;
+}
+.day #down{
+  cursor:url(cursor/gray/down.svg) 128 128,pointer;
 }
 @media(inverted-colors:inverted){
   body{
@@ -148,9 +166,10 @@ p{
   position:fixed;
   width:calc(10vw - 10vmin);
   height:100vh;
+  cursor:url(cursor/white/up.svg),auto;
 }
-#up:hover{
-  cursor:url(cursor/up.svg),auto;
+.day #up{
+  cursor:url(cursor/gray/up.svg),pointer;
 }
 @keyframes hitAsteroid{
   0%{fill:#fff}
@@ -256,9 +275,13 @@ doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
   });
 });
 
-let hour = new Date().getHours();
-if(hour>5&&hour<18){
-  doc.body.style.background='#ccc';
+let hour = {time:Date.now().getHours,color:0};
+hour.time=8;
+if(hour.time>=6&&hour.time<18){
+  doc.body.classList.add('day');
+  hour.color = (155*(1-Math.abs((hour.time-12)/12))+100).toString(16).slice(0,2);
+  hour.color = '#'+hour.color+hour.color+hour.color;
+  doc.body.style.background=hour.color;
   logoWrapper.style.stroke='#444';
   doc.body.style.color='#444';
 }
@@ -274,6 +297,7 @@ down.speed = 1;
 var proto;
 function enterGame(){
   if(contentWrapper.style.display!=='none'){
+    doc.body.style.background='#000';
     doc.body.style.cursor='none';
     cursor.angle = 120;
     doc.onmousemove = function(e){
