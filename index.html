@@ -276,7 +276,6 @@ doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
 });
 
 let hour = {time:Date.now().getHours,color:0};
-hour.time=8;
 if(hour.time>=6&&hour.time<18){
   doc.body.classList.add('day');
   hour.color = (155*(1-Math.abs((hour.time-12)/12))+100).toString(16).slice(0,2);
