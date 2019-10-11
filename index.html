@@ -40,7 +40,6 @@ body{
   letter-spacing:.1rem;
   font-weight:400;
   font-size:2rem;
-  /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
 .day{
   color:#444;
@@ -64,7 +63,6 @@ a{
   cursor:url(cursor/gray/out.svg) 128 0,pointer;
 }
 h1::first-letter{
-  font-weight:300;
   font-family:hyperspace,raleway,sans-serif;
   font-size:5.5rem;
   margin-right:-.4rem;
@@ -79,10 +77,6 @@ p{
 }
 ::selection{
   background:#fff;
-}
-@keyframes hue{
-  0%{filter:hue-rotate(0)}
-  100%{filter:hue-rotate(360deg)}
 }
 #content-wrapper{
   margin:0 calc(40vw - 40vmin);
@@ -115,12 +109,7 @@ p{
 .day #down{
   cursor:url(cursor/gray/down.svg) 128 128,pointer;
 }
-@media(inverted-colors:inverted){
-  body{
-    filter:invert(1);
-  }
-}
-#logo-wrapper,#cursor,path#wire0{
+#logo-wrapper,#cursor{
   stroke-width:.4rem;
 }
 #arcade{
@@ -130,7 +119,6 @@ p{
   width:100vw;
   height:100vh;
   pointer-events:none;
-  mix-blend-mode:lighten;
 }
 #cursor{
   position:absolute;
@@ -140,6 +128,7 @@ p{
   width:32px;
   height:32px;
   transform-origin:11.1px 18.5px;
+  transform:translate(-64px,-64px);
 }
 .beam{
   position:absolute;
@@ -268,7 +257,6 @@ const doc = document,
       cursor = doc.getElementById('cursor'),
       asteroids = doc.getElementById('asteroids');
 let beam,animateTick = 0,asteroidTick=0;
-disappear();
 requestUpdate();
 
 doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
@@ -299,6 +287,7 @@ down.speed = 1;
 var proto;
 function enterGame(){
   if(contentWrapper.style.display!=='none'){
+    doc.body.style.overflow='hidden';
     doc.body.style.background='#000';
     doc.body.style.cursor='none';
     cursor.angle = 120;
@@ -337,9 +326,6 @@ function enterGame(){
     };
     doc.onmousedown = function(){
       shoot();
-    };
-    window.onmouseout = function(){
-      disappear();
     };
     contentWrapper.style.display='none';
   }
@@ -450,9 +436,6 @@ function anim3D(){
   ' '+(Math.sin(down.tick+4*Math.PI/3)*50+down.center[1])+
   'L1050 1700'
   );
-}
-function disappear(){
-  cursor.style.transform='translate(-64px,-64px)';
 }
 function addAsteroid(){
   // let proto=`<path id='asteroid`+asteroidTick+`' d='M`+Math.random()*1000+` `+(Math.round(Math.random())*2000-500)+`l`;
