@@ -12,35 +12,28 @@
     <style>
 @font-face{
   font-family:'hyperspace';
-  font-weight:normal;
+  font-weight:300;
   src: url('fonts/hyperspace/regular.otf');
-}
-@font-face{
-  font-family:'hyperspace';
-  font-weight:bold;
-  src: url('fonts/hyperspace/bold.otf');
+  font-display:swap;
 }
 @font-face{
   font-family:'raleway';
   font-weight:400;
-  src: url('fonts/raleway/regular.ttf');
+  src: url('fonts/raleway/regular.woff2') format('woff2'),url('fonts/raleway/regular.woff') format('woff');
+  font-display:swap;
 }
 @font-face{
   font-family:'raleway';
   font-weight:300;
-  src: url('fonts/raleway/light.ttf');
-}
-@font-face{
-  font-family:'raleway';
-  font-weight:700;
-  src: url('fonts/raleway/bold.ttf');
+  src: url('fonts/raleway/light.woff2') format('woff2'),url('fonts/raleway/light.woff') format('woff');
+  font-display:optional;
 }
 html,body{
   margin:0 1rem;
 }
 body{
   background:#000;
-  cursor:url(cursor.svg),auto;
+  cursor:url(cursor/up-blank.svg),auto;
   overflow-y:scroll;
   color:#fff;
   font-family:raleway,sans-serif;
@@ -49,15 +42,18 @@ body{
   font-size:2rem;
   /*filter:drop-shadow(0 0 .1vmin #aaf) drop-shadow(0 0 .4vmin #88f) drop-shadow(0 0 1.6vmin #44f8);*/
 }
+a[href^='#']{
+  text-decoration:none;
+  cursor:url(cursor/right-blank.svg) 128 0,pointer;
+}
 a{
   color:inherit;
-  text-decoration:none;
-  cursor:url(pointer.svg),pointer;
+  text-decoration:underline;
+  cursor:url(cursor/out.svg) 128 0,pointer;
 }
 h1::first-letter{
-  font-family:hyperspace,sans-serif;
-}
-h1:first-letter{
+  font-weight:300;
+  font-family:hyperspace,raleway,sans-serif;
   font-size:5.5rem;
   margin-right:-.4rem;
 }
@@ -90,10 +86,10 @@ p{
   pointer-events:all;
 }
 #wire:hover{
-  cursor:url(pointer.svg),pointer;
+  cursor:url(cursor/up.svg),pointer;
 }
 #down:hover{
-  cursor:url(pointer.svg),pointer;
+  cursor:url(cursor/down.svg) 128 128,pointer;
 }
 @media(inverted-colors:inverted){
   body{
@@ -154,7 +150,7 @@ p{
   height:100vh;
 }
 #up:hover{
-  cursor:url(pointer.svg),auto;
+  cursor:url(cursor/up.svg),auto;
 }
 @keyframes hitAsteroid{
   0%{fill:#fff}
@@ -221,6 +217,10 @@ p{
       <p>Through the combination of 3D printing and cutting, we are able to rapidly build and prototype innovative designs for our robot.</p>
       <p>For our mecanum wheel drivetrain, we rely on REV motors, controllers and extrusions.</p>
       <p>At the heart of our robot is a pair of linear sliders, used to move the device that collects and deposits the stone.</p>
+      <p>Our code is hosted <a href='https://github.com/15303/ftc_app/'>here</a> on GitHub.</p>
+
+      <a href='#social'><h1 id='social'>We post regular updates on our blog.</h1></a>
+      <p>Check it out <a href='..'>here</a>.</p>
 
     </div>
     <div id='arcade'>
@@ -251,7 +251,7 @@ doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
     e.preventDefault();
     this.blur();
     doc.querySelector(this.getAttribute('href')).scrollIntoView({
-        behavior: 'smooth'
+      behavior: 'smooth'
     });
   });
 });
