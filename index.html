@@ -42,10 +42,9 @@ body{
   font-weight:400;
   font-size:2rem;
 }
-.day{
+body.day{
+  background:#ddd;
   color:#444;
-}
-.day body{
   cursor:url(cursor/gray/up-blank.svg),auto;
 }
 a[href^='#']{
@@ -235,7 +234,7 @@ p{
       <p>Our code is hosted <a href='https://github.com/15303/ftc_app/'>here</a> on GitHub.</p>
 
       <a href='#social'><h1 id='social'>We post regular updates on our blog.</h1></a>
-      <p>Check it out <a href='..'>here</a>.</p>
+      <p>Check it out <a href='https://majorstem.org'>here</a>.</p>
 
     </div>
     <div id='arcade'>
@@ -260,22 +259,34 @@ const doc = document,
 let beam,animateTick = 0,asteroidTick=0;
 requestUpdate();
 
+let internalLinks = doc.querySelectorAll(`a[href^='#']`);
 
-doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
+internalLinks.forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
     this.blur();
     doc.querySelector(this.getAttribute('href')).scrollIntoView({
       behavior: 'smooth'
     });
+    window.history.pushState({},'Space Rocks | FTC 15303',anchor.getAttribute('href'));
   });
 });
 
-let hour = {time:Date.now().getHours,color:0};
-if(hour.time>=6&&hour.time<18){
+doc.onscroll = function(){
+  if(window.scrollY<50){
+    window.history.pushState({},'Space Rocks | FTC 15303',' ');
+  }
+  internalLinks.forEach(anchor => {
+    if(Math.abs(anchor.getBoundingClientRect().top)<50){
+      window.history.pushState({},'Space Rocks | FTC 15303',anchor.getAttribute('href'));
+    }
+  });
+};
+
+let time = new Date();
+time = time.getHours();
+if(time>=6&&time<18){
   doc.body.classList.add('day');
-  hour.color = (155*(1-Math.abs((hour.time-12)/12))+100).toString(16).slice(0,2);
-  doc.body.style.backgroundColor='#'+hour.color+hour.color+hour.color;
 }
 
 wire.tick = 0;
