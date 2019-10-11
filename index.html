@@ -259,9 +259,7 @@ const doc = document,
 let beam,animateTick = 0,asteroidTick=0;
 requestUpdate();
 
-let internalLinks = doc.querySelectorAll(`a[href^='#']`);
-
-internalLinks.forEach(anchor => {
+doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
     this.blur();
@@ -276,7 +274,7 @@ doc.onscroll = function(){
   if(window.scrollY<50){
     window.history.pushState({},'Space Rocks | FTC 15303',' ');
   }
-  internalLinks.forEach(anchor => {
+  doc.querySelectorAll(`a[href^='#']`).forEach(anchor => {
     if(Math.abs(anchor.getBoundingClientRect().top)<50){
       window.history.pushState({},'Space Rocks | FTC 15303',anchor.getAttribute('href'));
     }
