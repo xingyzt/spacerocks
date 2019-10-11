@@ -4,6 +4,7 @@
   <head>
     <title>Space Rocks | FTC 15303</title>
     <meta charset='utf-8'>
+    <meta http-equiv='cache-control' content='public,max-age=31536000' />
     <meta name='description' content='A robotics team based in southern California. Part of MajorStem.org and sponsored by Collins Aerospace.'>
     <meta name='keywords' content='15303,space rocks,15303 space rocks,FIRST,FTC,robotics'>
     <meta name='viewpoint' content='width=device-width, initial-scale=1'>
@@ -258,6 +259,7 @@ const doc = document,
       asteroids = doc.getElementById('asteroids');
 let beam,animateTick = 0,asteroidTick=0;
 requestUpdate();
+
 
 doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
   anchor.addEventListener('click', function (e) {
