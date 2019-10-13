@@ -305,6 +305,7 @@ doc.addEventListener('pointerlockchange',function(){
   if(doc.pointerLockElement===doc.body){
     enterGame();
   }else{
+    arcade.style.backgroundColor='#fff';
     window.location.reload(false);
   }
 });
@@ -392,6 +393,7 @@ function collision(){
 }
 function gameAnim(){
   if(asteroidTick&&inside([cursor.posX,cursor.posY],proto.pathcoords)){
+    arcade.style.backgroundColor='#fff';
     window.location.reload(false);
   }
   
