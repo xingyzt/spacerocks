@@ -177,7 +177,7 @@ p{
     <div id='up' onclick='window.scrollTo({top:0,behavior:`smooth`})'></div>
     <div id='content-wrapper'>
       <svg aria-hidden='true' id='logo-wrapper' viewBox='0 100 1800 1900' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' aria-label='15303 Space Rocks'>
-        <g id='wire' onclick='enterGame()' onmouseover='wire.speed=10,down.speed=.5' onmouseout='wire.speed=1,down.speed=1'>
+        <g id='wire' onclick='doc.body.requestPointerLock()' onmouseover='wire.speed=10,down.speed=.5' onmouseout='wire.speed=1,down.speed=1'>
           <path id='wirex' d='
           M900 500l500 500l-500 500l-500 -500z
           '/>
@@ -240,13 +240,17 @@ p{
     <div id='arcade'>
       <svg id='cursor' viewBox='0 0 128 128'>
         <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
+        <path id='flame' d='M32 87L69.415 126L60 70L44.415 74' fill='#fff'/>
       </svg>
       <div id='beamWrapper'></div>
       <svg id='asteroids' viewBox='0 0 1000 1000' fill='none' stroke='#fff'>
       </svg>
     </div>
-    <!--<div id='indicator' style='position:absolute;width:5px;height:5px;background-color:#f00'></div>-->
+    <div id='indicator' style='position:absolute;width:5px;height:5px;background-color:#f00;z-index:99999'></div>
     <script>
+Number.prototype.toRad = function() {
+  return this*Math.PI / 180;
+};
 const doc = document,
       ref = doc.referrer,
       contentWrapper = doc.getElementById('content-wrapper'),
@@ -255,9 +259,10 @@ const doc = document,
       down = [doc.getElementById('down0'),doc.getElementById('down1'),doc.getElementById('down2')],
       beamWrapper = doc.getElementById('beamWrapper'),
       cursor = doc.getElementById('cursor'),
+      flame = doc.getElementById('flame'),
       asteroids = doc.getElementById('asteroids');
-let beam,animateTick = 0,asteroidTick=0;
-requestUpdate();
+let animateTick = 0,asteroidTick=0;
+splashAnim();
 
 doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
   anchor.addEventListener('click', function (e) {
@@ -296,102 +301,118 @@ down.time = wire.time;
 down.speed = 1;
 
 var proto;
-function enterGame(){
-  if(contentWrapper.style.display!=='none'){
-    doc.body.style.overflow='hidden';
-    doc.body.style.background='#000';
-    doc.body.style.cursor='none';
-    cursor.angle = 120;
-    doc.onmousemove = function(e){
-      cursor.xcoord = e.pageX;
-      cursor.ycoord = e.pageY;
-    };
-    addAsteroid();
-    doc.onkeydown = function(e){
-      switch(e.code){
-        case 'ArrowLeft':
-          cursor.angle-=6;
-          break;
-        case 'ArrowRight':
-          cursor.angle+=6;
-          break;
-        case 'KeyA':
-          cursor.angle-=6;
-          break;
-        case 'KeyD':
-          cursor.angle+=6;
-          break;
-      }
-    };
-    doc.onwheel = function(e){
-      if(e.deltaY>0){
-        cursor.angle-=Math.ceil(e.deltaY/8);
-      }else{
-        cursor.angle-=Math.floor(e.deltaY/8);
-      }
-    };
-    doc.onkeyup = function(e){
-      if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){
-        shoot();
-      }
-    };
-    doc.onmousedown = function(){
-      shoot();
-    };
-    contentWrapper.style.display='none';
+doc.addEventListener('pointerlockchange',function(){
+  if(doc.pointerLockElement===doc.body){
+    enterGame();
+  }else{
+    window.location.reload(false);
+  }
+});
+
+function angleChange(input){
+  if(input>0){
+    cursor.angle+=Math.min(input/8,8);
+  }else{
+    cursor.angle+=Math.max(input/8,-8);
   }
 }
+function enterGame(){
+  cursor.posX = window.innerWidth/2;
+  cursor.posY = window.innerHeight/2;
+  doc.body.style.overflow='hidden';
+  doc.body.style.background='#000';
+  flame.style.visibility='hidden';
+  cursor.angle = 120;
+  cursor.vR = 0;
+  cursor.vX = 0;
+  cursor.vY = 0;
+  addAsteroid();
+  gameAnim();
+  doc.onkeydown=function(e){
+    if(e.code==='ArrowLeft'||e.code==='KeyA'){
+      cursor.vR+=.1;
+    }else if(e.code==='ArrowRight'||e.code==='KeyD'){
+      cursor.vR-=.1;
+    }else if(e.code==='KeyW'||e.code==='ArrowUp'){
+      cursor.vY+=(-.1*Math.sin(cursor.angle.toRad()));
+      cursor.vX+=(.1*Math.cos(cursor.angle.toRad()));
+      flame.style.visibility='visible';
+    }
+  };
+  doc.onwheel = function(e){angleChange(e.deltaY);};
+  doc.onkeyup = function(e){
+    if(e.code==='Space'){
+      shoot();
+    }
+    flame.style.visibility='hidden';
+  };
+  doc.onmousedown = function(){
+    shoot();
+  };
+  contentWrapper.style.display='none';
+}
 function shoot(){
-  beam = doc.createElement('div');
+  let beam = doc.createElement('div');
   beam.classList = 'beam';
-  beam.xstart = cursor.xcoord;
-  beam.ystart = cursor.ycoord;
+  beam.angle = cursor.angle.toRad();
+  beam.xstart = (cursor.posX+20*Math.cos(beam.angle)+12);
+  beam.ystart = (cursor.posY-20*Math.sin(beam.angle)+18);
   beam.style.left=(beam.xstart)+'px';
   beam.style.top=(beam.ystart)+'px';
   beam.style.transform = 'rotate('+(-cursor.angle)+'deg)';
   beam.style.display='block';
   beamWrapper.appendChild(beam);
   
-  beam.angle = cursor.angle/180*Math.PI;
-  beam.time = Date.now()+10;
+  beam.time = Date.now();
   beam.max = 2*Math.max(window.innerWidth,window.innerHeight);
   
-  let hitChecker = setInterval(function(){
-    beam.elapsed = (Date.now() - beam.time)/2000;
-    beam.xcoord = beam.elapsed*beam.max*Math.cos(beam.angle)+beam.xstart;
-    beam.ycoord = -beam.elapsed*beam.max*Math.sin(beam.angle)+beam.ystart;
-    
-  // doc.getElementById('indicator').style.transform='translate('+proto.pathcoords[0][0]+'px,'+proto.pathcoords[0][1]+'px)';
-    
-    if(inside([beam.xcoord,beam.ycoord],proto.pathcoords)){
-      clearInterval(hitChecker);
-      collision();
+  beam.hitcheck = setInterval(function(){
+    let initElapse = Math.max((Date.now() - beam.time - 50),0);
+    for(let elapse = initElapse;elapse < (initElapse+10);elapse+=0.1){
+      beam.posX = elapse*beam.max*Math.cos(beam.angle)/2000+beam.xstart;
+      beam.posY = -elapse*beam.max*Math.sin(beam.angle)/2000+beam.ystart;
+      if(inside([beam.posX,beam.posY],proto.pathcoords)){
+        collision();
+        clearInterval(beam.hitcheck);
+        beamWrapper.removeChild(beamWrapper.firstElementChild);
+      }
     }
-    
-  },5);
-  setTimeout(function(){beamWrapper.removeChild(beamWrapper.firstElementChild);clearInterval(hitChecker);},1500);
-  
+    if(initElapse>1000){
+      clearInterval(beam.hitcheck);
+      beamWrapper.removeChild(beamWrapper.firstElementChild);
+    }
+  },10);
 }
 function collision(){
   doc.getElementById('asteroid'+asteroidTick).classList.add('hitAsteroid');
-  if(beam){
-    beam.style.display='none';
-  }
   addAsteroid();
   setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild);},200);
 }
-function requestUpdate(){
-  window.requestAnimationFrame(cursorMove);
-}
-function cursorMove(){
-  if(asteroidTick&&inside([cursor.xcoord,cursor.ycoord],proto.pathcoords)){
-    collision();
+function gameAnim(){
+  if(asteroidTick&&inside([cursor.posX,cursor.posY],proto.pathcoords)){
+    window.location.reload(false);
   }
-  cursor.style.transform='translate('+cursor.xcoord+'px,'+cursor.ycoord+'px) rotate('+(-cursor.angle+120)+'deg)';
-  anim3D();
-  requestUpdate();
+  
+  cursor.angle+=cursor.vR
+  cursor.posX+=cursor.vX;
+  cursor.posY+=cursor.vY;
+  
+  if(cursor.posX>window.innerWidth){
+    cursor.posX=0;
+  }else if(cursor.posX<0){
+    cursor.posX=window.innerWidth;
+  }
+  if(cursor.posY>window.innerHeight){
+    cursor.posY=0;
+  }else if(cursor.posY<0){
+    cursor.posY=window.innerHeight;
+  }
+  
+  cursor.style.transform='translate('+cursor.posX+'px,'+cursor.posY+'px) rotate('+(-cursor.angle+120)+'deg)';
+  
+  window.requestAnimationFrame(gameAnim);
 }
-function anim3D(){
+function splashAnim(){
   wire.tick += (Date.now() - wire.time)/8000*wire.speed;
   wire.time = Date.now();
   wire.center = [900,1000];
@@ -399,34 +420,34 @@ function anim3D(){
   down.tick += (Date.now() - down.time)/1000*down.speed;
   down.time = Date.now();
   down.center = [900,1800];
-  wire.ydevi = Math.sin(wire.tick/4-50)*100;
+  wire.deviY = Math.sin(wire.tick/4-50)*100;
   wire[0].setAttribute('d',
   'M900 550'+
   'L'+(Math.cos(wire.tick)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick)*wire.deviY+wire.center[1])+
   'L900 1450'+
   'L'+(Math.cos(wire.tick+Math.PI)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick+Math.PI)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick+Math.PI)*wire.deviY+wire.center[1])+
   'z'
   );
   wire[1].setAttribute('d',
   'M'+(Math.cos(wire.tick)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick)*wire.deviY+wire.center[1])+
   'L'+(Math.cos(wire.tick+Math.PI/2)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick+Math.PI/2)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick+Math.PI/2)*wire.deviY+wire.center[1])+
   'L'+(Math.cos(wire.tick+Math.PI)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick+Math.PI)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick+Math.PI)*wire.deviY+wire.center[1])+
   'L'+(Math.cos(wire.tick+Math.PI*1.5)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.deviY+wire.center[1])+
   'z'
   );
   wire[2].setAttribute('d',
   'M900 550'+
   'L'+(Math.cos(wire.tick+Math.PI/2)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick+Math.PI/2)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick+Math.PI/2)*wire.deviY+wire.center[1])+
   'L900 1450'+
   'L'+(Math.cos(wire.tick+Math.PI*1.5)*450+wire.center[0])+
-  ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.ydevi+wire.center[1])+
+  ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.deviY+wire.center[1])+
   'z'
   );
   down[0].setAttribute('d',
@@ -447,31 +468,32 @@ function anim3D(){
   ' '+(Math.sin(down.tick+4*Math.PI/3)*50+down.center[1])+
   'L1050 1700'
   );
+  window.requestAnimationFrame(splashAnim);
 }
 function addAsteroid(){
   // let proto=`<path id='asteroid`+asteroidTick+`' d='M`+Math.random()*1000+` `+(Math.round(Math.random())*2000-500)+`l`;
   asteroidTick++;
   let scaler = Math.max(window.innerWidth,window.innerHeight)/1000;
   proto={
-    ycoord:400*Math.random()+100,
-    xcoord:800*Math.random()+100,
+    posY:400*Math.random()+100,
+    posX:800*Math.random()+100,
   };
-  proto.path=`<path class='asteroid' id='asteroid`+asteroidTick+`' d='M`+proto.xcoord+` `+proto.ycoord+`L`;
-  proto.pathcoords=[[proto.xcoord*scaler,proto.ycoord*scaler]];
+  proto.path=`<path class='asteroid' id='asteroid`+asteroidTick+`' d='M`+proto.posX+` `+proto.posY+`L`;
+  proto.pathcoords=[[proto.posX*scaler,proto.posY*scaler]];
   for(let i = 0;i<20;i++){
     proto.coord=Math.round(Math.random()*20);
     proto.i=Math.PI*i/11;
     if(i%2){
-      proto.ycoord+=3*Math.round(proto.coord*Math.sin(proto.i));
-      proto.pathcoords.push([proto.xcoord*scaler,proto.ycoord*scaler]);
+      proto.posY+=3*Math.round(proto.coord*Math.sin(proto.i));
+      proto.pathcoords.push([proto.posX*scaler,proto.posY*scaler]);
       if(i===19){
-        proto.path+=(proto.ycoord+`Z'/>`);
+        proto.path+=(proto.posY+`Z'/>`);
       }else{
-        proto.path+=(proto.ycoord+'L');
+        proto.path+=(proto.posY+'L');
       }
     }else{
-      proto.xcoord+=3*Math.round(proto.coord*Math.cos(proto.i));
-      proto.path+=(proto.xcoord+' ');
+      proto.posX+=3*Math.round(proto.coord*Math.cos(proto.i));
+      proto.path+=(proto.posX+' ');
     }
   }
   asteroids.style.display='block';
