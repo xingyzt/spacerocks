@@ -1,29 +1,87 @@
+
 <!doctype html>
 <html lang='en-us'>
   <head>
-    <title>Space Junk</title>
+    <title>Space Rocks | FTC 15303</title>
     <meta charset='utf-8'>
-    <meta name='description' content='A game of Asteroids turned Kessler.'>
-    <meta name='keywords' content='space,asteroids,game'>
+    <meta http-equiv='cache-control' content='public,max-age=31536000' />
+    <meta name='description' content='A robotics team based in southern California. Part of MajorStem.org and sponsored by Collins Aerospace.'>
+    <meta name='keywords' content='15303,space rocks,15303 space rocks,FIRST,FTC,robotics'>
     <meta name='viewpoint' content='width=device-width, initial-scale=1'>
     <link rel='shortcut icon' href='fav.png'>
+    <!--<link rel='prefetch' href='http://majorstem.org/index.php/feed'>-->
     <style>
-html,body{
-  margin:0;
-  width:100vw;
-  height:100vh;
+@font-face{
+  font-family:'hyperspace';
+  font-weight:300;
+  src: url('fonts/hyperspace/regular.otf');
+  font-display:swap;
 }
-html{
-  background-color:#000;
+@font-face{
+  font-family:'raleway';
+  font-weight:400;
+  src: url('fonts/raleway/regular.woff2') format('woff2'),url('fonts/raleway/regular.woff') format('woff');
+  font-display:swap;
+}
+@font-face{
+  font-family:'raleway';
+  font-weight:300;
+  src: url('fonts/raleway/light.woff2') format('woff2'),url('fonts/raleway/light.woff') format('woff');
+  font-display:fallback;
+}
+html,body{
+  margin:0 1rem;
 }
 body{
-  font-family:monospace,monospace;
-  font-size:1.5rem;
-  ship:url(ship/white/up-blank.svg),auto;
+  background:#000;
+  cursor:url(cursor/white/up-blank.svg),auto;
+  overflow-y:scroll;
   color:#fff;
+  font-family:raleway,sans-serif;
+  letter-spacing:.1rem;
+  font-weight:400;
+  font-size:2rem;
+}
+body.day{
+  background:#ddd;
+  color:#444;
+  cursor:url(cursor/gray/up-blank.svg),auto;
+}
+a[href^='#']{
+  text-decoration:none;
+  cursor:url(cursor/white/right-blank.svg) 128 0,pointer;
+}
+.day a[href^='#']{
+  cursor:url(cursor/gray/right-blank.svg) 128 0,pointer;
 }
 a{
-  color:#fff;
+  color:inherit;
+  text-decoration:underline;
+  cursor:url(cursor/white/out.svg) 128 0,pointer;
+}
+.day a{
+  cursor:url(cursor/gray/out.svg) 128 0,pointer;
+}
+h1::first-letter{
+  font-family:hyperspace,raleway,sans-serif;
+  font-size:5.5rem;
+  margin-right:-.4rem;
+}
+h1{
+  font-weight:300;
+  font-size:3rem;
+}
+p{
+  box-sizing:border-box;
+  padding:0 1rem;
+}
+::selection{
+  background:#fff;
+}
+#content-wrapper{
+  margin:0 calc(40vw - 40vmin);
+  box-sizing:border-box;
+  padding-top:100vh;
 }
 #logo-wrapper{
   position:absolute;
@@ -33,11 +91,26 @@ a{
   height:100vmin;
   clip-path:polygon(0 50%, 50% 0, 100% 50%, 50% 100%);
 }
+.day #logo-wrapper{
+  stroke:#444;
+}
+#down,#wire{
+  pointer-events:all;
+}
+#wire{
+  cursor:url(cursor/white/up.svg),pointer;
+}
+.day #wire{
+  cursor:url(cursor/gray/up.svg),pointer;
+}
+#down{
+  cursor:url(cursor/white/down.svg) 128 128,pointer;
+}
+.day #down{
+  cursor:url(cursor/gray/down.svg) 128 128,pointer;
+}
 #logo-wrapper{
   stroke-width:.4rem;
-}
-#wirex{
-  pointer-events:all;
 }
 #arcade{
   position:absolute;
@@ -46,9 +119,8 @@ a{
   width:100vw;
   height:100vh;
   pointer-events:none;
-  visibility:hidden;
 }
-#ship{
+#cursor{
   position:absolute;
   left:0;
   top:0;
@@ -71,10 +143,10 @@ a{
   position:fixed;
   width:calc(10vw - 10vmin);
   height:100vh;
-  ship:url(ship/white/up.svg),auto;
+  cursor:url(cursor/white/up.svg),auto;
 }
 .day #up{
-  ship:url(ship/gray/up.svg),pointer;
+  cursor:url(cursor/gray/up.svg),pointer;
 }
 @keyframes hitAsteroid{
   0%{fill:#fff}
@@ -84,31 +156,71 @@ a{
     </style>
   </head>
   <body>
-    <span id='intro'>
-      WASD to move. Space to shoot.
-      <p>This is a toroidal universe. You have infinite shots, but use them wisely.</p>
-      <p style='color:#888'>Made by <a href='https://xyzt.design/'>XYZt</a>. Tinker with the code <a href='https://github.com/FlyOrBoom/spacejunk/'>here</a>.</p>
-      <p>Click the octahedron to begin.</p>
-    </span>
-    <svg id='logo-wrapper' viewBox='0 100 1800 1900' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff'>
-      <g id='wire' onclick='doc.body.requestPointerLock();doc.body.requestFullscreen()' onmouseover='wire.speed=10' onmouseout='wire.speed=1'>
-        <path id='wirex' d='
-        M900 500l500 500l-500 500l-500 -500z
+    <div id='up' onclick='window.scrollTo({top:0,behavior:`smooth`})'></div>
+    <div id='content-wrapper'>
+      <svg aria-hidden='true' id='logo-wrapper' viewBox='0 100 1800 1900' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' aria-label='15303 Space Rocks'>
+        <g id='wire' onclick='doc.body.requestPointerLock();doc.body.requestFullscreen()' onmouseover='wire.speed=10,down.speed=.5' onmouseout='wire.speed=1,down.speed=1'>
+          <path id='wirex' d='
+          M900 500l500 500l-500 500l-500 -500z
+          '/>
+          <path id='wire0' d='
+          M900 500l500 500l-500 500l-500 -500z
+          '/>
+          <path id='wire1' d='
+          M400 1000l600 -100l400 100l-600 100z
+          '/>
+          <path id='wire2' d='
+          M900 500l100 400l-100 600l-100 -400z
+          '/>
+        </g>
+        <path id='logo' d='
+    M682.5 667.5l-150 -150v50v-50z
+    M707.5 642.5l100 -100l-50 -100l-125 125l-75 -75l150 -150
+    M832.5 517.5l50 -50v-150l-100 100l100 -100v-150l-150 150
+    M917.5 467.5l82.5 82.5l100 -200l-182.5 -182.5z
+    M1025 575l100 100l75 -75l-125 -125l125 125l75 -75l-150 -150
+    
+    M450 1100l-75 -75l-75 75l75 75l-75 75l-75 -75
+    M475 1125l-150 150l150 -150l75 75l-75 75l-75 -75
+    M632.5 1267.5h-100l-107.5 107.5l77.5 -75l100 100l-75 75l107.5 -107.5v-100
+    M775 1425l-75 -75l-150 150l75 75
+    M875 1525l-75 -75l-75 75l50 50l-50 -50l-75 75l75 75
+    
+    M925 1525l150 150l-150 -150l75 -75l75 75l-75 75h150
+    M1125 1325l-100 100l150 150l100 -100z
+    M1225 1225l-75 75l150 150l75 -75
+    M1250 1200l150 150l-75 -75h150h-150v-150
+    M1425 1025l-75 75l75 75l75 -75l75 75l-75 75
         '/>
-        <path id='wire0' d='
-        M900 500l500 500l-500 500l-500 -500z
-        '/>
-        <path id='wire1' d='
-        M400 1000l600 -100l400 100l-600 100z
-        '/>
-        <path id='wire2' d='
-        M900 500l100 400l-100 600l-100 -400z
-        '/>
-      </g>
-    </svg>
-    <span id='death' style='color:#000'>Sorry. Fullscreen only.</span>
+        <g id='down' href='#about' onmouseover='down.speed=5,wire.speed=.5' onmouseout='down.speed=1,wire.speed=1'>
+          <path id='down0' d='
+          M800 1700L900 1750L1000 1700
+          '/>
+          <path id='down1' d='
+          M800 1700L900 1800L1000 1700
+          '/>
+          <path id='down2' d='
+          M800 1700L900 1850L1000 1700
+          '/>
+        </g>
+      </svg>
+
+      <a href='#about'><h1 id='about'>We are a youth robotics team based in Southern California.</h1></a>
+      <p>Created in August 2018 as part of MajorStem.org, our team consists of a group of students who are not only passionate towards science, but also eager to develop skills in communication, collaboration, teamwork, and leadership.</p>
+      <p>Every year we participate in the FIRST Tech Challenge, a nationwide robotics challenge where teams of middle and high school students compete to design, build, and program machines that score points in the challenge's game.</p>
+
+      <a href='#robot'><h1 id='robot'>Our FTC robot is built using the REV Robotics Kit and parts we made in-house.</h1></a>
+      <p>Through the combination of 3D printing and cutting, we are able to rapidly build and prototype innovative designs for our robot.</p>
+      <p>For our mecanum wheel drivetrain, we rely on REV motors, controllers and extrusions.</p>
+      <p>At the heart of our robot is a pair of linear sliders, used to move the device that collects and deposits the stone.</p>
+      <p>Our code is hosted <a href='https://github.com/15303/ftc_app/'>here</a> on GitHub.</p>
+
+      <a href='#social'><h1 id='social'>We post regular updates on our blog.</h1></a>
+      <p>Check it out <a href='https://majorstem.org'>here</a>.</p>
+
+    </div>
     <svg id='arcade'>
-      <g id='ship' stroke-width='.5rem'>
+      <g id='cursor' stroke-width='.5rem'>
         <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
         <path id='flame' d='M32 87L69.415 126L60 70L44.415 74' fill='#fff'/>
       </g>
@@ -117,21 +229,45 @@ a{
       <g id='bullet-wrapper' fill='#fff'>
       </g>
     </svg>
+    <!--<div id='indicator' style='position:absolute;width:5px;height:5px;background-color:#f00;z-index:99999'></div>-->
     <script>
 Number.prototype.toRad = function() {
   return this*Math.PI / 180;
 };
 const doc = document,
+      ref = doc.referrer,
+      contentWrapper = doc.getElementById('content-wrapper'),
       logoWrapper = doc.getElementById('logo-wrapper'),
-      intro = doc.getElementById('intro'),
       wire = [doc.getElementById('wire0'),doc.getElementById('wire1'),doc.getElementById('wire2')],
+      down = [doc.getElementById('down0'),doc.getElementById('down1'),doc.getElementById('down2')],
       bulletWrapper = doc.getElementById('bullet-wrapper'),
-      death = doc.getElementById('death'),
-      ship = doc.getElementById('ship'),
+      cursor = doc.getElementById('cursor'),
       flame = doc.getElementById('flame'),
       asteroids = doc.getElementById('asteroids');
-let animateTick = 0,asteroidTick=0,bullet=[],go=true;
+let animateTick = 0,asteroidTick=0,bullet=[];
 splashAnim();
+
+doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    this.blur();
+    doc.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+    window.history.pushState({},'Space Rocks | FTC 15303',anchor.getAttribute('href'));
+  });
+});
+
+doc.onscroll = function(){
+  if(window.scrollY<50){
+    window.history.pushState({},'Space Rocks | FTC 15303',' ');
+  }
+  doc.querySelectorAll(`a[href^='#']`).forEach(anchor => {
+    if(Math.abs(anchor.getBoundingClientRect().top)<50){
+      window.history.pushState({},'Space Rocks | FTC 15303',anchor.getAttribute('href'));
+    }
+  });
+};
 
 let time = new Date();
 time = time.getHours();
@@ -142,6 +278,10 @@ if(time>=6&&time<18){
 wire.tick = 0;
 wire.time = Date.now();
 wire.speed = 1;
+
+down.tick = 0;
+down.time = wire.time;
+down.speed = 1;
 
 let proto;
 doc.addEventListener('pointerlockchange',function(){
@@ -154,38 +294,36 @@ doc.addEventListener('pointerlockchange',function(){
 
 function angleChange(input){
   if(input>0){
-    ship.angle+=Math.min(input/8,8);
+    cursor.angle+=Math.min(input/8,8);
   }else{
-    ship.angle+=Math.max(input/8,-8);
+    cursor.angle+=Math.max(input/8,-8);
   }
 }
 function enterGame(){
-  logoWrapper.style.visibility='hidden';
-  intro.style.visibility='hidden';
-  arcade.style.visibility='visible';
   arcade.maxX = window.innerWidth;
   arcade.maxY = window.innerHeight
   arcade.setAttribute('viewBox',('0 0 '+arcade.maxX+' '+arcade.maxY));
-  ship.posX = arcade.maxX/2;
-  ship.posY = arcade.maxY/2;
+  cursor.posX = arcade.maxX/2;
+  cursor.posY = arcade.maxY/2;
   doc.body.style.overflow='hidden';
+  doc.body.style.background='#000';
   flame.style.visibility='hidden';
-  ship.angle = 120;
-  ship.vR = 0;
-  ship.vX = 0;
-  ship.vY = 0;
+  cursor.angle = 120;
+  cursor.vR = 0;
+  cursor.vX = 0;
+  cursor.vY = 0;
   addAsteroid();
   gameAnim();
   let time = Date.now();
   bulletAnim();
   doc.onkeydown=function(e){
     if(e.code==='ArrowLeft'||e.code==='KeyA'){
-      ship.vR+=.1;
+      cursor.vR+=.1;
     }else if(e.code==='ArrowRight'||e.code==='KeyD'){
-      ship.vR-=.1;
+      cursor.vR-=.1;
     }else if(e.code==='KeyW'||e.code==='ArrowUp'){
-      ship.vY-=(.1*Math.sin(ship.angle.toRad()));
-      ship.vX+=(.1*Math.cos(ship.angle.toRad()));
+      cursor.vY-=(.1*Math.sin(cursor.angle.toRad()));
+      cursor.vX+=(.1*Math.cos(cursor.angle.toRad()));
       flame.style.visibility='visible';
     }
   };
@@ -204,17 +342,15 @@ function enterGame(){
 // setInterval(shoot,1);
 function shoot(){
   let proto = doc.createElementNS('http://www.w3.org/2000/svg','circle');
-  proto.angle = ship.angle.toRad();
-  proto.startX = ship.posX+18*Math.cos(proto.angle);
-  proto.startY = ship.posY-19*Math.sin(proto.angle);
+  proto.angle = cursor.angle.toRad();
+  proto.startX = cursor.posX+18*Math.cos(proto.angle);
+  proto.startY = cursor.posY-19*Math.sin(proto.angle);
   proto.posX = proto.startX;
   proto.posY = proto.startY;
   proto.setAttribute('r','.1rem');
   bulletWrapper.appendChild(proto);
-  ship.vY+=(.02*Math.sin(ship.angle.toRad()));
-  ship.vX-=(.02*Math.cos(ship.angle.toRad()));
-  proto.vX = ship.vX;
-  proto.vY = ship.vY;
+  cursor.vY+=(.02*Math.sin(cursor.angle.toRad()));
+  cursor.vX-=(.02*Math.cos(cursor.angle.toRad()));
   proto.startT = Date.now();
   bullet.push(proto);
 }
@@ -223,29 +359,25 @@ function collision(){
   addAsteroid();
   setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild);},200);
 }
-function gameOver(message){
-  doc.body.style.backgroundColor='#fff';
-  doc.exitPointerLock();
-  doc.exitFullscreen();
-  if(message){
-    death.innerHTML = message;
-  }
-  go=false;
+function gameOver(){
+  arcade.style.backgroundColor='#fff';
+  window.location.reload(false);
 }
 function bulletAnim(){
   let initElapse = Date.now() - time;
   bullet.forEach(function(e,f){
     for(let elapse = initElapse;elapse < (initElapse+10);elapse+=0.1){
-      ship.rect = ship.getBoundingClientRect();
-      e.posX+=((elapse*Math.cos(e.angle)+e.vX)/300);
-      e.posY-=((elapse*Math.sin(e.angle)-e.vY)/300);
+      cursor.rect = cursor.getBoundingClientRect();
+      e.posX+=elapse*10*Math.cos(e.angle)/2000;
+      e.posY-=elapse*10*Math.sin(e.angle)/2000;
       if(inside([e.posX,e.posY],proto.pathcoords)){
         collision();
-        e.setAttribute('cx','-10000');
+        e.posX=null;
+        e.posY=null;
         bullet.splice(f,1);
       }
-      if(inside([e.posX,e.posY],[[ship.rect.left,ship.rect.top],[ship.rect.right,ship.rect.top],[ship.rect.left,ship.rect.bottom],[ship.rect.right,ship.rect.bottom]])){
-        gameOver('Collided with debris. Oxygen tank punctured. Game over.');
+      if(inside([e.posX,e.posY],[[cursor.rect.left,cursor.rect.top],[cursor.rect.right,cursor.rect.top],[cursor.rect.left,cursor.rect.bottom],[cursor.rect.right,cursor.rect.bottom]])){
+        gameOver();
       }
     }
     if(e.posX>arcade.maxX){
@@ -261,42 +393,41 @@ function bulletAnim(){
     e.style.transform='translate('+e.posX+'px,'+e.posY+'px)';
   });
   time = Date.now();
-  if(go){
-    window.requestAnimationFrame(bulletAnim);
-  }
+  window.requestAnimationFrame(bulletAnim);
 }
 function gameAnim(){
-  if((asteroidTick&&inside([ship.posX,ship.posY],proto.pathcoords))||Math.abs(ship.vR)>20){
-    gameOver('Collided with asteroid. Hull damaged. Game over.');
+  if((asteroidTick&&inside([cursor.posX,cursor.posY],proto.pathcoords))||Math.abs(cursor.vR)>20){
+    gameOver();
   }
   
-  ship.vR*=0.99; //for noobs
-  ship.angle+=ship.vR;
-  ship.posX+=ship.vX;
-  ship.posY+=ship.vY;
+  cursor.vR*=0.99; //for noobs
+  cursor.angle+=cursor.vR;
+  cursor.posX+=cursor.vX;
+  cursor.posY+=cursor.vY;
   
-  if(ship.posX>arcade.maxX){
-    ship.posX=0;
-  }else if(ship.posX<0){
-    ship.posX=arcade.maxX;
+  if(cursor.posX>arcade.maxX){
+    cursor.posX=0;
+  }else if(cursor.posX<0){
+    cursor.posX=arcade.maxX;
   }
-  if(ship.posY>arcade.maxY){
-    ship.posY=0;
-  }else if(ship.posY<0){
-    ship.posY=arcade.maxY;
+  if(cursor.posY>arcade.maxY){
+    cursor.posY=0;
+  }else if(cursor.posY<0){
+    cursor.posY=arcade.maxY;
   }
   
-  ship.style.transform='translate('+(ship.posX-44.415)+'px,'+(ship.posY-74)+'px) rotate('+(-ship.angle+120)+'deg) scale(0.2)';
+  cursor.style.transform='translate('+(cursor.posX-44.415)+'px,'+(cursor.posY-74)+'px) rotate('+(-cursor.angle+120)+'deg) scale(0.2)';
   
-  if(go){
-    window.requestAnimationFrame(gameAnim);
-  }
+  window.requestAnimationFrame(gameAnim);
 }
 function splashAnim(){
   wire.tick += (Date.now() - wire.time)/8000*wire.speed;
   wire.time = Date.now();
   wire.center = [900,1000];
 
+  down.tick += (Date.now() - down.time)/1000*down.speed;
+  down.time = Date.now();
+  down.center = [900,1800];
   wire.deviY = Math.sin(wire.tick/4-50)*100;
   wire[0].setAttribute('d',
   'M900 550'+
@@ -327,9 +458,28 @@ function splashAnim(){
   ' '+(Math.sin(wire.tick+Math.PI*1.5)*wire.deviY+wire.center[1])+
   'z'
   );
+  down[0].setAttribute('d',
+  'M750 1700'+
+  'L'+(Math.cos(down.tick)*10+down.center[0])+
+  ' '+(Math.sin(down.tick)*50+down.center[1])+
+  'L1050 1700'
+  );
+  down[1].setAttribute('d',
+  'M750 1700'+
+  'L'+(Math.cos(down.tick+2*Math.PI/3)*10+down.center[0])+
+  ' '+(Math.sin(down.tick+2*Math.PI/3)*50+down.center[1])+
+  'L1050 1700'
+  );
+  down[2].setAttribute('d',
+  'M750 1700'+
+  'L'+(Math.cos(down.tick+4*Math.PI/3)*10+down.center[0])+
+  ' '+(Math.sin(down.tick+4*Math.PI/3)*50+down.center[1])+
+  'L1050 1700'
+  );
   window.requestAnimationFrame(splashAnim);
 }
 function addAsteroid(){
+  // let proto=`<path id='asteroid`+asteroidTick+`' d='M`+Math.random()*1000+` `+(Math.round(Math.random())*2000-500)+`l`;
   asteroidTick++;
   proto={
     posY:arcade.maxY*Math.random(),
