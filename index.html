@@ -159,7 +159,7 @@ p{
     <div id='up' onclick='window.scrollTo({top:0,behavior:`smooth`})'></div>
     <div id='content-wrapper'>
       <svg aria-hidden='true' id='logo-wrapper' viewBox='0 100 1800 1900' stroke-linecap='round' stroke-linejoin='round' fill='none' stroke='#fff' aria-label='15303 Space Rocks'>
-        <g id='wire' onclick='doc.body.requestPointerLock();doc.body.requestFullscreen()' onmouseover='wire.speed=10,down.speed=.5' onmouseout='wire.speed=1,down.speed=1'>
+        <g id='wire' ondblclick='window.open(`https://xyzt.design/kessler`)' onmouseover='wire.speed=10,down.speed=.5' onmouseout='wire.speed=1,down.speed=1'>
           <path id='wirex' d='
           M900 500l500 500l-500 500l-500 -500z
           '/>
@@ -219,21 +219,7 @@ p{
       <p>Check it out <a href='https://majorstem.org'>here</a>.</p>
 
     </div>
-    <svg id='arcade'>
-      <g id='cursor' stroke-width='.5rem'>
-        <path d='M107.923 64L4 4v120L44.415 74z' fill='none' stroke='#fff'/>
-        <path id='flame' d='M32 87L69.415 126L60 70L44.415 74' fill='#fff'/>
-      </g>
-      <g id='asteroids' fill='none' stroke='#fff' stroke-width='0.1rem'>
-      </g>
-      <g id='bullet-wrapper' fill='#fff'>
-      </g>
-    </svg>
-    <!--<div id='indicator' style='position:absolute;width:5px;height:5px;background-color:#f00;z-index:99999'></div>-->
     <script>
-Number.prototype.toRad = function() {
-  return this*Math.PI / 180;
-};
 const doc = document,
       ref = doc.referrer,
       contentWrapper = doc.getElementById('content-wrapper'),
@@ -244,7 +230,6 @@ const doc = document,
       cursor = doc.getElementById('cursor'),
       flame = doc.getElementById('flame'),
       asteroids = doc.getElementById('asteroids');
-let animateTick = 0,asteroidTick=0,bullet=[];
 splashAnim();
 
 doc.querySelectorAll(`*[href^='#']`).forEach(anchor => {
@@ -274,7 +259,6 @@ time = time.getHours();
 if(time>=6&&time<18){
   doc.body.classList.add('day');
 }
-
 wire.tick = 0;
 wire.time = Date.now();
 wire.speed = 1;
@@ -282,144 +266,7 @@ wire.speed = 1;
 down.tick = 0;
 down.time = wire.time;
 down.speed = 1;
-
-let proto;
-doc.addEventListener('pointerlockchange',function(){
-  if(doc.pointerLockElement===doc.body){
-    enterGame();
-  }else{
-    gameOver();
-  }
-});
-
-function angleChange(input){
-  if(input>0){
-    cursor.angle+=Math.min(input/8,8);
-  }else{
-    cursor.angle+=Math.max(input/8,-8);
-  }
-}
-function enterGame(){
-  arcade.maxX = window.innerWidth;
-  arcade.maxY = window.innerHeight
-  arcade.setAttribute('viewBox',('0 0 '+arcade.maxX+' '+arcade.maxY));
-  cursor.posX = arcade.maxX/2;
-  cursor.posY = arcade.maxY/2;
-  doc.body.style.overflow='hidden';
-  doc.body.style.background='#000';
-  flame.style.visibility='hidden';
-  cursor.angle = 120;
-  cursor.vR = 0;
-  cursor.vX = 0;
-  cursor.vY = 0;
-  addAsteroid();
-  gameAnim();
-  let time = Date.now();
-  bulletAnim();
-  doc.onkeydown=function(e){
-    if(e.code==='ArrowLeft'||e.code==='KeyA'){
-      cursor.vR+=.1;
-    }else if(e.code==='ArrowRight'||e.code==='KeyD'){
-      cursor.vR-=.1;
-    }else if(e.code==='KeyW'||e.code==='ArrowUp'){
-      cursor.vY-=(.1*Math.sin(cursor.angle.toRad()));
-      cursor.vX+=(.1*Math.cos(cursor.angle.toRad()));
-      flame.style.visibility='visible';
-    }
-  };
-  doc.onwheel = function(e){angleChange(e.deltaY);};
-  doc.onkeyup = function(e){
-    if(e.code==='Space'||e.code==='KeyS'||e.code==='ArrowDown'){
-      shoot();
-    }
-    flame.style.visibility='hidden';
-  };
-  doc.onmousedown = function(){
-    shoot();
-  };
-  contentWrapper.style.display='none';
-}
-// setInterval(shoot,1);
-function shoot(){
-  let proto = doc.createElementNS('http://www.w3.org/2000/svg','circle');
-  proto.angle = cursor.angle.toRad();
-  proto.startX = cursor.posX+18*Math.cos(proto.angle);
-  proto.startY = cursor.posY-19*Math.sin(proto.angle);
-  proto.posX = proto.startX;
-  proto.posY = proto.startY;
-  proto.setAttribute('r','.1rem');
-  bulletWrapper.appendChild(proto);
-  cursor.vY+=(.02*Math.sin(cursor.angle.toRad()));
-  cursor.vX-=(.02*Math.cos(cursor.angle.toRad()));
-  proto.startT = Date.now();
-  bullet.push(proto);
-}
-function collision(){
-  doc.getElementById('asteroid'+asteroidTick).classList.add('hitAsteroid');
-  addAsteroid();
-  setTimeout(function(){asteroids.removeChild(asteroids.firstElementChild);},200);
-}
-function gameOver(){
-  arcade.style.backgroundColor='#fff';
-  window.location.reload(false);
-}
-function bulletAnim(){
-  let initElapse = Date.now() - time;
-  bullet.forEach(function(e,f){
-    for(let elapse = initElapse;elapse < (initElapse+10);elapse+=0.1){
-      cursor.rect = cursor.getBoundingClientRect();
-      e.posX+=elapse*10*Math.cos(e.angle)/2000;
-      e.posY-=elapse*10*Math.sin(e.angle)/2000;
-      if(inside([e.posX,e.posY],proto.pathcoords)){
-        collision();
-        e.posX=null;
-        e.posY=null;
-        bullet.splice(f,1);
-      }
-      if(inside([e.posX,e.posY],[[cursor.rect.left,cursor.rect.top],[cursor.rect.right,cursor.rect.top],[cursor.rect.left,cursor.rect.bottom],[cursor.rect.right,cursor.rect.bottom]])){
-        gameOver();
-      }
-    }
-    if(e.posX>arcade.maxX){
-      e.posX=0;
-    }else if(e.posX<0){
-      e.posX=arcade.maxX;
-    }
-    if(e.posY>arcade.maxY){
-      e.posY=0;
-    }else if(e.posY<0){
-      e.posY=arcade.maxY;
-    }
-    e.style.transform='translate('+e.posX+'px,'+e.posY+'px)';
-  });
-  time = Date.now();
-  window.requestAnimationFrame(bulletAnim);
-}
-function gameAnim(){
-  if((asteroidTick&&inside([cursor.posX,cursor.posY],proto.pathcoords))||Math.abs(cursor.vR)>20){
-    gameOver();
-  }
-  
-  cursor.vR*=0.99; //for noobs
-  cursor.angle+=cursor.vR;
-  cursor.posX+=cursor.vX;
-  cursor.posY+=cursor.vY;
-  
-  if(cursor.posX>arcade.maxX){
-    cursor.posX=0;
-  }else if(cursor.posX<0){
-    cursor.posX=arcade.maxX;
-  }
-  if(cursor.posY>arcade.maxY){
-    cursor.posY=0;
-  }else if(cursor.posY<0){
-    cursor.posY=arcade.maxY;
-  }
-  
-  cursor.style.transform='translate('+(cursor.posX-44.415)+'px,'+(cursor.posY-74)+'px) rotate('+(-cursor.angle+120)+'deg) scale(0.2)';
-  
-  window.requestAnimationFrame(gameAnim);
-}
+        
 function splashAnim(){
   wire.tick += (Date.now() - wire.time)/8000*wire.speed;
   wire.time = Date.now();
@@ -477,52 +324,6 @@ function splashAnim(){
   'L1050 1700'
   );
   window.requestAnimationFrame(splashAnim);
-}
-function addAsteroid(){
-  // let proto=`<path id='asteroid`+asteroidTick+`' d='M`+Math.random()*1000+` `+(Math.round(Math.random())*2000-500)+`l`;
-  asteroidTick++;
-  proto={
-    posY:arcade.maxY*Math.random(),
-    posX:arcade.maxX*Math.random(),
-  };
-  proto.path=`<path class='asteroid' id='asteroid`+asteroidTick+`' d='M`+proto.posX+` `+proto.posY+`L`;
-  proto.pathcoords=[[proto.posX,proto.posY]];
-  for(let i = 0;i<20;i++){
-    proto.coord=Math.round(Math.random()*20);
-    proto.i=Math.PI*i/11;
-    if(i%2){
-      proto.posY+=3*Math.round(proto.coord*Math.sin(proto.i));
-      proto.pathcoords.push([proto.posX,proto.posY]);
-      if(i===19){
-        proto.path+=(proto.posY+`Z'/>`);
-      }else{
-        proto.path+=(proto.posY+'L');
-      }
-    }else{
-      proto.posX+=3*Math.round(proto.coord*Math.cos(proto.i));
-      proto.path+=(proto.posX+' ');
-    }
-  }
-  asteroids.style.display='block';
-  asteroids.innerHTML+=proto.path;
-}
-function inside(point, vs) {
-  // ray-casting algorithm based on
-  // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-
-  let x = point[0], y = point[1];
-
-  let inside = false;
-  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-    let xi = vs[i][0], yi = vs[i][1];
-    let xj = vs[j][0], yj = vs[j][1];
-
-    let intersect = ((yi > y) != (yj > y))
-        && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-    if (intersect) inside = !inside;
-  }
-
-  return inside;
 }
     </script>
   </body>
